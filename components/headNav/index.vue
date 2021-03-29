@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-navbar :is-back="false" :border-bottom="false" is-fixed :background="background">
+		<u-navbar height="50" :is-back="false" :border-bottom="false" is-fixed :background="background">
 			<view class="container-title">
 				<view class="leftIcon">
 					<view>

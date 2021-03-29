@@ -1,11 +1,11 @@
 <template>
 	<view style="height:100%">
 		<view class="calendar">
-			<view class='tit'>
+			<!-- <view class='tit'>
 				<view class='pre leftRight' @click='gotoPreMonth'>《</view>
 				<view class='current'>{{currentYear}} / {{ currentMonth < 10 ? '0' + currentMonth : currentMonth }}</view>
 				<view class='next leftRight' @click='gotoNextMonth'>》</view>
-			</view>
+			</view> -->
 			<view class='content'>
 				<view>日</view>
 				<view>一</view>
@@ -19,7 +19,7 @@
 			 :current="current" circular>
 				<swiper-item v-for="(item,index) in threeTime" :key="index">
 					<view class='daysItem'>
-						<view v-for="(item,index) in allArr" :key="index">{{item.date}}</view>
+						<view v-for="(items,index) in item.allArr" :key="index" :class="items.month != 'current' ? 'noCurrent' :'' ">{{items.date}}</view>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -54,13 +54,14 @@
 			return {
 				swiperHeight: "",
 				swiperDuration: 100, // 值为0禁止切换动画
-				current: 0, //初始显示页下标
+				current: 1, //初始显示页下标
 				currentYear: "",
 				currentMonth: "",
 				currentMonthDateLen: 0, // 当月天数
 				preMonthDateLen: 0, // 当月中，上月多余天数
 				allArr: [], // 当月所有数据
-				threeTime: [],
+				questionList: [], //所有的月份数据
+				threeTime: [], //页面展示的三个月份数据
 			};
 		},
 		created() {
@@ -71,9 +72,10 @@
 			this.currentYear = this.currentYear2
 			this.currentMonth = this.currentMonth2
 			let preYearMonth = this.preMonth(this.currentYear, this.currentMonth) // 获取上月 年、月
-			console.log("上",preYearMonth)
-			this.getAllArr(this.currentYear, this.currentMonth);
+			let nextYearMonth = this.nextMonth(this.currentYear, this.currentMonth) // 获取下月 年、月
 			this.getAllArr(preYearMonth.year, preYearMonth.month);
+			this.getAllArr(this.currentYear, this.currentMonth);
+			this.getAllArr(nextYearMonth.year, nextYearMonth.month);
 		},
 		methods: {
 			//
@@ -204,7 +206,7 @@
 				}
 				console.log("allArr", allArr)
 				let shortList = [];
-				let newThreeTime = this.threeTime
+				let newThreeTime = this.questionList
 				if (newThreeTime != '') {
 					let isInclude = newThreeTime.find(item => {
 						return item.yearAndMonth == sendObj.yearAndMonth
@@ -217,9 +219,9 @@
 				} else {
 					shortList.push(sendObj)
 				}
-				this.threeTime = this.threeTime.concat(shortList);
-				// this.getThreeItemList(this.timeList)
-				console.log("threeTime", this.threeTime)
+				this.questionList = this.questionList.concat(shortList);
+				this.getThreeItemList(sendObj)
+				console.log("questionList", this.questionList)
 			},
 			// 点击 上月
 			gotoPreMonth() {
@@ -254,7 +256,7 @@
 				var defaultIndex = ''
 
 				for (let index = 0; index < zongList.length; index++) {
-					if (zongList[index].id == newList.id) {
+					if (zongList[index].yearAndMonth == newList.yearAndMonth) {
 						defaultIndex = index
 					}
 				}
@@ -270,11 +272,55 @@
 				swiperList[current] = currentItem
 				swiperList[that.getLastSwiperChangeIndex(current)] = that.getLastSwiperNeedItem(currentItem, zongList)
 				swiperList[that.getNextSwiperChangeIndex(current)] = that.getNextSwiperNeedItem(currentItem, zongList)
-
-				that.threeItemList = swiperList
-
+				that.threeTime = swiperList
 				console.log("总数据", that.questionList)
-				console.log("三个页面", that.threeItemList)
+				console.log("三个页面", that.threeTime)
+			},
+
+			/**
+			 * 获取swiperList中current上一个的index
+			 */
+			getLastSwiperChangeIndex(current) {
+				const START = 0;
+				const END = 2; // //console.log("上一个index", current)
+				return current > START ? current - 1 : END;
+			},
+
+			/**
+			 * 获取swiperLit中current下一个的index
+			 */
+			getNextSwiperChangeIndex(current) {
+				const START = 0;
+				const END = 2; // //console.log("下一个index", current)
+				return current < END ? current + 1 : START;
+			},
+
+			/**
+			 * 获取上一个要替换的list中的item
+			 */
+			getLastSwiperNeedItem(currentItem, list) {
+				let zongList = this.questionList;
+				let defaultIndex = zongList.indexOf(currentItem); // //console.log(defaultIndex)
+
+				let listNeedIndex = defaultIndex - 1;
+				let item = listNeedIndex == -1 ? {
+					isFirstPlaceholder: true
+				} : zongList[listNeedIndex];
+				return item;
+			},
+
+			/**
+			 * 获取下一个要替换的list中的item
+			 */
+			getNextSwiperNeedItem(currentItem, list) {
+				let zongList = this.questionList;
+				let defaultIndex = zongList.indexOf(currentItem); ////console.log(defaultIndex)
+
+				let listNeedIndex = defaultIndex + 1;
+				let item = listNeedIndex == zongList.length ? {
+					isLastPlaceholder: true
+				} : zongList[listNeedIndex];
+				return item;
 			},
 		}
 	}
@@ -310,8 +356,8 @@
 
 	.calendar .content view {
 		width: 14%;
-		height: 52rpx;
-		line-height: 52rpx;
+		height: 30px;
+		line-height: 30px;
 		text-align: center;
 		flex-shrink: 0;
 		font-size: 24rpx;
@@ -319,26 +365,35 @@
 	}
 
 	.daysItem {
-
+		height: 100%;
 		display: flex;
 		flex-wrap: wrap;
 		box-sizing: border-box;
 
 		view {
-			width: 14%;
-			height: 16.5vh;
+			// width: 14%;
+			margin: 0 !important;
+			padding: 0 !important;
+			width: 14.28%;
+			min-width: 14.28%; // 加入这两个后每个item的宽度就生效了
+			max-width: 14.28%; // 加入这两个后每个item的宽度就生效了
+			// height: 16.5vh;
+			height: calc(100% / 6) ;
 			font-size: 26rpx;
 			color: #333333;
 			font-weight: bold;
-			text-align: center;
-			flex-shrink: 0;
-			border-radius: 50%;
+			// flex-shrink: 0;
 			display: flex;
 			justify-content: center;
-			align-items: center;
+			// padding-top: 20rpx;
+			box-sizing: border-box;
 		}
 
 
+	}
+
+	.noCurrent {
+		background-color: #F2F2F2;
 	}
 
 	.leftRight {
