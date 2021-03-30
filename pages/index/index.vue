@@ -16,7 +16,8 @@
 
 <script>
 	import headNav from '../../components/headNav/index.vue'; //头部导航组件
-	import calendar from '../../components/calendar/calendar.vue'; //日历组件
+	// import calendar from '../../components/calendar/calendar.vue'; //日历组件
+	import calendar from '../../components/lx-calendar/lx-calendar.vue'; //日历组件
 	export default {
 		data() {
 			return {
@@ -24,6 +25,7 @@
 				currentYear: "",
 				currentMonth: "",
 				signLists: [],
+				list:[]
 			}
 		},
 		components: {

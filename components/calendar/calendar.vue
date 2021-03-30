@@ -15,8 +15,8 @@
 				<view>五</view>
 				<view>六</view>
 			</view>
-			<swiper @animationfinish="swiperChange" style="height:100%" easing-function="linear" :duration="swiperDuration"
-			 :current="current" circular>
+			<swiper @change="swiperChange" style="height:100%" easing-function="linear" :duration="swiperDuration" :current="current"
+			 circular>
 				<swiper-item v-for="(item,index) in threeTime" :key="index">
 					<view class='daysItem'>
 						<view v-for="(items,index) in item.allArr" :key="index" :class="items.month != 'current' ? 'noCurrent' :'' ">{{items.date}}</view>
@@ -54,7 +54,7 @@
 			return {
 				swiperHeight: "",
 				swiperDuration: 100, // 值为0禁止切换动画
-				current: 1, //初始显示页下标
+				current: 0, //初始显示页下标
 				currentYear: "",
 				currentMonth: "",
 				currentMonthDateLen: 0, // 当月天数
@@ -62,6 +62,9 @@
 				allArr: [], // 当月所有数据
 				questionList: [], //所有的月份数据
 				threeTime: [], //页面展示的三个月份数据
+				timeList: {}, //当前的临时数据
+				preYearMonth: {},
+				nextYearMonth: {},
 			};
 		},
 		created() {
@@ -71,17 +74,10 @@
 			console.log("signLists", this.signLists)
 			this.currentYear = this.currentYear2
 			this.currentMonth = this.currentMonth2
-			let preYearMonth = this.preMonth(this.currentYear, this.currentMonth) // 获取上月 年、月
-			let nextYearMonth = this.nextMonth(this.currentYear, this.currentMonth) // 获取下月 年、月
-			this.getAllArr(preYearMonth.year, preYearMonth.month);
 			this.getAllArr(this.currentYear, this.currentMonth);
-			this.getAllArr(nextYearMonth.year, nextYearMonth.month);
+
 		},
 		methods: {
-			//
-			swiperChange(event) {
-				console.log("ccccc", event.detail)
-			},
 
 			// 获取某年某月总共多少天
 			getDateLen(year, month) {
@@ -141,7 +137,6 @@
 					}
 				}
 				this.currentMonthDateLen = currentMonthDateLen
-				console.log(currentMonthDateLen)
 				return currentMonthDateArr
 			},
 			// 获取当月中，上月多余数据，返回数组
@@ -164,7 +159,6 @@
 					}
 				}
 				this.preMonthDateLen = preMonthDateLen
-				console.log("preMonthDateLen", preMonthDateLen)
 				return preMonthDateArr
 			},
 			// 获取当月中，下月多余数据，返回数组
@@ -204,7 +198,7 @@
 					yearAndMonth: currentYear + "-" + currentMonth,
 					allArr: allArr
 				}
-				console.log("allArr", allArr)
+				this.timeList = sendObj;
 				let shortList = [];
 				let newThreeTime = this.questionList
 				if (newThreeTime != '') {
@@ -221,7 +215,46 @@
 				}
 				this.questionList = this.questionList.concat(shortList);
 				this.getThreeItemList(sendObj)
-				console.log("questionList", this.questionList)
+				
+				this.preYearMonth = this.preMonth(currentYear, currentMonth) // 获取上月 年、月
+				this.nextYearMonth = this.nextMonth(currentYear, currentMonth) // 获取下月 年、月
+
+				this.getPreLast(this.nextYearMonth.year, this.nextYearMonth.month);
+				this.getPreLast(this.preYearMonth.year, this.preYearMonth.month);
+
+
+			},
+
+			// 整合上、下月的所有数据
+			getPreLast(currentYear, currentMonth) {
+				let preArr = this.getPreArr(currentYear, currentMonth)
+				let currentArr = this.getCurrentArr(currentYear, currentMonth)
+				let nextArr = this.getNextArr(currentYear, currentMonth)
+				let allArr = [...preArr, ...currentArr, ...nextArr]
+				// this.allArr = allArr
+				let sendObj = {
+					currentYear: currentYear,
+					currentMonth: currentMonth,
+					yearAndMonth: currentYear + "-" + currentMonth,
+					allArr: allArr
+				}
+				let shortList = [];
+				let newThreeTime = this.questionList
+				if (newThreeTime != '') {
+					let isInclude = newThreeTime.find(item => {
+						return item.yearAndMonth == sendObj.yearAndMonth
+					})
+					if (isInclude == undefined) {
+						shortList.push(sendObj)
+					} else {
+						shortList = []
+					}
+				} else {
+					shortList.push(sendObj)
+				}
+				this.questionList = this.questionList.concat(shortList);
+				this.getThreeItemList(this.timeList)
+				console.log("当前页数据", this.timeList)
 			},
 			// 点击 上月
 			gotoPreMonth() {
@@ -231,7 +264,6 @@
 				} = this.preMonth(this.currentYear, this.currentMonth)
 				this.currentYear = year
 				this.currentMonth = month
-				console.log("当月", this.currentYear, this.currentMonth)
 				this.getAllArr(this.currentYear, this.currentMonth)
 				this.$emit("gotoPreMonth")
 			},
@@ -244,7 +276,6 @@
 
 				this.currentYear = year
 				this.currentMonth = month
-				console.log("当月", this.currentYear, this.currentMonth)
 				this.getAllArr(this.currentYear, this.currentMonth)
 				this.$emit("gotoNextMonth")
 			},
@@ -265,16 +296,18 @@
 				for (let i = 0; i < 3; i++) {
 					swiperList.push({})
 				}
-				console.log("defaultIndex", defaultIndex)
 				let current = defaultIndex % 3
 				that.currentIndex = current
 				let currentItem = zongList[defaultIndex]
+				console.log("current", newList, current)
+				console.log("getLastSwiperChangeIndex", that.getLastSwiperChangeIndex(current),that.getLastSwiperNeedItem(currentItem, zongList))
+				console.log("getNextSwiperChangeIndex", that.getNextSwiperChangeIndex(current),that.getNextSwiperNeedItem(currentItem, zongList))
 				swiperList[current] = currentItem
 				swiperList[that.getLastSwiperChangeIndex(current)] = that.getLastSwiperNeedItem(currentItem, zongList)
 				swiperList[that.getNextSwiperChangeIndex(current)] = that.getNextSwiperNeedItem(currentItem, zongList)
 				that.threeTime = swiperList
-				console.log("总数据", that.questionList)
-				console.log("三个页面", that.threeTime)
+				console.log("总数据", this.questionList)
+				console.log("三个页面", this.threeTime)
 			},
 
 			/**
@@ -300,8 +333,8 @@
 			 */
 			getLastSwiperNeedItem(currentItem, list) {
 				let zongList = this.questionList;
-				let defaultIndex = zongList.indexOf(currentItem); // //console.log(defaultIndex)
-
+				let defaultIndex = zongList.indexOf(currentItem); // 
+				console.log("上一个", currentItem, defaultIndex)
 				let listNeedIndex = defaultIndex - 1;
 				let item = listNeedIndex == -1 ? {
 					isFirstPlaceholder: true
@@ -315,12 +348,54 @@
 			getNextSwiperNeedItem(currentItem, list) {
 				let zongList = this.questionList;
 				let defaultIndex = zongList.indexOf(currentItem); ////console.log(defaultIndex)
-
+				console.log("下一个", currentItem, defaultIndex)
 				let listNeedIndex = defaultIndex + 1;
 				let item = listNeedIndex == zongList.length ? {
 					isLastPlaceholder: true
 				} : zongList[listNeedIndex];
 				return item;
+			},
+
+			//滑动事件
+			swiperChange(e) {
+				let that = this
+				console.log("swiper", e.detail.current, that.currentIndex, that.timeList)
+				console.log(that.threeItemList)
+				let current = e.detail.current
+				let currentIndex = that.currentIndex
+				let zongList = that.questionList
+				let currentItem = zongList[current]
+
+				if (e.detail.source === 'touch') {
+					console.log("e.detail.source", e.detail.source)
+					that.currentIndex = current
+					that.current = current
+				}
+
+				console.log("滑动current", that.current)
+
+				const START = 0
+				const END = 2
+				// 正向滑动，到下一个的时候
+				let isLoopPositive = current == START && currentIndex == END
+				//console.log(isLoopPositive)
+				if (current - currentIndex == 1 || isLoopPositive) {
+					let topicXh = that.timeList.xh * 1 + 1
+					that.getThreeItemList(that.timeList)
+					if (that.timeList.tx != 0 && that.timeList.tx != 5 && that.timeList.tx != 6) {
+						that.selectTopic(topicXh)
+					}
+				}
+				// 反向滑动，到上一个的时候
+				var isLoopNegative = current == END && currentIndex == START
+				if (currentIndex - current == 1 || isLoopNegative) {
+					let topicXh = that.timeList.xh * 1
+					that.getThreeItemList(that.timeList)
+					if (that.timeList.tx != 0 && that.timeList.tx != 5 && that.timeList.tx != 6) {
+						that.selectTopic(topicXh - 1)
+					}
+				}
+
 			},
 		}
 	}
@@ -378,7 +453,7 @@
 			min-width: 14.28%; // 加入这两个后每个item的宽度就生效了
 			max-width: 14.28%; // 加入这两个后每个item的宽度就生效了
 			// height: 16.5vh;
-			height: calc(100% / 6) ;
+			height: calc(100% / 6);
 			font-size: 26rpx;
 			color: #333333;
 			font-weight: bold;
