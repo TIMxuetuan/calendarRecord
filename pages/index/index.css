@@ -1,4 +1,4 @@
-page{
+page {
 	height: 100%;
 }
 
@@ -8,7 +8,190 @@ page{
 	box-sizing: border-box;
 }
 
-.calendarModel{
+.calendarModel {
 	width: 100%;
 	height: calc(100% - 80px);
+}
+
+/*右下角添加图表*/
+.rightAdd {
+	position: fixed;
+	right: 30rpx;
+	bottom: 30rpx;
+	width: 100rpx;
+	height: 100rpx;
+	background-color: #CDDC39;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/*新增事件弹窗*/
+.activity-centent {
+	height: 100%;
+	padding: 30rpx 0 0 40rpx;
+}
+
+.activity-head {
+	width: 100%;
+	height: 60rpx;
+	display: flex;
+	align-items: center;
+}
+
+.activity-head-text {
+	font-size: 32rpx;
+	margin-left: 60rpx;
+	box-sizing: border-box;
+	color: #727272;
+}
+
+.activityMore {
+	width: 100%;
+	height: calc(100% - 90rpx);
+	overflow-y: scroll;
+	box-sizing: border-box;
+	margin-top: 30rpx;
+}
+
+.more-item {
+	width: 100%;
+	height: 60rpx;
+	display: flex;
+	align-items: center;
+	margin-bottom: 30rpx;
+}
+
+.aaa {
+	width: 100%;
+	height: 100%;
+}
+
+
+/*添加 各种类型的事件 弹窗*/
+.addMode-head {
+	width: 100%;
+	height: 100rpx;
+	background-color: #2196F3;
+	font-size: 32rpx;
+	color: #fff;
+	font-weight: bold;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 30rpx;
+}
+
+.addMode-body {
+	margin-top: 40rpx;
+	width: 100%;
+	padding: 0 30rpx;
+	display: flex;
+
+}
+
+.leftIcon {
+	display: flex;
+	align-items: center;
+	text-align: center;
+}
+
+.selectIcon {
+	width: 120rpx;
+	height: 120rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 28rpx;
+}
+
+
+.rightText {
+	margin-left: 30rpx;
+	width: 100%;
+}
+
+.rightText-titile {
+	font-size: 32rpx;
+}
+
+.rightText-input {
+	width: 100%;
+	height: 100%;
+
+	/deep/ .uni-textarea-textarea {
+		font-size: 40rpx;
+		color: red;
+	}
+}
+
+
+/*icon集合弹窗*/
+.icon-content {
+	width: 100%;
+	height: 100%;
+	padding: 40rpx 40rpx 0 40rpx;
+}
+
+.iconTop {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 32rpx;
+	font-weight: bold;
+}
+
+.iconTop-right {
+	display: flex;
+	align-items: center;
+}
+
+.iconTop-color {
+	width: 120rpx;
+	height: 120rpx;
+	border-radius: 4rpx;
+	margin-left: 30rpx;
+}
+
+.iconCentent {
+	width: 100%;
+	height: 75%;
+	margin-top: 30rpx;
+	overflow-y: scroll;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.iconCentent-item {
+	width: 33.33%;
+	/* height: 100rpx; */
+	padding: 30rpx 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 30rpx;
+}
+
+.bgSelect{
+	background-color: #E4E4E4;
+}
+
+.iconBottom{
+	width: 100%;
+	height: 100rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 32rpx;
+	font-weight: bold;
+}
+
+.iconBottom-two{
+	display: flex;
+}
+
+.iconBottom-no{
+	margin-right: 60rpx;
 }

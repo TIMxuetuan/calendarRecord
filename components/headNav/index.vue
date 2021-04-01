@@ -7,11 +7,11 @@
 						<u-icon name="list" color="#ffffff" size="36"></u-icon>
 					</view>
 					<view class="timeValue">
-						二月
+						{{timeListTime}}
 					</view>
 				</view>
 				<view class="rightIcon">
-					<u-icon name="calendar" color="#ffffff" size="34"></u-icon>
+					<u-icon name="calendar" color="#ffffff" size="36"></u-icon>
 				</view>
 			</view>
 		</u-navbar>
@@ -20,6 +20,12 @@
 
 <script>
 	export default {
+		props:{
+			timeListTime:{
+				type: [Array,String],
+				default: ""
+			}
+		},
 		data() {
 			return {
 				background: {
@@ -33,6 +39,7 @@
 <style lang="scss" scoped>
 	.container-title {
 		width: 100%;
+		height: 50px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -41,12 +48,15 @@
 	
 	.leftIcon{
 		display: flex;
+		height: 50px;
+		align-items: center;
+		font-weight: bold;
 	}
 
 	.timeValue {
 		margin-left: 30rpx;
 		color: #fff;
-		font-size: 30rpx;
+		font-size: 34rpx;
 	}
 
 	.rightIcon {

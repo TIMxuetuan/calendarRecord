@@ -205,25 +205,17 @@
 					this.to_week_index = this.to_prev_week_index;
 					this.to_prev_week_index = this.to_next_week_index
 					this.to_next_week_index = to_week_index;
-
 					this.week_list = this.week_list_prev_week
 					this.week_list_prev_week = this.week_list_next_week;
 					this.week_list_next_week = week_list;
-
-
-
 				} else if (type == 'next') {
 					this.to_week_index = this.to_next_week_index;
 					this.to_next_week_index = this.to_prev_week_index
 					this.to_prev_week_index = to_week_index;
-
 					this.week_list = this.week_list_next_week
 					this.week_list_next_week = this.week_list_prev_week;
 					this.week_list_prev_week = week_list;
-
-
 				}
-
 				this.set_to_day_all();
 			},
 			change_date_month(type) {
@@ -239,18 +231,10 @@
 				}
 			},
 			change_date(e) {
-
-
 				let primary_current = this.current
 				let current = e.detail.current;
-
 				this.current = current;
-
-
-
-
 				if (primary_current - current == -1 || primary_current - current == 2) {
-
 					if (this.retract) {
 						this.switch_month_week('next')
 						this.change_week()
