@@ -89,16 +89,17 @@
 				if (items.isOpen) {
 					console.log("已经选择了")
 				} else {
-					let allLists = this.timeList.allArr;
+					let allLists = this.timeList;
 					items.isOpen = true
-					for (let item of allLists) {
+					for (let item of allLists.allArr) {
 						if (item.ziDate == items.ziDate) {
 							item.isOpen = true
+							localStorage.setItem("dayRecord",JSON.stringify(items))
 						} else {
 							item.isOpen = false;
 						}
 					}
-					this.timeList.allArr = allLists;
+					this.timeList = allLists;
 					this.$forceUpdate()
 					console.log("this.timeList", this.timeList)
 				}
@@ -264,6 +265,7 @@
 						console.log("item", item)
 						item.isOpen = true
 						newAllArr.push(item)
+						localStorage.setItem("dayRecord",JSON.stringify(item))
 					} else {
 						item.isOpen = false;
 						newAllArr.push(item)
