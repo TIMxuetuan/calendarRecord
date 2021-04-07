@@ -23,6 +23,15 @@
 						<view class="item-date" :class="items.isOpen == true ? 'nowZiDate-text' :''">
 							{{items.date}}
 						</view>
+						<view class="lastAll">
+							<view class="lastAll-item" v-for="(last,index) in items.lastAllItem" :key="index">
+								<view class="lastItem-icon">
+									<u-icon :name="last.explainIconValue.icon.name"
+										:color="last.explainIconValue.icon.color" size="30"></u-icon>
+								</view>
+								<view class="lastItem-text">{{last.explainIconValue.value}}</view>
+							</view>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -94,7 +103,7 @@
 					for (let item of allLists.allArr) {
 						if (item.ziDate == items.ziDate) {
 							item.isOpen = true
-							localStorage.setItem("dayRecord",JSON.stringify(items))
+							localStorage.setItem("dayRecord", JSON.stringify(items))
 						} else {
 							item.isOpen = false;
 						}
@@ -182,8 +191,8 @@
 						}
 						currentMonthDateArr.push({
 							month: 'current', // 只是为了增加标识，区分上下月
-							currentYear:currentYear,
-							currentMonth:currentMonth,
+							currentYear: currentYear,
+							currentMonth: currentMonth,
 							date: newi,
 							ziDate: currentYear + "-" + currentMonth + "-" + newi,
 
@@ -206,8 +215,8 @@
 					for (let i = 0; i < preMonthDateLen; i++) {
 						preMonthDateArr.unshift({ // 尾部追加
 							month: 'pre', // 只是为了增加标识，区分当、下月
-							currentYear:year,
-							currentMonth:month,
+							currentYear: year,
+							currentMonth: month,
 							date: date,
 							ziDate: year + "-" + month + "-" + date,
 						})
@@ -234,8 +243,8 @@
 						}
 						nextMonthDateArr.push({
 							month: 'next', // 只是为了增加标识，区分当、上月
-							currentYear:year,
-							currentMonth:month,
+							currentYear: year,
+							currentMonth: month,
 							date: newi,
 							ziDate: year + "-" + month + "-" + newi,
 						})
@@ -265,7 +274,7 @@
 						console.log("item", item)
 						item.isOpen = true
 						newAllArr.push(item)
-						localStorage.setItem("dayRecord",JSON.stringify(item))
+						localStorage.setItem("dayRecord", JSON.stringify(item))
 					} else {
 						item.isOpen = false;
 						newAllArr.push(item)
@@ -276,11 +285,46 @@
 					currentYear: currentYear,
 					currentMonth: currentMonth,
 					yearAndMonth: newi + "-" + currentYear,
-					allArr: allArr
+					allArr: this.isTimeAll(allArr)
 				}
 				this.timeList = sendObj;
 				console.log("newAllArr", newAllArr)
 				console.log("当前月份", newi, currentMonth, this.timeList)
+			},
+
+			//获取本地数据，与当月数据进行对比，如果有记录则将缓存数据添加整合
+			isTimeAll(allArr) {
+				let lastAllLists = localStorage.getItem("lastAllLists");
+				if (lastAllLists != null && lastAllLists != "") {
+					lastAllLists = JSON.parse(lastAllLists);
+				} else {
+					lastAllLists = [];
+				}
+
+				if (lastAllLists != '') {
+					for (var i = 0; i < lastAllLists.length; i++) {
+						for (var j = 0; j < allArr.length; j++) {
+							let lastAllItem = []
+							if (lastAllLists[i].idTime == allArr[j].ziDate) {
+								console.log("allArr[j]", allArr[j], allArr[j].lastAllItem, allArr[j].lastAllItem !=
+									undefined)
+								lastAllItem.push(lastAllLists[i])
+								allArr[j].lastAllItem != undefined ? allArr[j].lastAllItem = allArr[j].lastAllItem.concat(
+									lastAllItem) : allArr[j].lastAllItem = lastAllItem
+							} else {
+								// allArr[j].lastAllItem = []
+							}
+						}
+					}
+				}
+				console.log("lastAllLists", lastAllLists, allArr)
+				return allArr
+
+			},
+			
+			shuaLists(){
+				console.log("执行了")
+				this.getAllArr(this.currentYear, this.currentMonth)
 			},
 
 			// 点击 上月
@@ -372,6 +416,8 @@
 			border-bottom: 2rpx solid #F5F5F5;
 			font-weight: bold;
 			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
 			padding: 10rpx 0 0 10rpx;
 			box-sizing: border-box;
 		}
@@ -409,5 +455,36 @@
 	.nowZiDate-text {
 		background-color: #2196F3;
 		color: #fff;
+	}
+
+	.lastAll {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.lastAll-item {
+		width: 100%;
+		display: flex;
+		align-items: center;
+	}
+
+	.lastItem-icon {
+		display: inline-block;
+		width: 30rpx !important;
+		height: 30rpx;
+		box-sizing: border-box;
+	}
+
+	.lastItem-text {
+		flex: 1;
+		width: 100%;
+		margin-left: 4rpx;
+		overflow: hidden;
+		/*超出部分隐藏*/
+		white-space: nowrap;
+		/*不换行*/
+		text-overflow: ellipsis;
+		/*超出部分文字以...显示*/
 	}
 </style>

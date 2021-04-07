@@ -63,7 +63,7 @@ page {
 	margin-bottom: 30rpx;
 }
 
-.more-item-icon{
+.more-item-icon {
 	width: 50rpx;
 	height: 50rpx;
 }
@@ -179,11 +179,11 @@ page {
 	margin-bottom: 30rpx;
 }
 
-.bgSelect{
+.bgSelect {
 	background-color: #E4E4E4;
 }
 
-.iconBottom{
+.iconBottom {
 	width: 100%;
 	height: 100rpx;
 	display: flex;
@@ -193,10 +193,68 @@ page {
 	font-weight: bold;
 }
 
-.iconBottom-two{
+.iconBottom-two {
 	display: flex;
 }
 
-.iconBottom-no{
+.iconBottom-no {
 	margin-right: 60rpx;
+}
+
+/*为日期添加事件的数值和备注 弹窗*/
+.explain-centent {
+	padding: 40rpx;
+}
+
+.explain-body {
+	margin-top: 40rpx;
+}
+
+.explain-head {
+	display: flex;
+	align-items: center;
+}
+
+.explainHead-text {
+	color: #000000;
+	font-weight: bold;
+	font-size: 36rpx;
+	margin-left: 30rpx;
+}
+
+.explainBody-title {
+	font-size: 36rpx;
+	color: #747474;
+	margin: 20rpx 0 10rpx 0;
+}
+
+.explainBody-input {
+	width: 100%;
+	height: 100%;
+
+	/deep/ .uni-textarea-textarea {
+		font-size: 40rpx;
+		color: red;
+	}
+}
+
+.explain-time {
+	margin-top: 50rpx;
+	font-size: 32rpx;
+	color: #747474;
+	display: flex;
+	align-items: center;
+}
+
+.explainTime-year {
+	color: #2196F3;
+	margin-left: 10rpx;
+}
+
+.explain-affirm {
+	font-size: 36rpx;
+	color: #000000;
+	font-weight: bold;
+	margin-top: 30rpx;
+	text-align: right;
 }

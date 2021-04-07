@@ -9,7 +9,8 @@
 		<!--日历内容 开始-->
 		<view class="calendarModel">
 			<calendar ref="calendar" @gotoPreMonth="gotoPreMonth" @gotoNextMonth="gotoNextMonth" :signLists="signLists"
-				:nowTime="nowTime" :currentYear2='currentYear' :currentMonth2="currentMonth" @daysAdd="daysAdd"></calendar>
+				:nowTime="nowTime" :currentYear2='currentYear' :currentMonth2="currentMonth" @daysAdd="daysAdd">
+			</calendar>
 		</view>
 		<!--日历内容 结束-->
 
@@ -26,7 +27,8 @@
 					<view class="activity-head-text">新增事件</view>
 				</view>
 				<view class="activityMore">
-					<view class="more-item" v-for="(item,index) in activityLists" :key="index" @click="addDayRecord(item)">
+					<view class="more-item" v-for="(item,index) in activityLists" :key="index"
+						@click="addDayRecord(item)">
 						<view class="more-item-icon">
 							<u-icon :name="item.icon.name" :color="item.icon.color" size="50"></u-icon>
 						</view>
@@ -58,10 +60,40 @@
 				</view>
 			</view>
 		</u-popup>
-		
+
 		<!--为事件添加值和说明弹窗-->
 		<u-popup v-model="explainShow" mode="center" width="80%" height="50%" border-radius="10">
-			
+			<view class="explain-centent">
+				<view class="explain-head">
+					<view class="explainHead-icon">
+						<u-icon v-if="explainIconValue" :name="explainIconValue.icon.name"
+							:color="explainIconValue.icon.color" size="80"></u-icon>
+					</view>
+					<view class="explainHead-text">{{explainIconValue.value}}</view>
+				</view>
+				<view class="explain-body">
+					<view class="explainBody-item">
+						<view class="explainBody-title">数值:</view>
+						<view class="explainBody-input">
+							<u-input v-model="explainValue" type="number" :border="false"
+								:clearable="false" :custom-style="explainCustom" placeholder="" />
+						</view>
+					</view>
+					<view class="explainBody-item">
+						<view class="explainBody-title">备注:</view>
+						<view class="explainBody-input">
+							<u-input v-model="explainNote" type="text" :border="false"
+								:clearable="false" :custom-style="explainCustom" placeholder="" />
+						</view>
+					</view>
+				</view>
+				<view class="explain-time">
+					<view class="">创建时间:</view>
+					<view class="explainTime-year">{{explainDate}} {{explainTime}}</view>
+				</view>
+				
+				<view class="explain-affirm" @click="explainComfig">确认</view>
+			</view>
 		</u-popup>
 
 		<!--各种图标 弹窗-->
@@ -141,7 +173,18 @@
 				colorShow: false, //控制颜色选择器弹窗显示
 				newActivityItem: "", //确定添加图标后，将图标内容存进这里
 				timeListNow: "", //给子组件更新用的监听中间值
-				explainShow:false, //
+				explainShow: false, //是否显示事件的值、备注弹窗
+				explainIconValue: "", //选择的事件图标和名字
+				explainValue:"", //填写的数值
+				explainNote:"", //备注
+				explainCustom: {
+					borderBottom: "2px solid #2196F3",
+					fontSize: "40rpx"
+				},
+				explainDateTime:"",
+				explainDate:"",
+				explainTime:"",
+				
 
 			}
 		},
@@ -328,12 +371,64 @@
 				localStorage.setItem("nowIconListsItem", "");
 				this.closeIconModel();
 			},
-			
-			//为某一天添加活动时间--例如，为2021-4-02添加 跑步事件
-			addDayRecord(item){
-				console.log("item",item)
+
+			//为某一天添加活动事件 ，打开弹窗，并初始化--例如，为2021-4-02添加 跑步事件
+			addDayRecord(item) {
 				this.explainShow = true;
-			}
+				this.activityShow = false;
+				this.explainIconValue = item;
+				this.explainValue = "";
+				this.explainNote = "";
+				let nowDate = new Date();
+				let year = nowDate.getFullYear()
+				let month = nowDate.getMonth() + 1
+				let date = nowDate.getDate()
+				let hours = nowDate.getHours()
+				let minutes = nowDate.getMinutes()
+				this.explainDateTime = {
+					year,
+					month,
+					date,
+					hours,
+					minutes,
+				}
+				this.explainDate = year + "年" + month  +"月" + date + "日"
+				if(hours < 12){
+					this.explainTime = "上午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes )
+				}else{
+					hours = hours - 12
+					this.explainTime = "下午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes )
+				}
+				
+				console.log("item",this.explainDateTime)
+			},
+			
+			//添加活动事件弹窗,最终添加按钮事件
+			explainComfig(){
+				let lastAllLists = localStorage.getItem("lastAllLists");
+				if (lastAllLists != null && lastAllLists != "") {
+					lastAllLists = JSON.parse(lastAllLists);
+				} else {
+					lastAllLists = [];
+				}
+				
+				let dayRecord = JSON.parse(localStorage.getItem("dayRecord"))
+				let linLists = []
+				let lastAllItem = {
+					idTime:dayRecord.ziDate,
+					dayRecord,
+					explainValue:this.explainValue,
+					explainNote:this.explainNote,
+					explainDateTime:this.explainDateTime,
+					explainIconValue:this.explainIconValue,
+				}
+				linLists.push(lastAllItem)
+				lastAllLists = lastAllLists.concat(linLists);
+				localStorage.setItem("lastAllLists",JSON.stringify(lastAllLists))
+				this.explainShow = false;
+				this.$refs.calendar.shuaLists()
+				console.log("最终添加",lastAllLists)
+			},
 
 		}
 	}
