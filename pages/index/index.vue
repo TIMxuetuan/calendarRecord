@@ -9,7 +9,8 @@
 		<!--日历内容 开始-->
 		<view class="calendarModel">
 			<calendar ref="calendar" @gotoPreMonth="gotoPreMonth" @gotoNextMonth="gotoNextMonth" :signLists="signLists"
-				:nowTime="nowTime" :currentYear2='currentYear' :currentMonth2="currentMonth" @daysAdd="daysAdd">
+				:nowTime="nowTime" :currentYear2='currentYear' :currentMonth2="currentMonth" @daysAdd="daysAdd"
+				@openDayAllRecord="openDayAllRecord">
 			</calendar>
 		</view>
 		<!--日历内容 结束-->
@@ -62,7 +63,7 @@
 		</u-popup>
 
 		<!--为事件添加值和说明弹窗-->
-		<u-popup v-model="explainShow" mode="center" width="80%" height="50%" border-radius="10">
+		<u-popup v-model="explainShow" z-index="10085" mode="center" width="80%" height="50%" border-radius="10">
 			<view class="explain-centent">
 				<view class="explain-head">
 					<view class="explainHead-icon">
@@ -75,15 +76,15 @@
 					<view class="explainBody-item">
 						<view class="explainBody-title">数值:</view>
 						<view class="explainBody-input">
-							<u-input v-model="explainValue" type="number" :border="false"
-								:clearable="false" :custom-style="explainCustom" placeholder="" />
+							<u-input v-model="explainValue" type="number" :border="false" :clearable="false"
+								:custom-style="explainCustom" placeholder="" />
 						</view>
 					</view>
 					<view class="explainBody-item">
 						<view class="explainBody-title">备注:</view>
 						<view class="explainBody-input">
-							<u-input v-model="explainNote" type="text" :border="false"
-								:clearable="false" :custom-style="explainCustom" placeholder="" />
+							<u-input v-model="explainNote" type="text" :border="false" :clearable="false"
+								:custom-style="explainCustom" placeholder="" />
 						</view>
 					</view>
 				</view>
@@ -91,7 +92,7 @@
 					<view class="">创建时间:</view>
 					<view class="explainTime-year">{{explainDate}} {{explainTime}}</view>
 				</view>
-				
+
 				<view class="explain-affirm" @click="explainComfig">确认</view>
 			</view>
 		</u-popup>
@@ -130,6 +131,73 @@
 			</view>
 		</u-popup>
 
+		<!--某一天里所有记录的 弹窗-->
+		<u-popup class="allRecord" v-model="dayAllRecord" mode="center" width="100%" height="100%">
+			<view class="allRecord-body">
+				<view class="allRecord-head">
+					<view class="allRecord-left">
+						<u-icon @click="offAllRecord" name="arrow-leftward" color="#ffffff" size="40"></u-icon>
+						<view class="allRecord-text">
+							{{dayAllRecordList.currentYear}}年{{dayAllRecordList.currentMonth}}月{{dayAllRecordList.date}}日
+						</view>
+					</view>
+					<view class="allRecord-right">
+						<u-icon name="calendar" color="#ffffff" size="40"></u-icon>
+					</view>
+				</view>
+				<view class="allRecord-con">
+					<view class="allRecordCon-ul">
+						<view class="allRecordCon-li" v-for="(item,index) in dayAllRecordList.lastAllItem" :key="index">
+							<view class="recordLi-top">
+								<view class="recordTop-head">
+									<view class="recordHead-left">
+										<u-icon :name="item.explainIconValue.icon.name"
+											:color="item.explainIconValue.icon.color" size="40"></u-icon>
+										<view class="recordHead-left-text">
+											{{item.explainIconValue.value}}
+										</view>
+									</view>
+									<view class="">
+										<u-icon v-if="!item.isOpen" @click="openRecordHide(item,true)" name="arrow-down"
+											color="#000" size="40"></u-icon>
+										<u-icon v-else name="arrow-up" @click="openRecordHide(item,false)" color="#000"
+											size="40"></u-icon>
+									</view>
+								</view>
+								<view class="recordTop-value">{{item.explainValue}}</view>
+								<view class="">{{item.explainNote}}</view>
+							</view>
+							<view class="recordLi-hide" v-if="item.isOpen">
+								<view class="recordHide-top">
+									<view class="">创建时间:</view>
+									<view class="recordHide-time">
+										<view class="">
+											{{item.explainDateTime.year}}年{{item.explainDateTime.month}}月{{item.explainDateTime.date}}日
+										</view>
+										<view class="">
+											{{item.explainDateTime.hours < 12 ? '上午' + item.explainDateTime.hours : '下午' + (item.explainDateTime.hours - 12)}}:{{item.explainDateTime.minutes < 10 ? '0' + item.explainDateTime.minutes : item.explainDateTime.minutes }}
+										</view>
+									</view>
+								</view>
+								<view class="recordHide-btn">
+									<view class="">
+										<u-icon @click="recordDelete(item)" name="trash-fill" color="#727272" size="40"></u-icon>
+									</view>
+									<view class="">
+										<u-icon @click="recordEdit(item)" name="edit-pen-fill" color="#727272"
+											size="40"></u-icon>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</u-popup>
+		
+		<!--删除记录确认弹窗-->
+		<u-modal v-model="deleteShow" show-cancel-button content="确定删除这条记录吗？" confirm-color="red" @confirm="confirmRecord"></u-modal>
+
 		<!--保存时，提示-->
 		<u-toast ref="uToast" />
 	</view>
@@ -141,6 +209,7 @@
 	// import calendar from '../../components/lx-calendar/lx-calendar.vue'; //日历组件--=可以使用，但是没有注释，很不好理解
 	import tColorPicker from '@/components/t-color-picker/t-color-picker.vue' //颜色选择
 	import iconAll from "./iconList.json"
+	import products from "../../utils/products.js"
 	export default {
 		data() {
 			return {
@@ -175,16 +244,22 @@
 				timeListNow: "", //给子组件更新用的监听中间值
 				explainShow: false, //是否显示事件的值、备注弹窗
 				explainIconValue: "", //选择的事件图标和名字
-				explainValue:"", //填写的数值
-				explainNote:"", //备注
+				explainValue: "", //填写的数值
+				explainNote: "", //备注
 				explainCustom: {
 					borderBottom: "2px solid #2196F3",
 					fontSize: "40rpx"
 				},
-				explainDateTime:"",
-				explainDate:"",
-				explainTime:"",
-				
+				explainDateTime: "",
+				explainDate: "",
+				explainTime: "",
+
+				dayAllRecord: false, //控制某一天里所有记录的弹窗显示
+				dayAllRecordList: [], //某天的所有记录数据
+				editLinShi: "", //点击编辑时，存进临时数据里
+				deleteShow:false,
+				deleteRecordItem:"", //点击删除图标时，将数据暂时存入
+
 
 			}
 		},
@@ -392,43 +467,154 @@
 					hours,
 					minutes,
 				}
-				this.explainDate = year + "年" + month  +"月" + date + "日"
-				if(hours < 12){
-					this.explainTime = "上午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes )
-				}else{
+				this.explainDate = year + "年" + month + "月" + date + "日"
+				if (hours < 12) {
+					this.explainTime = "上午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes)
+				} else {
 					hours = hours - 12
-					this.explainTime = "下午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes )
+					this.explainTime = "下午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes)
 				}
-				
-				console.log("item",this.explainDateTime)
+
+				console.log("item", this.explainDateTime)
+			},
+
+			//添加活动事件弹窗,最终添加按钮事件
+			explainComfig() {
+				if (this.editLinShi == "") {
+					//新增
+					let timestamp = (new Date()).getTime();
+					let idTime = timestamp + products.randomNum();
+					console.log("idTime", idTime)
+					let lastAllLists = localStorage.getItem("lastAllLists");
+					if (lastAllLists != null && lastAllLists != "") {
+						lastAllLists = JSON.parse(lastAllLists);
+					} else {
+						lastAllLists = [];
+					}
+
+					let dayRecord = JSON.parse(localStorage.getItem("dayRecord"))
+					let linLists = []
+					let lastAllItem = {
+						idTime: dayRecord.ziDate,
+						dayRecord,
+						explainValue: this.explainValue,
+						explainNote: this.explainNote,
+						explainDateTime: this.explainDateTime,
+						explainIconValue: this.explainIconValue,
+						isOpen: false,
+						soleId: idTime
+					}
+					linLists.push(lastAllItem)
+					lastAllLists = lastAllLists.concat(linLists);
+					localStorage.setItem("lastAllLists", JSON.stringify(lastAllLists))
+					this.explainShow = false;
+					this.$refs.calendar.shuaLists()
+					console.log("最终添加", lastAllLists)
+				}else{
+					//编辑
+					let lastAllLists = localStorage.getItem("lastAllLists");
+					if (lastAllLists != null && lastAllLists != "") {
+						lastAllLists = JSON.parse(lastAllLists);
+					} else {
+						lastAllLists = [];
+					}
+					console.log("编辑",this.editLinShi,lastAllLists)
+					//更新事件集合内容，并重新存入缓存
+					lastAllLists.forEach(item=>{
+						if(this.editLinShi.soleId == item.soleId){
+							item.explainValue = this.explainValue;
+							item.explainNote = this.explainNote;
+						}
+					})
+					localStorage.setItem("lastAllLists", JSON.stringify(lastAllLists))
+					
+					//修改当前日子里面的记录事件数组，用于页面更新渲染
+					let lastAllItem = this.dayAllRecordList.lastAllItem;
+					lastAllItem.forEach(item=>{
+						if(this.editLinShi.soleId == item.soleId){
+							console.log("这一条",item)
+							item.explainValue = this.explainValue;
+							item.explainNote = this.explainNote;
+						}
+					})
+					this.editLinShi = "";
+					this.explainShow = false;
+				}
+			},
+
+			//打开某一天所有记录 弹窗，并获得所有记录
+			openDayAllRecord(list) {
+				console.log("list", list)
+				this.dayAllRecord = true;
+				this.dayAllRecordList = list;
+			},
+
+			//关闭某一天所有记录 弹窗，并获得所有记录
+			offAllRecord() {
+				this.dayAllRecord = false;
+			},
+
+			//切换记录隐藏内容的显示
+			openRecordHide(value, type) {
+				value.isOpen = type;
+				this.$forceUpdate()
+			},
+
+			//点击修改 获取当条记录的数值和备注，并渲染弹窗， 最后点击确认时，执行explainComfig事件，但是需要传入判断（新增和编辑）
+			recordEdit(item) {
+				this.editLinShi = item;
+				this.explainShow = true;
+				this.explainIconValue = item.explainIconValue;
+				this.explainValue = item.explainValue;
+				this.explainNote = item.explainNote;
+				let time = item.explainDateTime;
+				this.explainDate = time.year + "年" + time.month + "月" + time.date + "日"
+				if (time.hours < 12) {
+					this.explainTime = "上午" + time.hours + ":" + (time.minutes < 10 ? '0' + time.minutes : time.minutes)
+				} else {
+					let hours = time.hours - 12
+					this.explainTime = "下午" + hours + ":" + (time.minutes < 10 ? '0' + time.minutes : time.minutes)
+				}
 			},
 			
-			//添加活动事件弹窗,最终添加按钮事件
-			explainComfig(){
+			//点击删除图标，获得值并打开弹窗
+			recordDelete(item){
+				console.log("删除",item)
+				this.deleteRecordItem = item;
+				this.deleteShow = true;
+			},
+			
+			//点击删除弹窗确认按钮
+			confirmRecord(){
+				console.log("确定",this.deleteRecordItem)
 				let lastAllLists = localStorage.getItem("lastAllLists");
 				if (lastAllLists != null && lastAllLists != "") {
 					lastAllLists = JSON.parse(lastAllLists);
 				} else {
 					lastAllLists = [];
 				}
+				//删除,更新事件集合内容，并重新存入缓存
+				lastAllLists.forEach(item=>{
+					if(this.deleteRecordItem.soleId == item.soleId){
+						console.log("sss",item,lastAllLists.indexOf(item))
+						lastAllLists.splice(lastAllLists.indexOf(item),1)
+					}
+				})
+				console.log("删除",lastAllLists)
+				localStorage.setItem("lastAllLists", JSON.stringify(lastAllLists))
 				
-				let dayRecord = JSON.parse(localStorage.getItem("dayRecord"))
-				let linLists = []
-				let lastAllItem = {
-					idTime:dayRecord.ziDate,
-					dayRecord,
-					explainValue:this.explainValue,
-					explainNote:this.explainNote,
-					explainDateTime:this.explainDateTime,
-					explainIconValue:this.explainIconValue,
-				}
-				linLists.push(lastAllItem)
-				lastAllLists = lastAllLists.concat(linLists);
-				localStorage.setItem("lastAllLists",JSON.stringify(lastAllLists))
-				this.explainShow = false;
+				//删除当前日子里面的记录事件数组，用于页面更新渲染
+				let lastAllItem = this.dayAllRecordList.lastAllItem;
+				lastAllItem.forEach(item=>{
+					if(this.deleteRecordItem.soleId == item.soleId){
+						console.log("这一条",item)
+						lastAllItem.splice(lastAllLists.indexOf(item),1)
+					}
+				})
 				this.$refs.calendar.shuaLists()
-				console.log("最终添加",lastAllLists)
 			},
+			
+			
 
 		}
 	}

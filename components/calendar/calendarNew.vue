@@ -97,6 +97,7 @@
 				console.log("items", items)
 				if (items.isOpen) {
 					console.log("已经选择了")
+					this.$emit("openDayAllRecord",items)
 				} else {
 					let allLists = this.timeList;
 					items.isOpen = true
@@ -271,7 +272,6 @@
 				let newAllArr = [];
 				for (let item of allArr) {
 					if (item.ziDate == this.nowTime) {
-						console.log("item", item)
 						item.isOpen = true
 						newAllArr.push(item)
 						localStorage.setItem("dayRecord", JSON.stringify(item))
@@ -306,8 +306,6 @@
 						for (var j = 0; j < allArr.length; j++) {
 							let lastAllItem = []
 							if (lastAllLists[i].idTime == allArr[j].ziDate) {
-								console.log("allArr[j]", allArr[j], allArr[j].lastAllItem, allArr[j].lastAllItem !=
-									undefined)
 								lastAllItem.push(lastAllLists[i])
 								allArr[j].lastAllItem != undefined ? allArr[j].lastAllItem = allArr[j].lastAllItem.concat(
 									lastAllItem) : allArr[j].lastAllItem = lastAllItem
@@ -410,7 +408,7 @@
 			width: 14.28%;
 			min-width: 14.28%; // 加入这两个后每个item的宽度就生效了
 			max-width: 14.28%; // 加入这两个后每个item的宽度就生效了
-			// height: calc(100% / 6);
+			height: calc(100% / 6);
 			font-size: 26rpx;
 			color: #333333;
 			border-bottom: 2rpx solid #F5F5F5;
@@ -420,6 +418,7 @@
 			align-items: flex-start;
 			padding: 10rpx 0 0 10rpx;
 			box-sizing: border-box;
+			overflow: hidden;
 		}
 
 		.item-date {
