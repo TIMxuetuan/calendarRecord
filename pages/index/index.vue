@@ -21,7 +21,7 @@
 		</view>
 
 		<!--各种事件弹窗-->
-		<u-popup v-model="activityShow" mode="bottom" height="50%">
+		<u-popup v-model="activityShow" z-index="10085" mode="bottom" height="50%">
 			<view class="activity-centent">
 				<view class="activity-head" @click="addActivity">
 					<u-icon name="plus" color="#2196F3" size="50"></u-icon>
@@ -40,7 +40,7 @@
 		</u-popup>
 
 		<!--添加 各种类型的事件 弹窗（点击新增事件弹出）-->
-		<u-popup v-model="addActivityShow" mode="bottom" height="100%">
+		<u-popup v-model="addActivityShow" z-index="10085" mode="bottom" height="100%">
 			<view class="addMode-head">
 				<view @click="addActivityClose">退出</view>
 				<view @click="configActivity">保存</view>
@@ -98,7 +98,7 @@
 		</u-popup>
 
 		<!--各种图标 弹窗-->
-		<u-popup v-model="iconShow" mode="center" width="80%" height="80%" border-radius="10">
+		<u-popup v-model="iconShow" z-index="10085" mode="center" width="80%" height="80%" border-radius="10">
 			<view class="icon-content">
 				<view class="iconTop">
 					<view>图标:</view>
@@ -124,7 +124,7 @@
 		</u-popup>
 
 		<!--各种图标 弹窗-->
-		<u-popup v-model="colorShow" mode="center">
+		<u-popup v-model="colorShow" z-index="10085" mode="center">
 			<view class="aaa" v-if="tColorPickerIs">
 				<t-color-picker ref="colorPicker" :color="color" @closeColor="closeColor" @confirm="confirm">
 				</t-color-picker>
@@ -132,7 +132,7 @@
 		</u-popup>
 
 		<!--某一天里所有记录的 弹窗-->
-		<u-popup class="allRecord" v-model="dayAllRecord" mode="center" width="100%" height="100%">
+		<u-popup class="allRecord" z-index="10065" v-model="dayAllRecord" mode="center" width="100%" height="100%">
 			<view class="allRecord-body">
 				<view class="allRecord-head">
 					<view class="allRecord-left">
@@ -147,7 +147,8 @@
 				</view>
 				<view class="allRecord-con">
 					<view class="allRecordCon-ul">
-						<view class="allRecordCon-li" v-for="(item,index) in dayAllRecordList.lastAllItem" :key="index">
+						<view class="allRecordCon-li" v-for="(item,index) in dayAllRecordList.lastAllItem" :key="index"
+							@click="lineItem(item)">
 							<view class="recordLi-top">
 								<view class="recordTop-head">
 									<view class="recordHead-left">
@@ -157,7 +158,7 @@
 											{{item.explainIconValue.value}}
 										</view>
 									</view>
-									<view class="">
+									<view class="" @click.stop>
 										<u-icon v-if="!item.isOpen" @click="openRecordHide(item,true)" name="arrow-down"
 											color="#000" size="40"></u-icon>
 										<u-icon v-else name="arrow-up" @click="openRecordHide(item,false)" color="#000"
@@ -180,10 +181,11 @@
 									</view>
 								</view>
 								<view class="recordHide-btn">
-									<view class="">
-										<u-icon @click="recordDelete(item)" name="trash-fill" color="#727272" size="40"></u-icon>
+									<view class="" @click.stop>
+										<u-icon @click="recordDelete(item)" name="trash-fill" color="#727272" size="40">
+										</u-icon>
 									</view>
-									<view class="">
+									<view class="" @click.stop>
 										<u-icon @click="recordEdit(item)" name="edit-pen-fill" color="#727272"
 											size="40"></u-icon>
 									</view>
@@ -192,11 +194,47 @@
 						</view>
 					</view>
 				</view>
+				<view class="rightAdd" @click="openRightModel">
+					<u-icon name="plus" color="#000000" size="36"></u-icon>
+				</view>
 			</view>
 		</u-popup>
-		
+
 		<!--删除记录确认弹窗-->
-		<u-modal v-model="deleteShow" show-cancel-button content="确定删除这条记录吗？" confirm-color="red" @confirm="confirmRecord"></u-modal>
+		<u-modal v-model="deleteShow" show-cancel-button content="确定删除这条记录吗？" confirm-color="red"
+			@confirm="confirmRecord"></u-modal>
+
+		<!--点击某一天中的某条记录，查看此条记录的所有数据分析弹窗-->
+		<u-popup class="echartsModel" z-index="10085" v-model="echartsModel" mode="center" width="100%" height="100%">
+			<view class="echartsModel-body">
+				<view class="echartsModel-top">
+					<view class="allRecord-left">
+						<u-icon @click="offEchartsModel" name="arrow-leftward" color="#ffffff" size="40"></u-icon>
+						<view class="explain-head echartsModel-head" v-if="echartsNowItem">
+							<view v-if="echartsNowItem.explainIconValue.icon"
+								class="explainHead-icon echartsModel-icon">
+								<u-icon :name="echartsNowItem.explainIconValue.icon.name"
+									:color="echartsNowItem.explainIconValue.icon.color" size="60"></u-icon>
+							</view>
+							<view class="explainHead-text echartsModel-text">{{echartsNowItem.explainIconValue.value}}
+							</view>
+						</view>
+					</view>
+				</view>
+				<view class="echarts-line">
+					<view class="charts-box">
+						<qiun-data-charts type="line" :echartsH5="true" :echartsApp="true"
+							:opts="{enableScroll:true,xAxis:{scrollShow:true,itemCount:4,disableGrid:true}}"
+							:chartData="chartData" :ontouch="true" :canvas2d="true" />
+					</view>
+				</view>
+				<view class="echartsModel-bottom">
+					<view class="echartsBottom">
+						222
+					</view>
+				</view>
+			</view>
+		</u-popup>
 
 		<!--保存时，提示-->
 		<u-toast ref="uToast" />
@@ -257,10 +295,11 @@
 				dayAllRecord: false, //控制某一天里所有记录的弹窗显示
 				dayAllRecordList: [], //某天的所有记录数据
 				editLinShi: "", //点击编辑时，存进临时数据里
-				deleteShow:false,
-				deleteRecordItem:"", //点击删除图标时，将数据暂时存入
-
-
+				deleteShow: false,
+				deleteRecordItem: "", //点击删除图标时，将数据暂时存入
+				echartsModel: false, //控制echarts分析弹窗
+				echartsNowItem: "", //当前选定的单条记录
+				chartData: "",
 			}
 		},
 		components: {
@@ -355,11 +394,13 @@
 				}
 
 				let linLists = [];
-
+				let timestamp = (new Date()).getTime();
+				let iconSoleId = timestamp + products.randomNum();
 				let activityLists = [];
 				let activityItem = {
 					icon: this.newActivityItem,
-					value: this.rightInput
+					value: this.rightInput,
+					iconSoleId: iconSoleId
 				}
 				activityLists.push(activityItem);
 				linLists = this.activityLists.concat(activityLists);
@@ -507,10 +548,15 @@
 					linLists.push(lastAllItem)
 					lastAllLists = lastAllLists.concat(linLists);
 					localStorage.setItem("lastAllLists", JSON.stringify(lastAllLists))
+					if (this.dayAllRecordList.lastAllItem != undefined) {
+						this.dayAllRecordList.lastAllItem = this.dayAllRecordList.lastAllItem.concat(linLists);
+						console.log("对了", this.dayAllRecordList.lastAllItem)
+					}
 					this.explainShow = false;
 					this.$refs.calendar.shuaLists()
 					console.log("最终添加", lastAllLists)
-				}else{
+
+				} else {
 					//编辑
 					let lastAllLists = localStorage.getItem("lastAllLists");
 					if (lastAllLists != null && lastAllLists != "") {
@@ -518,27 +564,28 @@
 					} else {
 						lastAllLists = [];
 					}
-					console.log("编辑",this.editLinShi,lastAllLists)
+					console.log("编辑", this.editLinShi, lastAllLists)
 					//更新事件集合内容，并重新存入缓存
-					lastAllLists.forEach(item=>{
-						if(this.editLinShi.soleId == item.soleId){
+					lastAllLists.forEach(item => {
+						if (this.editLinShi.soleId == item.soleId) {
 							item.explainValue = this.explainValue;
 							item.explainNote = this.explainNote;
 						}
 					})
 					localStorage.setItem("lastAllLists", JSON.stringify(lastAllLists))
-					
+
 					//修改当前日子里面的记录事件数组，用于页面更新渲染
 					let lastAllItem = this.dayAllRecordList.lastAllItem;
-					lastAllItem.forEach(item=>{
-						if(this.editLinShi.soleId == item.soleId){
-							console.log("这一条",item)
+					lastAllItem.forEach(item => {
+						if (this.editLinShi.soleId == item.soleId) {
+							console.log("这一条", item)
 							item.explainValue = this.explainValue;
 							item.explainNote = this.explainNote;
 						}
 					})
 					this.editLinShi = "";
 					this.explainShow = false;
+					this.$refs.calendar.shuaLists()
 				}
 			},
 
@@ -552,6 +599,7 @@
 			//关闭某一天所有记录 弹窗，并获得所有记录
 			offAllRecord() {
 				this.dayAllRecord = false;
+				this.dayAllRecordList = []
 			},
 
 			//切换记录隐藏内容的显示
@@ -576,17 +624,17 @@
 					this.explainTime = "下午" + hours + ":" + (time.minutes < 10 ? '0' + time.minutes : time.minutes)
 				}
 			},
-			
+
 			//点击删除图标，获得值并打开弹窗
-			recordDelete(item){
-				console.log("删除",item)
+			recordDelete(item) {
+				console.log("删除", item)
 				this.deleteRecordItem = item;
 				this.deleteShow = true;
 			},
-			
+
 			//点击删除弹窗确认按钮
-			confirmRecord(){
-				console.log("确定",this.deleteRecordItem)
+			confirmRecord() {
+				console.log("确定", this.deleteRecordItem)
 				let lastAllLists = localStorage.getItem("lastAllLists");
 				if (lastAllLists != null && lastAllLists != "") {
 					lastAllLists = JSON.parse(lastAllLists);
@@ -594,27 +642,69 @@
 					lastAllLists = [];
 				}
 				//删除,更新事件集合内容，并重新存入缓存
-				lastAllLists.forEach(item=>{
-					if(this.deleteRecordItem.soleId == item.soleId){
-						console.log("sss",item,lastAllLists.indexOf(item))
-						lastAllLists.splice(lastAllLists.indexOf(item),1)
+				lastAllLists.forEach(item => {
+					if (this.deleteRecordItem.soleId == item.soleId) {
+						console.log("sss", item, lastAllLists.indexOf(item))
+						lastAllLists.splice(lastAllLists.indexOf(item), 1)
 					}
 				})
-				console.log("删除",lastAllLists)
+				console.log("删除", lastAllLists)
 				localStorage.setItem("lastAllLists", JSON.stringify(lastAllLists))
-				
+
 				//删除当前日子里面的记录事件数组，用于页面更新渲染
 				let lastAllItem = this.dayAllRecordList.lastAllItem;
-				lastAllItem.forEach(item=>{
-					if(this.deleteRecordItem.soleId == item.soleId){
-						console.log("这一条",item)
-						lastAllItem.splice(lastAllLists.indexOf(item),1)
+				lastAllItem.forEach(item => {
+					if (this.deleteRecordItem.soleId == item.soleId) {
+						console.log("这一条", item)
+						lastAllItem.splice(lastAllLists.indexOf(item), 1)
 					}
 				})
 				this.$refs.calendar.shuaLists()
 			},
-			
-			
+
+			//点击记录中的某一条，获得数据，并打开数据分析弹窗
+			lineItem(item) {
+				let lastAllLists = localStorage.getItem("lastAllLists");
+				if (lastAllLists != null && lastAllLists != "") {
+					lastAllLists = JSON.parse(lastAllLists);
+				} else {
+					lastAllLists = [];
+				}
+				this.echartsModel = true;
+				this.echartsNowItem = item;
+				console.log("点击某一条", item, lastAllLists)
+				let listsAll = [];
+				let seriesData = []; //折线图使用的数据值
+				lastAllLists.forEach(lists => {
+					if (lists.explainIconValue.iconSoleId == item.explainIconValue.iconSoleId) {
+						console.log("lists",lists)
+						listsAll.push(lists)
+						seriesData.push(lists.explainValue)
+					}
+				})
+				console.log("lists总数据", listsAll)
+				
+				let chartData = {
+					// categories: ['2016', '2017', '2018', '2019', '2020', '2021'],
+					series: [{
+						data: seriesData
+						// data: [100, 252, 874, 74, 32, 32, 252, 252, 874, 74, 32, 32, 252, 874, 32, 252, 874,
+						// 	32, 252,
+						// ]
+					}]
+				}
+
+				this.chartData = chartData;
+
+
+			},
+
+			//关闭数据分析弹窗
+			offEchartsModel() {
+				this.echartsModel = false;
+			},
+
+
 
 		}
 	}

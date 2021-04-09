@@ -261,7 +261,7 @@ page {
 
 /*某一天所有记录弹窗*/
 
-.allRecord-body{
+.allRecord-body {
 	padding: 100rpx 0 30rpx 0;
 }
 
@@ -304,14 +304,14 @@ page {
 	padding: 0 20rpx;
 }
 
-.allRecordCon-ul{
+.allRecordCon-ul {
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
 
-.allRecordCon-li{
+.allRecordCon-li {
 	width: 49%;
 	height: 100%;
 	padding: 20rpx 20rpx;
@@ -320,24 +320,24 @@ page {
 	border-radius: 10rpx;
 }
 
-.recordTop-head{
+.recordTop-head {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.recordHead-left{
+.recordHead-left {
 	display: flex;
 	align-items: center;
 }
 
-.recordHead-left-text{
+.recordHead-left-text {
 	margin-left: 10rpx;
 	color: #000000;
 	font-weight: bold;
 }
 
-.recordTop-value{
+.recordTop-value {
 	font-size: 60rpx;
 	margin: 10rpx 0;
 	color: #CDDC39;
@@ -345,29 +345,83 @@ page {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	
+
 }
 
-.recordLi-hide{
+.recordLi-hide {
 	margin-top: 20rpx;
 	border-top: 1px solid #E0E0E0;
 	padding: 20rpx 0;
 	font-size: 24rpx;
 }
 
-.recordHide-top{
+.recordHide-top {
 	display: flex;
 	align-items: center;
 	font-size: 24rpx;
 }
 
-.recordHide-time{
+.recordHide-time {
 	margin-left: 20rpx;
 }
 
-.recordHide-btn{
+.recordHide-btn {
 	margin-top: 10rpx;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+/*记录弹窗--折线图分析*/
+.echartsModel-body {
+	padding: 0 0 30rpx 0;
+	height: 100%;
+	box-sizing: border-box;
+	background-color: #E4E4E4;
+}
+
+.echartsModel-top {
+	width: 100%;
+	height: 100rpx;
+	background-color: #2196F3;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 50rpx;
+	box-sizing: border-box;
+}
+
+.echartsModel-head {
+	margin-left: 80rpx;
+}
+
+
+.echartsModel-icon {}
+
+.echartsModel-text {
+	color: #fff;
+	margin-left: 30rpx;
+}
+
+.echarts-line {
+	width: 100%;
+	display: flex;
+	background-color: #fff;
+}
+
+.charts-box {
+  width: 100%;
+  height: 400px;
+}
+
+.echartsModel-bottom{
+	margin-top: 20rpx;
+	padding: 0 20rpx;
+}
+
+.echartsBottom{
+	width: 100%;
+	background-color: #fff;
+	border-radius: 10rpx;
+	padding: 30rpx 10rpx;
 }

@@ -271,7 +271,15 @@
 				}
 				let newAllArr = [];
 				for (let item of allArr) {
-					if (item.ziDate == this.nowTime) {
+					item.lastAllItem = []
+					let dayRecord = localStorage.getItem("dayRecord")
+					let nowTimeTwo = this.nowTime
+					if(dayRecord != null){
+						dayRecord = JSON.parse(dayRecord)
+						nowTimeTwo = dayRecord.ziDate
+					}else{
+					}
+					if (item.ziDate == nowTimeTwo) {
 						item.isOpen = true
 						newAllArr.push(item)
 						localStorage.setItem("dayRecord", JSON.stringify(item))
@@ -294,6 +302,7 @@
 
 			//获取本地数据，与当月数据进行对比，如果有记录则将缓存数据添加整合
 			isTimeAll(allArr) {
+				console.log("all",allArr)
 				let lastAllLists = localStorage.getItem("lastAllLists");
 				if (lastAllLists != null && lastAllLists != "") {
 					lastAllLists = JSON.parse(lastAllLists);
@@ -306,22 +315,20 @@
 						for (var j = 0; j < allArr.length; j++) {
 							let lastAllItem = []
 							if (lastAllLists[i].idTime == allArr[j].ziDate) {
+								console.log("在这里",lastAllLists[i],allArr[j])
 								lastAllItem.push(lastAllLists[i])
-								allArr[j].lastAllItem != undefined ? allArr[j].lastAllItem = allArr[j].lastAllItem.concat(
-									lastAllItem) : allArr[j].lastAllItem = lastAllItem
-							} else {
-								// allArr[j].lastAllItem = []
+								 allArr[j].lastAllItem = allArr[j].lastAllItem.concat(lastAllItem)
 							}
 						}
 					}
 				}
-				console.log("lastAllLists", lastAllLists, allArr)
+				console.log("lastAllLists", allArr)
 				return allArr
 
 			},
 			
 			shuaLists(){
-				console.log("执行了")
+				console.log("执行了",this.timeList)
 				this.getAllArr(this.currentYear, this.currentMonth)
 			},
 
