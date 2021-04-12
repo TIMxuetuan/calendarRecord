@@ -11,7 +11,7 @@
 					</view>
 				</view>
 				<view class="rightIcon">
-					<u-icon name="calendar" color="#ffffff" size="36"></u-icon>
+					<!-- <u-icon name="calendar" color="#ffffff" size="36"></u-icon> -->
 				</view>
 			</view>
 		</u-navbar>

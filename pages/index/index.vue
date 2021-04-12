@@ -1,5 +1,5 @@
 <template>
-	<view style="height: 100%;">
+	<view class="allContent">
 		<!--头部导航栏-->
 		<view class="left-jian">
 			<headNav :timeListTime="timeListTime"></headNav>
@@ -9,7 +9,7 @@
 		<!--日历内容 开始-->
 		<view class="calendarModel">
 			<calendar ref="calendar" @gotoPreMonth="gotoPreMonth" @gotoNextMonth="gotoNextMonth" :signLists="signLists"
-				:nowTime="nowTime" :currentYear2='currentYear' :currentMonth2="currentMonth" @daysAdd="daysAdd"
+				:nowTime="nowTime" :currentYear2='currentYear' :currentMonth2="currentMonth"
 				@openDayAllRecord="openDayAllRecord">
 			</calendar>
 		</view>
@@ -41,10 +41,13 @@
 
 		<!--添加 各种类型的事件 弹窗（点击新增事件弹出）-->
 		<u-popup v-model="addActivityShow" z-index="10085" mode="bottom" height="100%">
-			<view class="addMode-head">
-				<view @click="addActivityClose">退出</view>
-				<view @click="configActivity">保存</view>
-			</view>
+			<u-navbar height="50" :is-back="false" :border-bottom="false" is-fixed :background="background">
+				<view class="addMode-head">
+					<view @click="addActivityClose">退出</view>
+					<view @click="configActivity">保存</view>
+				</view>
+			</u-navbar>
+
 			<view class="addMode-body">
 				<view class="leftIcon">
 					<view v-if="newActivityItem == ''" @click="openIconModel" class="selectIcon">选择</br>图标</view>
@@ -63,7 +66,7 @@
 		</u-popup>
 
 		<!--为事件添加值和说明弹窗-->
-		<u-popup v-model="explainShow" z-index="10085" mode="center" width="80%" height="50%" border-radius="10">
+		<u-popup v-model="explainShow" z-index="10085" mode="center" width="80%" border-radius="10">
 			<view class="explain-centent">
 				<view class="explain-head">
 					<view class="explainHead-icon">
@@ -134,17 +137,19 @@
 		<!--某一天里所有记录的 弹窗-->
 		<u-popup class="allRecord" z-index="10065" v-model="dayAllRecord" mode="center" width="100%" height="100%">
 			<view class="allRecord-body">
-				<view class="allRecord-head">
-					<view class="allRecord-left">
-						<u-icon @click="offAllRecord" name="arrow-leftward" color="#ffffff" size="40"></u-icon>
-						<view class="allRecord-text">
-							{{dayAllRecordList.currentYear}}年{{dayAllRecordList.currentMonth}}月{{dayAllRecordList.date}}日
+				<u-navbar height="50" :is-back="false" :border-bottom="false" is-fixed :background="background">
+					<view class="allRecord-head">
+						<view class="allRecord-left">
+							<u-icon @click="offAllRecord" name="arrow-leftward" color="#ffffff" size="40"></u-icon>
+							<view class="allRecord-text">
+								{{dayAllRecordList.currentYear}}年{{dayAllRecordList.currentMonth}}月{{dayAllRecordList.date}}日
+							</view>
+						</view>
+						<view class="allRecord-right">
+							<!-- <u-icon name="calendar" color="#ffffff" size="40"></u-icon> -->
 						</view>
 					</view>
-					<view class="allRecord-right">
-						<u-icon name="calendar" color="#ffffff" size="40"></u-icon>
-					</view>
-				</view>
+				</u-navbar>
 				<view class="allRecord-con">
 					<view class="allRecordCon-ul">
 						<view class="allRecordCon-li" v-for="(item,index) in dayAllRecordList.lastAllItem" :key="index"
@@ -207,25 +212,30 @@
 		<!--点击某一天中的某条记录，查看此条记录的所有数据分析弹窗-->
 		<u-popup class="echartsModel" z-index="10085" v-model="echartsModel" mode="center" width="100%" height="100%">
 			<view class="echartsModel-body">
-				<view class="echartsModel-top">
-					<view class="allRecord-left">
-						<u-icon @click="offEchartsModel" name="arrow-leftward" color="#ffffff" size="40"></u-icon>
-						<view class="explain-head echartsModel-head" v-if="echartsNowItem">
-							<view v-if="echartsNowItem.explainIconValue.icon"
-								class="explainHead-icon echartsModel-icon">
-								<u-icon :name="echartsNowItem.explainIconValue.icon.name"
-									:color="echartsNowItem.explainIconValue.icon.color" size="60"></u-icon>
-							</view>
-							<view class="explainHead-text echartsModel-text">{{echartsNowItem.explainIconValue.value}}
+				<u-navbar height="50" :is-back="false" :border-bottom="false" is-fixed :background="background">
+					<view class="echartsModel-top">
+						<view class="allRecord-left">
+							<u-icon @click="offEchartsModel" name="arrow-leftward" color="#ffffff" size="40"></u-icon>
+							<view class="explain-head echartsModel-head" v-if="echartsNowItem">
+								<view v-if="echartsNowItem.explainIconValue.icon"
+									class="explainHead-icon echartsModel-icon">
+									<u-icon :name="echartsNowItem.explainIconValue.icon.name"
+										:color="echartsNowItem.explainIconValue.icon.color" size="60"></u-icon>
+								</view>
+								<view class="explainHead-text echartsModel-text">
+									{{echartsNowItem.explainIconValue.value}}
+								</view>
 							</view>
 						</view>
 					</view>
-				</view>
+				</u-navbar>
 				<view class="echarts-line">
 					<view class="charts-box">
-						<qiun-data-charts type="line" :echartsH5="true" :echartsApp="true"
-							:opts="{enableScroll:true,xAxis:{scrollShow:true,itemCount:4,disableGrid:true}}"
-							:chartData="chartData" :ontouch="true" :canvas2d="true" />
+						<view class="charts-box">
+							<qiun-data-charts type="line" canvasId="scrolllineid" :eopts="ringOpts"
+								:chartData="chartDataOne" :animation="false" :ontouch="true" :canvas2d="true"
+								:echartsH5="true" :echartsApp="true" />
+						</view>
 					</view>
 				</view>
 				<view class="echartsModel-bottom">
@@ -242,6 +252,7 @@
 </template>
 
 <script>
+	// import uCharts from '@/components/u-charts.js';
 	import headNav from '../../components/headNav/index.vue'; //头部导航组件
 	import calendar from '../../components/calendar/calendarNew.vue'; //日历组件--自己写的
 	// import calendar from '../../components/lx-calendar/lx-calendar.vue'; //日历组件--=可以使用，但是没有注释，很不好理解
@@ -251,6 +262,9 @@
 	export default {
 		data() {
 			return {
+				background: {
+					backgroundColor: '#2196F3',
+				},
 				iconAllNew: [], //icon数据
 				nowTime: "", //当天年月日  "2020-11-28"
 				currentYear: "",
@@ -299,7 +313,8 @@
 				deleteRecordItem: "", //点击删除图标时，将数据暂时存入
 				echartsModel: false, //控制echarts分析弹窗
 				echartsNowItem: "", //当前选定的单条记录
-				chartData: "",
+				chartDataOne: "",
+				ringOpts: null,
 			}
 		},
 		components: {
@@ -308,6 +323,8 @@
 			tColorPicker
 		},
 		onLoad() {
+			this.cWidth = uni.upx2px(750);
+			this.cHeight = uni.upx2px(500);
 			this.iconLists = this.shencopy(iconAll);
 			this.getNowDate();
 		},
@@ -361,9 +378,10 @@
 			openRightModel() {
 				this.activityShow = true;
 				let activityLists = [];
-				let getLoca = localStorage.getItem("activityLists");
+				let getLoca = uni.getStorageSync("activityLists");
+				console.log("getLoca", getLoca)
 				if (getLoca != null && getLoca != "") {
-					activityLists = JSON.parse(getLoca);
+					activityLists = getLoca;
 				} else {
 					activityLists = [];
 				}
@@ -404,7 +422,7 @@
 				}
 				activityLists.push(activityItem);
 				linLists = this.activityLists.concat(activityLists);
-				localStorage.setItem("activityLists", JSON.stringify(linLists));
+				uni.setStorageSync("activityLists", linLists);
 				this.$nextTick(() => {
 					this.activityLists = linLists;
 				});
@@ -477,14 +495,14 @@
 			//确定使用选中的图标
 			confirmIcon() {
 				this.newActivityItem = this.nowIconListsItem;
-				localStorage.setItem("nowIconListsItem", JSON.stringify(this.nowIconListsItem))
+				uni.setStorageSync("nowIconListsItem", this.nowIconListsItem)
 				this.closeIconModel();
 			},
 
 			//不使用图标--将清除现在使用的图标
 			noDoneIcon() {
 				this.newActivityItem = "";
-				localStorage.setItem("nowIconListsItem", "");
+				uni.setStorageSync("nowIconListsItem", "");
 				this.closeIconModel();
 			},
 
@@ -526,14 +544,14 @@
 					let timestamp = (new Date()).getTime();
 					let idTime = timestamp + products.randomNum();
 					console.log("idTime", idTime)
-					let lastAllLists = localStorage.getItem("lastAllLists");
+					let lastAllLists = uni.getStorageSync("lastAllLists");
 					if (lastAllLists != null && lastAllLists != "") {
-						lastAllLists = JSON.parse(lastAllLists);
+						lastAllLists = lastAllLists;
 					} else {
 						lastAllLists = [];
 					}
 
-					let dayRecord = JSON.parse(localStorage.getItem("dayRecord"))
+					let dayRecord = uni.getStorageSync("dayRecord")
 					let linLists = []
 					let lastAllItem = {
 						idTime: dayRecord.ziDate,
@@ -547,7 +565,7 @@
 					}
 					linLists.push(lastAllItem)
 					lastAllLists = lastAllLists.concat(linLists);
-					localStorage.setItem("lastAllLists", JSON.stringify(lastAllLists))
+					uni.setStorageSync("lastAllLists", lastAllLists)
 					if (this.dayAllRecordList.lastAllItem != undefined) {
 						this.dayAllRecordList.lastAllItem = this.dayAllRecordList.lastAllItem.concat(linLists);
 						console.log("对了", this.dayAllRecordList.lastAllItem)
@@ -558,9 +576,9 @@
 
 				} else {
 					//编辑
-					let lastAllLists = localStorage.getItem("lastAllLists");
+					let lastAllLists = uni.getStorageSync("lastAllLists");
 					if (lastAllLists != null && lastAllLists != "") {
-						lastAllLists = JSON.parse(lastAllLists);
+						lastAllLists = lastAllLists;
 					} else {
 						lastAllLists = [];
 					}
@@ -572,7 +590,7 @@
 							item.explainNote = this.explainNote;
 						}
 					})
-					localStorage.setItem("lastAllLists", JSON.stringify(lastAllLists))
+					uni.setStorageSync("lastAllLists", lastAllLists)
 
 					//修改当前日子里面的记录事件数组，用于页面更新渲染
 					let lastAllItem = this.dayAllRecordList.lastAllItem;
@@ -635,12 +653,13 @@
 			//点击删除弹窗确认按钮
 			confirmRecord() {
 				console.log("确定", this.deleteRecordItem)
-				let lastAllLists = localStorage.getItem("lastAllLists");
+				let lastAllLists = uni.getStorageSync("lastAllLists");
 				if (lastAllLists != null && lastAllLists != "") {
-					lastAllLists = JSON.parse(lastAllLists);
+					lastAllLists = lastAllLists;
 				} else {
 					lastAllLists = [];
 				}
+				console.log("lastAllLists", lastAllLists)
 				//删除,更新事件集合内容，并重新存入缓存
 				lastAllLists.forEach(item => {
 					if (this.deleteRecordItem.soleId == item.soleId) {
@@ -649,24 +668,26 @@
 					}
 				})
 				console.log("删除", lastAllLists)
-				localStorage.setItem("lastAllLists", JSON.stringify(lastAllLists))
+				uni.setStorageSync("lastAllLists", lastAllLists)
 
 				//删除当前日子里面的记录事件数组，用于页面更新渲染
 				let lastAllItem = this.dayAllRecordList.lastAllItem;
+				console.log("this.dayAllRecordList.lastAllItem", this.dayAllRecordList.lastAllItem)
 				lastAllItem.forEach(item => {
 					if (this.deleteRecordItem.soleId == item.soleId) {
-						console.log("这一条", item)
-						lastAllItem.splice(lastAllLists.indexOf(item), 1)
+						console.log("这一条", item, lastAllItem.indexOf(item))
+						lastAllItem.splice(lastAllItem.indexOf(item), 1)
 					}
 				})
+				this.dayAllRecordList.lastAllItem = lastAllItem;
 				this.$refs.calendar.shuaLists()
 			},
 
 			//点击记录中的某一条，获得数据，并打开数据分析弹窗
 			lineItem(item) {
-				let lastAllLists = localStorage.getItem("lastAllLists");
+				let lastAllLists = uni.getStorageSync("lastAllLists");
 				if (lastAllLists != null && lastAllLists != "") {
-					lastAllLists = JSON.parse(lastAllLists);
+					lastAllLists = lastAllLists;
 				} else {
 					lastAllLists = [];
 				}
@@ -675,27 +696,73 @@
 				console.log("点击某一条", item, lastAllLists)
 				let listsAll = [];
 				let seriesData = []; //折线图使用的数据值
+				let timeJointAll = []
 				lastAllLists.forEach(lists => {
 					if (lists.explainIconValue.iconSoleId == item.explainIconValue.iconSoleId) {
-						console.log("lists",lists)
+						console.log("lists", lists)
+						let exTime = lists.explainDateTime
+						let explainDate = exTime.year + "年" + exTime.month + "月" + exTime.date + "日"
+						let explainTime = "";
+						if (exTime.hours < 12) {
+							explainTime = "上午" + exTime.hours + ":" + (exTime.minutes < 10 ? '0' + exTime.minutes :
+								exTime.minutes)
+						} else {
+							let hours = exTime.hours - 12
+							explainTime = "下午" + hours + ":" + (exTime.minutes < 10 ? '0' + exTime.minutes : exTime
+								.minutes)
+						}
+						let timeJoint = explainDate + " " + explainTime
 						listsAll.push(lists)
 						seriesData.push(lists.explainValue)
+						timeJointAll.push(timeJoint)
 					}
 				})
-				console.log("lists总数据", listsAll)
-				
-				let chartData = {
-					// categories: ['2016', '2017', '2018', '2019', '2020', '2021'],
+				console.log("lists总数据", listsAll, seriesData, timeJointAll)
+
+				//渐变色区域图
+				let linearareadata = {
+					// categories: ["1","2","3","4","5","6","7","8","9","10"],
+					categories: timeJointAll,
 					series: [{
-						data: seriesData
-						// data: [100, 252, 874, 74, 32, 32, 252, 252, 874, 74, 32, 32, 252, 874, 32, 252, 874,
-						// 	32, 252,
-						// ]
-					}]
+						data: seriesData,
+						type: 'line',
+						symbolSize: 10
+					}],
 				}
-
-				this.chartData = chartData;
-
+				let ringOpts = {
+					// 缩放平移组件
+					tooltip: {
+						trigger: 'item'
+					},
+					xAxis: {
+						type: 'category',
+						show: false
+					},
+					yAxis: {
+						type: 'value',
+						axisTick: {
+							inside: true
+						},
+						scale: true,
+						axisLabel: {
+							show: true,
+							margin: 8,
+						},
+					},
+					grid: {
+						left: 60
+					},
+					dataZoom: [{
+						type: 'inside',
+						show: true,
+						start: 0,
+						end: 50,
+						handleSize: 8
+					}],
+				}
+				this.ringOpts = ringOpts
+				this.chartDataOne = linearareadata;
+				this.$forceUpdate();
 
 			},
 
@@ -703,7 +770,6 @@
 			offEchartsModel() {
 				this.echartsModel = false;
 			},
-
 
 
 		}

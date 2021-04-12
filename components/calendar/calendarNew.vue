@@ -97,14 +97,14 @@
 				console.log("items", items)
 				if (items.isOpen) {
 					console.log("已经选择了")
-					this.$emit("openDayAllRecord",items)
+					this.$emit("openDayAllRecord", items)
 				} else {
 					let allLists = this.timeList;
 					items.isOpen = true
 					for (let item of allLists.allArr) {
 						if (item.ziDate == items.ziDate) {
 							item.isOpen = true
-							localStorage.setItem("dayRecord", JSON.stringify(items))
+							 uni.setStorageSync("dayRecord",items)
 						} else {
 							item.isOpen = false;
 						}
@@ -272,17 +272,16 @@
 				let newAllArr = [];
 				for (let item of allArr) {
 					item.lastAllItem = []
-					let dayRecord = localStorage.getItem("dayRecord")
+					let dayRecord = uni.getStorageSync('dayRecord');
 					let nowTimeTwo = this.nowTime
-					if(dayRecord != null){
-						dayRecord = JSON.parse(dayRecord)
+					if (dayRecord != null) {
+						dayRecord = dayRecord
 						nowTimeTwo = dayRecord.ziDate
-					}else{
-					}
+					} else {}
 					if (item.ziDate == nowTimeTwo) {
 						item.isOpen = true
 						newAllArr.push(item)
-						localStorage.setItem("dayRecord", JSON.stringify(item))
+						uni.setStorageSync('dayRecord',item);
 					} else {
 						item.isOpen = false;
 						newAllArr.push(item)
@@ -302,10 +301,10 @@
 
 			//获取本地数据，与当月数据进行对比，如果有记录则将缓存数据添加整合
 			isTimeAll(allArr) {
-				console.log("all",allArr)
-				let lastAllLists = localStorage.getItem("lastAllLists");
+				console.log("all", allArr)
+				let lastAllLists = uni.getStorageSync('lastAllLists');
 				if (lastAllLists != null && lastAllLists != "") {
-					lastAllLists = JSON.parse(lastAllLists);
+					lastAllLists = lastAllLists;
 				} else {
 					lastAllLists = [];
 				}
@@ -315,9 +314,8 @@
 						for (var j = 0; j < allArr.length; j++) {
 							let lastAllItem = []
 							if (lastAllLists[i].idTime == allArr[j].ziDate) {
-								console.log("在这里",lastAllLists[i],allArr[j])
 								lastAllItem.push(lastAllLists[i])
-								 allArr[j].lastAllItem = allArr[j].lastAllItem.concat(lastAllItem)
+								allArr[j].lastAllItem = allArr[j].lastAllItem.concat(lastAllItem)
 							}
 						}
 					}
@@ -326,9 +324,9 @@
 				return allArr
 
 			},
-			
-			shuaLists(){
-				console.log("执行了",this.timeList)
+
+			shuaLists() {
+				console.log("执行了", this.timeList)
 				this.getAllArr(this.currentYear, this.currentMonth)
 			},
 
@@ -367,9 +365,12 @@
 </script>
 
 <style lang="scss" scoped>
+	
 	.calendar {
 		width: 100%;
 		height: 100%;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.calendar .tit {
@@ -416,6 +417,7 @@
 			min-width: 14.28%; // 加入这两个后每个item的宽度就生效了
 			max-width: 14.28%; // 加入这两个后每个item的宽度就生效了
 			height: calc(100% / 6);
+			// height: 200rpx;
 			font-size: 26rpx;
 			color: #333333;
 			border-bottom: 2rpx solid #F5F5F5;

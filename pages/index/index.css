@@ -1,5 +1,13 @@
 page {
+	width: 100%;
 	height: 100%;
+}
+
+.allContent{
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	flex-direction: column;
 }
 
 .left-jian {
@@ -10,7 +18,7 @@ page {
 
 .calendarModel {
 	width: 100%;
-	height: calc(100% - 80px);
+	height: calc(100% - 50px);
 }
 
 /*右下角添加图表*/
@@ -77,7 +85,7 @@ page {
 /*添加 各种类型的事件 弹窗*/
 .addMode-head {
 	width: 100%;
-	height: 100rpx;
+	/* height: 100rpx; */
 	background-color: #2196F3;
 	font-size: 32rpx;
 	color: #fff;
@@ -262,7 +270,7 @@ page {
 /*某一天所有记录弹窗*/
 
 .allRecord-body {
-	padding: 100rpx 0 30rpx 0;
+	padding: 0 0 30rpx 0;
 }
 
 .allRecord /deep/ .u-mode-center-box {
@@ -270,18 +278,13 @@ page {
 }
 
 .allRecord-head {
+	/* height: 100rpx; */
 	width: 100%;
-	height: 100rpx;
-	background-color: #2196F3;
+	height: 50px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 50rpx;
-	position: fixed;
-	box-sizing: border-box;
-	top: 0;
-	left: 0;
-	z-index: 10;
 }
 
 .allRecord-text {
@@ -382,8 +385,7 @@ page {
 
 .echartsModel-top {
 	width: 100%;
-	height: 100rpx;
-	background-color: #2196F3;
+	height: 50px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -410,16 +412,16 @@ page {
 }
 
 .charts-box {
-  width: 100%;
-  height: 400px;
+	width: 100%;
+	height: 400px;
 }
 
-.echartsModel-bottom{
+.echartsModel-bottom {
 	margin-top: 20rpx;
 	padding: 0 20rpx;
 }
 
-.echartsBottom{
+.echartsBottom {
 	width: 100%;
 	background-color: #fff;
 	border-radius: 10rpx;
