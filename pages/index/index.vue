@@ -2,7 +2,8 @@
 	<view class="allContent">
 		<!--头部导航栏-->
 		<view class="left-jian">
-			<headNav :timeListTime="timeListTime"></headNav>
+			<headNav :timeListTime="timeListTime" @openSetModel="openSetModel" @openCalendarModel="openCalendarModel">
+			</headNav>
 		</view>
 
 
@@ -58,7 +59,7 @@
 				<view class="rightText">
 					<view class="rightText-titile">事件名称</view>
 					<view class="rightText-input">
-						<u-input focus auto-height v-model="rightInput" type="textarea" :border="false"
+						<u-input :focus="false" auto-height v-model="rightInput" type="textarea" :border="false"
 							:clearable="false" :custom-style="rightTextCustom" />
 					</view>
 				</view>
@@ -111,10 +112,12 @@
 					</view>
 				</view>
 				<view class="iconCentent">
-					<view class="iconCentent-item" :class="item.isPitchOn == true ? 'bgSelect' :''"
-						v-for="(item,index) in iconLists" :key="index" @click="selectIcon(item)">
-						<u-icon :name="item.name" :color="item.color" size="100"></u-icon>
-					</view>
+					<scroll-view scroll-y="true" class="scroll-Y" :enable-flex="true">
+						<view class="iconCentent-item" :class="item.isPitchOn == true ? 'bgSelect' :''"
+							v-for="(item,index) in iconLists" :key="index" @click="selectIcon(item)">
+							<u-icon :name="item.name" :color="item.color" size="100"></u-icon>
+						</view>
+					</scroll-view>
 				</view>
 				<view class="iconBottom">
 					<view @click="noDoneIcon">不使用</view>
@@ -153,7 +156,7 @@
 				<view class="allRecord-con">
 					<view class="allRecordCon-ul">
 						<view class="allRecordCon-li" v-for="(item,index) in dayAllRecordList.lastAllItem" :key="index"
-							@click="lineItem(item)">
+							@click="lineItem(item,'allRecord')">
 							<view class="recordLi-top">
 								<view class="recordTop-head">
 									<view class="recordHead-left">
@@ -217,19 +220,19 @@
 						<view class="allRecord-left">
 							<u-icon @click="offEchartsModel" name="arrow-leftward" color="#ffffff" size="40"></u-icon>
 							<view class="explain-head echartsModel-head" v-if="echartsNowItem">
-								<view v-if="echartsNowItem.explainIconValue.icon"
+								<view v-if="echartsNowItem.icon"
 									class="explainHead-icon echartsModel-icon">
-									<u-icon :name="echartsNowItem.explainIconValue.icon.name"
-										:color="echartsNowItem.explainIconValue.icon.color" size="60"></u-icon>
+									<u-icon :name="echartsNowItem.icon.name"
+										:color="echartsNowItem.icon.color" size="60"></u-icon>
 								</view>
 								<view class="explainHead-text echartsModel-text">
-									{{echartsNowItem.explainIconValue.value}}
+									{{echartsNowItem.value}}
 								</view>
 							</view>
 						</view>
 					</view>
 				</u-navbar>
-				<view class="echarts-line">
+				<view class="echarts-line" v-if="yearLists != ''">
 					<view class="charts-box">
 						<view class="charts-box">
 							<qiun-data-charts type="line" canvasId="scrolllineid" :eopts="ringOpts"
@@ -238,13 +241,77 @@
 						</view>
 					</view>
 				</view>
-				<view class="echartsModel-bottom">
+				<view class="echartsModel-bottom" v-if="yearLists != ''">
 					<view class="echartsBottom">
-						222
+						<view class="ecbottomItem" v-for="(item,index) in yearLists" :key="index">
+							<!-- <view class="ecbottomItem"> -->
+							<view class="ecbottomItem-head">
+								{{item.yearItem}}
+							</view>
+							<view class="ecbottomItem-body">
+								<view class="ecbottomItem-body-item" v-for="(items,index) in item.dataItem"
+									:key="index">
+									<view class="ecbottomBody-top">
+										<view class="ecbottomBody-top-year">
+											{{timeSwitch(items.dayRecord,items.explainDateTime)}}
+										</view>
+										<view class="">
+											{{items.explainValue}}.00
+										</view>
+									</view>
+									<view class="ecbottomBody-remark">
+										{{items.explainNote}}
+									</view>
+								</view>
+							</view>
+						</view>
 					</view>
+				</view>
+				<view v-if="yearLists == ''" class="noData">
+					<image class="noData-img" src="../../static/noData.jpg" mode=""></image>
+				</view>
+			</view>
+			
+		</u-popup>
+
+		<!--日历弹窗-->
+		<u-calendar v-model="calendarModel" z-index="10085" max-date="9999-01-01" :safe-area-inset-bottom="true"
+			mode="date" @change="changeTimeModel"></u-calendar>
+
+		<!--左侧设置弹窗-->
+		<u-popup z-index="10085" v-model="settingModel" mode="left" width="80%" height="100%">
+			<view class="settingModel">
+				<view class="settingModel-icon">
+					<scroll-view scroll-y="true" class="scroll-Y" :enable-flex="true">
+						<view class="settingIcon">
+							<u-swipe-action :show="item.show" :index="index" v-for="(item,index) in setModelIcon"
+								:key="index" @content-click="dianContent" @click="clickSettingIcon"
+								@open="openSettingIcon" :options="setOptions">
+								<view class="settingIcon-item">
+									<view class="setIconItem-left">
+										<u-icon :name="item.icon.name" :color="item.icon.color" size="100"></u-icon>
+									</view>
+									<view class="setIconItem-right">{{item.value}}</view>
+								</view>
+							</u-swipe-action>
+							<!-- <view class="settingIcon-item" v-for="(item,index) in setModelIcon" :key="index">
+								<view class="setIconItem-left">
+									<u-icon :name="item.icon.name" :color="item.icon.color" size="100"></u-icon>
+								</view>
+								<view class="setIconItem-right">{{item.value}}</view>
+							</view> -->
+						</view>
+					</scroll-view>
+				</view>
+				<view class="">
+
 				</view>
 			</view>
 		</u-popup>
+		
+		<!--删除记录确认弹窗-->
+		<u-modal v-model="deleteSetIcon" z-index="10085" show-cancel-button content="确定删除这条记录吗？" confirm-color="red"
+			@confirm="confirmSetIcon"></u-modal>
 
 		<!--保存时，提示-->
 		<u-toast ref="uToast" />
@@ -315,6 +382,20 @@
 				echartsNowItem: "", //当前选定的单条记录
 				chartDataOne: "",
 				ringOpts: null,
+				yearLists: [], //年份合集
+				calendarModel: false, //控制日历弹窗
+				settingModel: false, //控制左侧设置弹窗
+				setModelIcon: [], //左侧设置弹窗Icon事件合集
+				setOptions: [{
+					text: '删除',
+					style: {
+						backgroundColor: '#dd524d'
+					}
+				}],
+				deleteSetIcon:false,
+				setIconIndex:"", //点击删除时，获得的下标
+
+
 			}
 		},
 		components: {
@@ -329,6 +410,7 @@
 			this.getNowDate();
 		},
 		methods: {
+			...products,
 			//为图标数组深拷贝出来一份
 			shencopy(obj) {
 				if (typeof obj !== 'object') {
@@ -418,7 +500,8 @@
 				let activityItem = {
 					icon: this.newActivityItem,
 					value: this.rightInput,
-					iconSoleId: iconSoleId
+					iconSoleId: iconSoleId,
+					show: false
 				}
 				activityLists.push(activityItem);
 				linLists = this.activityLists.concat(activityLists);
@@ -561,7 +644,8 @@
 						explainDateTime: this.explainDateTime,
 						explainIconValue: this.explainIconValue,
 						isOpen: false,
-						soleId: idTime
+						soleId: idTime,
+						presentYear: dayRecord.currentYear
 					}
 					linLists.push(lastAllItem)
 					lastAllLists = lastAllLists.concat(linLists);
@@ -684,7 +768,8 @@
 			},
 
 			//点击记录中的某一条，获得数据，并打开数据分析弹窗
-			lineItem(item) {
+			lineItem(value, type) {
+				console.log("底", value, type)
 				let lastAllLists = uni.getStorageSync("lastAllLists");
 				if (lastAllLists != null && lastAllLists != "") {
 					lastAllLists = lastAllLists;
@@ -692,32 +777,69 @@
 					lastAllLists = [];
 				}
 				this.echartsModel = true;
-				this.echartsNowItem = item;
-				console.log("点击某一条", item, lastAllLists)
+
+				let item = value
+				let itemIconSoleId = "";
+				if (type == "allRecord") {
+					itemIconSoleId = value.explainIconValue.iconSoleId
+					this.echartsNowItem = value.explainIconValue;
+				} else if (type == "dianContent") {
+					itemIconSoleId = value.iconSoleId
+					this.echartsNowItem = value;
+				}
+
 				let listsAll = [];
 				let seriesData = []; //折线图使用的数据值
 				let timeJointAll = []
-				lastAllLists.forEach(lists => {
-					if (lists.explainIconValue.iconSoleId == item.explainIconValue.iconSoleId) {
-						console.log("lists", lists)
-						let exTime = lists.explainDateTime
-						let explainDate = exTime.year + "年" + exTime.month + "月" + exTime.date + "日"
+				let res = {}
+				lastAllLists.sort(function(a, b) {
+					return b.presentYear - a.presentYear;
+				})
+				console.log("lastAllLists", item, lastAllLists)
+				for (var i = 0; i < lastAllLists.length; i++) {
+					if (lastAllLists[i].explainIconValue.iconSoleId == itemIconSoleId) {
+
+						//选择的日期（dayRecord）
+						let exTime = lastAllLists[i].dayRecord
+						let cjTime = lastAllLists[i].explainDateTime
+						let explainDate = exTime.currentYear + "年" + exTime.currentMonth + "月" + exTime.date
 						let explainTime = "";
-						if (exTime.hours < 12) {
-							explainTime = "上午" + exTime.hours + ":" + (exTime.minutes < 10 ? '0' + exTime.minutes :
-								exTime.minutes)
+						if (cjTime.hours < 12) {
+							explainTime = "上午" + cjTime.hours + ":" + (cjTime.minutes < 10 ? '0' + cjTime.minutes :
+								cjTime.minutes)
 						} else {
-							let hours = exTime.hours - 12
-							explainTime = "下午" + hours + ":" + (exTime.minutes < 10 ? '0' + exTime.minutes : exTime
+							let hours = cjTime.hours - 12
+							explainTime = "下午" + hours + ":" + (cjTime.minutes < 10 ? '0' + cjTime.minutes : cjTime
 								.minutes)
 						}
 						let timeJoint = explainDate + " " + explainTime
-						listsAll.push(lists)
-						seriesData.push(lists.explainValue)
+
+						listsAll.push(lastAllLists[i])
+						seriesData.push(lastAllLists[i].explainValue)
 						timeJointAll.push(timeJoint)
+
+						res[lastAllLists[i].presentYear] = res[lastAllLists[i].presentYear] || [];
+						res[lastAllLists[i].presentYear].push(lastAllLists[i]); //将所有的item列放入到对应的className中
+
 					}
+				}
+
+				//将对象转为数组
+				let newRes = []
+				for (let items in res) {
+					let newItem = {
+						yearItem: items,
+						dataItem: res[items]
+					}
+					newRes.push(newItem)
+				}
+				newRes.sort(function(a, b) {
+					return b.yearItem - a.yearItem;
 				})
-				console.log("lists总数据", listsAll, seriesData, timeJointAll)
+				console.log("newRes", newRes)
+				this.yearLists = newRes
+				console.log("this.yearLists", this.yearLists)
+
 
 				//渐变色区域图
 				let linearareadata = {
@@ -756,7 +878,7 @@
 						type: 'inside',
 						show: true,
 						start: 0,
-						end: 50,
+						end: 60,
 						handleSize: 8
 					}],
 				}
@@ -771,6 +893,74 @@
 				this.echartsModel = false;
 			},
 
+			//打开日历弹窗
+			openCalendarModel() {
+				this.calendarModel = true;
+			},
+
+			//点击确定获得某一天的信息
+			changeTimeModel(value) {
+				console.log("value", value)
+				this.currentYear = value.year
+				this.currentMonth = value.month
+				let currentDate = value.day
+				if (currentDate < 10) {
+					this.currentDate = "0" + currentDate
+				} else {
+					this.currentDate = currentDate
+				}
+				this.nowTime = this.currentYear + "-" + this.currentMonth + "-" + this.currentDate
+				this.timeListTime = this.currentMonth + "月" + "-" + this.currentYear;
+				console.log("点击确定", this.timeListTime, this.currentYear, this.currentMonth, this.nowTime)
+				// this.$refs.calendar.shuaLists()
+
+			},
+
+			//打开左侧的设置弹窗
+			openSetModel() {
+				this.settingModel = true;
+				let activityLists = [];
+				let getLoca = uni.getStorageSync("activityLists");
+				if (getLoca != null && getLoca != "") {
+					activityLists = getLoca;
+				} else {
+					activityLists = [];
+				}
+				this.setModelIcon = activityLists;
+				console.log("this.setModelIcon", this.setModelIcon)
+			},
+
+			//左侧的设置弹窗--点击内容事件（与下面的不同）
+			dianContent(index) {
+				console.log("index", index, this.setModelIcon[index])
+				this.lineItem(this.setModelIcon[index], "dianContent")
+				this.settingModel = false;
+			},
+
+			//左侧的设置弹窗--点击 删除或者收藏等操作事件
+			clickSettingIcon(index, index1) {
+				this.setIconIndex = index
+				this.deleteSetIcon = true;
+			},
+			
+			//设置列表里删除 某一事件
+			confirmSetIcon(){
+				this.setModelIcon.splice(this.setIconIndex, 1);
+				uni.setStorageSync("activityLists", this.setModelIcon);
+			},
+			
+			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
+			openSettingIcon(index) {
+				// 先将正在被操作的swipeAction标记为打开状态，否则由于props的特性限制，
+				// 原本为'false'，再次设置为'false'会无效
+				console.log("划开", index, this.setModelIcon)
+				let lsList = this.setModelIcon
+				lsList[index].show = true;
+				lsList.map((val, idx) => {
+					if (val.iconSoleId != lsList[index].iconSoleId) val.show = false;
+				})
+				this.setModelIcon = lsList;
+			}
 
 		}
 	}

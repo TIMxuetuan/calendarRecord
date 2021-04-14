@@ -24,6 +24,45 @@ let products = {
 		}
 		console.log(count);
 		return arr
+	},
+
+	//分析页面的时间转换，例如：四月14 - 下午2:25
+	timeSwitch(dayRecord, dateTime) {
+		let {
+			currentMonth,
+			date
+		} = dayRecord
+
+		let {
+			hours,
+			minutes
+		} = dateTime
+
+		let explainDate = currentMonth + "月" + " " + date * 1
+		let explainTime = ""
+		if (hours < 12) {
+			explainTime = "上午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes)
+		} else {
+			hours = hours - 12
+			explainTime = "下午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes)
+		}
+		let newDateTime = explainDate + " - " + explainTime
+		return newDateTime
+	},
+
+	//金额数字后面补 .00
+	filterNumber(value) {
+		let num = ""
+			num = value / 100
+		if (num.toString().split(".").length == 1) {
+			return num + ".00"
+		} else {
+			if (num.toString().split(".")[1].toString().length == 1) {
+				return num + "0"
+			} else {
+				return num + ""
+			}
+		}
 	}
 }
 

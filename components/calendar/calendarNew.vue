@@ -80,6 +80,26 @@
 				startData: {}
 			};
 		},
+		watch: {
+			currentYear2: {
+				handler(val, oldVal) {
+					console.log("currentYear2 ",val, oldVal);
+					this.currentYear = val;
+					this.editTime()
+				},
+				// immediate: true,
+				deep: true 
+			},
+			currentMonth2: { 
+				handler(val, oldVal) {
+					console.log("currentMonth2 ",val, oldVal);
+					this.currentMonth = val;
+					this.editTime()
+				},
+				// immediate: true,
+				deep: true 
+			}
+		},
 		created() {
 
 		},
@@ -91,6 +111,26 @@
 
 		},
 		methods: {
+			
+			//修改日期--当通过日历弹窗选择时间时，触发这个事件
+			editTime(){
+				this.getAllArr(this.currentYear, this.currentMonth);
+				let items = this.nowTime
+				console.log("修改时间",this.timeList,items)
+				let allLists = this.timeList;
+				for (let item of allLists.allArr) {
+					if (item.ziDate == items) {
+						console.log("这一条",item)
+						item.isOpen = true
+						uni.setStorageSync("dayRecord", item)
+					} else {
+						item.isOpen = false;
+					}
+				}
+				this.timeList = allLists;
+				this.$forceUpdate()
+			},
+			
 
 			//点击日期获得数据
 			daysAdd(items) {
@@ -104,7 +144,7 @@
 					for (let item of allLists.allArr) {
 						if (item.ziDate == items.ziDate) {
 							item.isOpen = true
-							 uni.setStorageSync("dayRecord",items)
+							uni.setStorageSync("dayRecord", items)
 						} else {
 							item.isOpen = false;
 						}
@@ -274,14 +314,14 @@
 					item.lastAllItem = []
 					let dayRecord = uni.getStorageSync('dayRecord');
 					let nowTimeTwo = this.nowTime
-					if (dayRecord != null) {
+					if (dayRecord != null && dayRecord != "") {
 						dayRecord = dayRecord
 						nowTimeTwo = dayRecord.ziDate
-					} else {}
+					}
 					if (item.ziDate == nowTimeTwo) {
 						item.isOpen = true
 						newAllArr.push(item)
-						uni.setStorageSync('dayRecord',item);
+						uni.setStorageSync('dayRecord', item);
 					} else {
 						item.isOpen = false;
 						newAllArr.push(item)
@@ -326,7 +366,7 @@
 			},
 
 			shuaLists() {
-				console.log("执行了", this.timeList)
+				console.log("执行了", this.currentYear, this.currentMonth, this.timeList)
 				this.getAllArr(this.currentYear, this.currentMonth)
 			},
 
@@ -365,7 +405,6 @@
 </script>
 
 <style lang="scss" scoped>
-	
 	.calendar {
 		width: 100%;
 		height: 100%;

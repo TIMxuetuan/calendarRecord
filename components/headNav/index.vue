@@ -4,14 +4,14 @@
 			<view class="container-title">
 				<view class="leftIcon">
 					<view>
-						<u-icon name="list" color="#ffffff" size="36"></u-icon>
+						<u-icon @click="openSetModel" name="list" color="#ffffff" size="36"></u-icon>
 					</view>
 					<view class="timeValue">
 						{{timeListTime}}
 					</view>
 				</view>
 				<view class="rightIcon">
-					<!-- <u-icon name="calendar" color="#ffffff" size="36"></u-icon> -->
+					<u-icon @click="openCalendarModel" name="calendar" color="#ffffff" size="36"></u-icon>
 				</view>
 			</view>
 		</u-navbar>
@@ -32,6 +32,14 @@
 					backgroundColor: '#2196F3',
 				}
 			};
+		},
+		methods:{
+			openSetModel(){
+				this.$emit("openSetModel")
+			},
+			openCalendarModel(){
+				this.$emit("openCalendarModel")
+			}
 		}
 	}
 </script>

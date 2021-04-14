@@ -3,10 +3,11 @@ page {
 	height: 100%;
 }
 
-.allContent{
+.allContent {
 	display: flex;
 	width: 100vw;
 	height: 100vh;
+	min-height: 100vh;
 	flex-direction: column;
 }
 
@@ -65,10 +66,25 @@ page {
 
 .more-item {
 	width: 100%;
-	height: 60rpx;
+	/* height: 60rpx; */
 	display: flex;
 	align-items: center;
 	margin-bottom: 30rpx;
+	padding: 10rpx 0;
+}
+
+.moreItem-left {
+	display: flex;
+	align-items: center;
+	flex: 1;
+}
+
+.moreItem-right {
+	width: 100rpx;
+	margin-right: 30rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .more-item-icon {
@@ -172,7 +188,17 @@ page {
 	width: 100%;
 	height: 75%;
 	margin-top: 30rpx;
-	overflow-y: scroll;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.scroll-Y {
+	width: 100%;
+	height: 100%;
+
+}
+
+.iconCentent /deep/ .uni-scroll-view-content {
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -376,11 +402,16 @@ page {
 }
 
 /*记录弹窗--折线图分析*/
+.echartsModel {}
+
+.echartsModel /deep/ .u-mode-center-box {
+	background-color: #E4E4E4;
+}
+
 .echartsModel-body {
 	padding: 0 0 30rpx 0;
-	height: 100%;
+	/* height: 100%; */
 	box-sizing: border-box;
-	background-color: #E4E4E4;
 }
 
 .echartsModel-top {
@@ -425,5 +456,84 @@ page {
 	width: 100%;
 	background-color: #fff;
 	border-radius: 10rpx;
-	padding: 30rpx 10rpx;
+	padding: 0 20rpx 30rpx 20rpx;
+}
+
+.ecbottomItem {
+	border-bottom: 1px solid #E2E2E2;
+}
+
+.ecbottomItem:last-child {
+	border-bottom: none;
+}
+
+
+.ecbottomItem-head {
+	font-size: 36rpx;
+	color: #2196F3;
+	padding: 30rpx 0;
+}
+
+.ecbottomItem-body {
+	display: flex;
+	flex-direction: column;
+}
+
+.ecbottomItem-body-item {
+	color: #000000;
+	margin-bottom: 20rpx;
+}
+
+.ecbottomBody-top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.ecbottomBody-top-year {
+	font-weight: bold;
+}
+
+.ecbottomBody-remark {
+	font-size: 26rpx;
+	margin: 10rpx 0;
+}
+
+.noData {
+	width: 100%;
+}
+
+.noData-img {
+	width: 400rpx;
+	height: 400rpx;
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+}
+
+/*左侧设置弹窗样式*/
+.settingModel {
+	padding: 40rpx;
+}
+
+.settingModel-icon {}
+
+.settingIcon-item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-bottom: 20rpx;
+}
+
+.setIconItem-left {
+	width: 100rpx;
+	height: 100rpx;
+}
+
+.setIconItem-right {
+	flex: 1;
+	margin-left: 30rpx;
+	font-size: 30rpx;
+	color: #000;
 }
