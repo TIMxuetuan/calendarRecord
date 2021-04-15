@@ -10,8 +10,8 @@
 		<!--日历内容 开始-->
 		<view class="calendarModel">
 			<calendar ref="calendar" @gotoPreMonth="gotoPreMonth" @gotoNextMonth="gotoNextMonth" :signLists="signLists"
-				:nowTime="nowTime" :currentYear2='currentYear' :currentMonth2="currentMonth"
-				@openDayAllRecord="openDayAllRecord">
+				:nowTime2="nowTime" :currentYear2='currentYear' :currentMonth2="currentMonth"
+				@openDayAllRecord="openDayAllRecord" @editNowTime="editNowTime">
 			</calendar>
 		</view>
 		<!--日历内容 结束-->
@@ -220,15 +220,17 @@
 						<view class="allRecord-left">
 							<u-icon @click="offEchartsModel" name="arrow-leftward" color="#ffffff" size="40"></u-icon>
 							<view class="explain-head echartsModel-head" v-if="echartsNowItem">
-								<view v-if="echartsNowItem.icon"
-									class="explainHead-icon echartsModel-icon">
-									<u-icon :name="echartsNowItem.icon.name"
-										:color="echartsNowItem.icon.color" size="60"></u-icon>
+								<view v-if="echartsNowItem.icon" class="explainHead-icon echartsModel-icon">
+									<u-icon :name="echartsNowItem.icon.name" :color="echartsNowItem.icon.color"
+										size="60"></u-icon>
 								</view>
 								<view class="explainHead-text echartsModel-text">
 									{{echartsNowItem.value}}
 								</view>
 							</view>
+						</view>
+						<view class="allRecord-right">
+							<u-icon name="list" color="#ffffff" size="50"></u-icon>
 						</view>
 					</view>
 				</u-navbar>
@@ -238,6 +240,60 @@
 							<qiun-data-charts type="line" canvasId="scrolllineid" :eopts="ringOpts"
 								:chartData="chartDataOne" :animation="false" :ontouch="true" :canvas2d="true"
 								:echartsH5="true" :echartsApp="true" />
+						</view>
+					</view>
+				</view>
+				<view class="echartsModel-statistics" v-if="yearLists != ''">
+					<view class="echartsStatistics">
+						<view class="ecStatistics-start">
+							<view class="dataStart">
+								起止时间
+							</view>
+							<view class="dataStart-right">
+								所有时间
+							</view>
+						</view>
+						<view class="ecStatistics-analyse">
+							<view class="analyse-item">
+								<view class="analyseItem-title">
+									{{analyseList.countName}}
+								</view>
+								<view class="analyseItem-value">
+									{{analyseList.countValue}}
+								</view>
+							</view>
+							<view class="analyse-item">
+								<view class="analyseItem-title">
+									{{analyseList.sumName}}
+								</view>
+								<view class="analyseItem-value">
+									{{analyseList.sumValue}}
+								</view>
+							</view>
+							<view class="analyse-item">
+								<view class="analyseItem-title">
+									{{analyseList.avgName}}
+								</view>
+								<view class="analyseItem-value">
+									{{analyseList.avgValue}}
+								</view>
+							</view>
+							<view class="analyse-item">
+								<view class="analyseItem-title">
+									{{analyseList.peakName}}
+								</view>
+								<view class="analyseItem-value">
+									{{analyseList.peakValue}}
+								</view>
+							</view>
+							<view class="analyse-item">
+								<view class="analyseItem-title">
+									{{analyseList.minName}}
+								</view>
+								<view class="analyseItem-value">
+									{{analyseList.minValue}}
+								</view>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -271,7 +327,7 @@
 					<image class="noData-img" src="../../static/noData.jpg" mode=""></image>
 				</view>
 			</view>
-			
+
 		</u-popup>
 
 		<!--日历弹窗-->
@@ -281,6 +337,8 @@
 		<!--左侧设置弹窗-->
 		<u-popup z-index="10085" v-model="settingModel" mode="left" width="80%" height="100%">
 			<view class="settingModel">
+				<u-navbar height="50" :is-back="false" :border-bottom="false" is-fixed :background="background">
+				</u-navbar>
 				<view class="settingModel-icon">
 					<scroll-view scroll-y="true" class="scroll-Y" :enable-flex="true">
 						<view class="settingIcon">
@@ -308,7 +366,7 @@
 				</view>
 			</view>
 		</u-popup>
-		
+
 		<!--删除记录确认弹窗-->
 		<u-modal v-model="deleteSetIcon" z-index="10085" show-cancel-button content="确定删除这条记录吗？" confirm-color="red"
 			@confirm="confirmSetIcon"></u-modal>
@@ -392,10 +450,20 @@
 						backgroundColor: '#dd524d'
 					}
 				}],
-				deleteSetIcon:false,
-				setIconIndex:"", //点击删除时，获得的下标
-
-
+				deleteSetIcon: false,
+				setIconIndex: "", //点击删除时，获得的下标
+				analyseList: { //统计的值
+					countName: "数量",
+					countValue: 0,
+					sumName: "总数",
+					sumValue: 0,
+					avgName: "平均值",
+					avgValue: 0,
+					peakName: "最高值",
+					peakValue: 0,
+					minName: "最低值",
+					minValue: 0,
+				}
 			}
 		},
 		components: {
@@ -796,9 +864,13 @@
 					return b.presentYear - a.presentYear;
 				})
 				console.log("lastAllLists", item, lastAllLists)
+
+				let peakMinList = [];
+				let sumValue = 0;
+				let avgValue = 0;
+
 				for (var i = 0; i < lastAllLists.length; i++) {
 					if (lastAllLists[i].explainIconValue.iconSoleId == itemIconSoleId) {
-
 						//选择的日期（dayRecord）
 						let exTime = lastAllLists[i].dayRecord
 						let cjTime = lastAllLists[i].explainDateTime
@@ -813,15 +885,33 @@
 								.minutes)
 						}
 						let timeJoint = explainDate + " " + explainTime
-
 						listsAll.push(lastAllLists[i])
 						seriesData.push(lastAllLists[i].explainValue)
 						timeJointAll.push(timeJoint)
-
 						res[lastAllLists[i].presentYear] = res[lastAllLists[i].presentYear] || [];
 						res[lastAllLists[i].presentYear].push(lastAllLists[i]); //将所有的item列放入到对应的className中
 
+						let explainValue = Number(lastAllLists[i].explainValue * 1)
+						sumValue += explainValue //求和
+						peakMinList.push(lastAllLists[i].explainValue * 1)
+						avgValue = sumValue / peakMinList.length; //求平均值
+						peakMinList.sort(function(a, b) {
+							return b - a;
+						})
 					}
+				}
+				console.log("sumValue", sumValue, avgValue, peakMinList)
+				this.analyseList = {
+						countName: "数量",
+						countValue: peakMinList.length,
+						sumName: "总数",
+						sumValue: sumValue,
+						avgName: "平均值",
+						avgValue: avgValue.toFixed(2),
+						peakName: "最高值",
+						peakValue: peakMinList[0],
+						minName: "最低值",
+						minValue: peakMinList[peakMinList.length - 1],
 				}
 
 				//将对象转为数组
@@ -900,7 +990,9 @@
 
 			//点击确定获得某一天的信息
 			changeTimeModel(value) {
-				console.log("value", value)
+				let oneTime = this.currentYear + "-" + this.currentMonth;
+				let twoTime = value.year + "-" + value.month;
+				console.log("value", oneTime, twoTime, value)
 				this.currentYear = value.year
 				this.currentMonth = value.month
 				let currentDate = value.day
@@ -912,8 +1004,15 @@
 				this.nowTime = this.currentYear + "-" + this.currentMonth + "-" + this.currentDate
 				this.timeListTime = this.currentMonth + "月" + "-" + this.currentYear;
 				console.log("点击确定", this.timeListTime, this.currentYear, this.currentMonth, this.nowTime)
-				// this.$refs.calendar.shuaLists()
+				if (oneTime == twoTime) {
+					console.log("还在这一月")
+				}
+			},
 
+			//点击某一天后修改 nowTime2 的值
+			editNowTime(value) {
+				console.log("value", value)
+				this.nowTime = value.ziDate;
 			},
 
 			//打开左侧的设置弹窗
@@ -942,13 +1041,13 @@
 				this.setIconIndex = index
 				this.deleteSetIcon = true;
 			},
-			
+
 			//设置列表里删除 某一事件
-			confirmSetIcon(){
+			confirmSetIcon() {
 				this.setModelIcon.splice(this.setIconIndex, 1);
 				uni.setStorageSync("activityLists", this.setModelIcon);
 			},
-			
+
 			// 如果打开一个的时候，不需要关闭其他，则无需实现本方法
 			openSettingIcon(index) {
 				// 先将正在被操作的swipeAction标记为打开状态，否则由于props的特性限制，

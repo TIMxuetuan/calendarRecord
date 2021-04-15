@@ -52,7 +52,7 @@
 				// default: 0
 				default: new Date().getMonth() + 1
 			},
-			nowTime: {
+			nowTime2: {
 				type: [String, Number],
 				default: ""
 			},
@@ -69,6 +69,7 @@
 				current: 0, //初始显示页下标
 				currentYear: "",
 				currentMonth: "",
+				nowTime:"",
 				currentMonthDateLen: 0, // 当月天数
 				preMonthDateLen: 0, // 当月中，上月多余天数
 				allArr: [], // 当月所有数据
@@ -85,18 +86,24 @@
 				handler(val, oldVal) {
 					console.log("currentYear2 ",val, oldVal);
 					this.currentYear = val;
-					this.editTime()
+					// this.editTime()
 				},
-				// immediate: true,
 				deep: true 
 			},
 			currentMonth2: { 
 				handler(val, oldVal) {
 					console.log("currentMonth2 ",val, oldVal);
 					this.currentMonth = val;
+					// this.editTime()
+				},
+				deep: true 
+			},
+			nowTime2: {
+				handler(val, oldVal) {
+					console.log("nowTime ",val, oldVal);
+					this.nowTime = val;
 					this.editTime()
 				},
-				// immediate: true,
 				deep: true 
 			}
 		},
@@ -107,6 +114,7 @@
 			console.log("signLists", this.signLists)
 			this.currentYear = this.currentYear2
 			this.currentMonth = this.currentMonth2
+			this.nowTime = this.nowTime2;
 			this.getAllArr(this.currentYear, this.currentMonth);
 
 		},
@@ -145,6 +153,7 @@
 						if (item.ziDate == items.ziDate) {
 							item.isOpen = true
 							uni.setStorageSync("dayRecord", items)
+							this.$emit("editNowTime",items)
 						} else {
 							item.isOpen = false;
 						}

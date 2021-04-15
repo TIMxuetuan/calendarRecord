@@ -452,6 +452,63 @@ page {
 	padding: 0 20rpx;
 }
 
+.echartsModel-statistics {
+	margin-top: 20rpx;
+	padding: 0 20rpx;
+}
+
+.echartsStatistics{
+	width: 100%;
+	background-color: #fff;
+	border-radius: 10rpx;
+	padding: 30rpx 20rpx;
+}
+
+.ecStatistics-start{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 30rpx;
+}
+
+.dataStart{
+	color: #000;
+	font-weight: bold;
+}
+
+.dataStart-right{
+	color: #2196F3;
+}
+
+.ecStatistics-analyse{
+	padding: 0 20rpx;
+	margin-top: 40rpx;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.analyse-item{
+	width: 25%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 30rpx;
+	margin-bottom: 20rpx;
+}
+
+.analyseItem-title{
+	color: #000;
+	font-weight: bold;
+}
+
+.analyseItem-value{
+	color: #2196F3;
+	margin-top: 10rpx;
+}
+
+
+
+
 .echartsBottom {
 	width: 100%;
 	background-color: #fff;
@@ -507,9 +564,9 @@ page {
 	width: 400rpx;
 	height: 400rpx;
 	position: absolute;
-	top:50%;
-	left:50%;
-	transform:translate(-50%,-50%);
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 /*左侧设置弹窗样式*/
