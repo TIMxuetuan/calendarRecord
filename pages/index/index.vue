@@ -230,7 +230,7 @@
 							</view>
 						</view>
 						<view class="allRecord-right">
-							<u-icon name="list" color="#ffffff" size="50"></u-icon>
+							<u-icon @click="yearCalendar" name="list" color="#ffffff" size="50"></u-icon>
 						</view>
 					</view>
 				</u-navbar>
@@ -1059,6 +1059,14 @@
 					if (val.iconSoleId != lsList[index].iconSoleId) val.show = false;
 				})
 				this.setModelIcon = lsList;
+			},
+			
+			//点击跳转到年历页面
+			yearCalendar(){
+				console.log("跳转")
+				uni.navigateTo({
+				    url: '/pages/yearCalendar/yearCalendar'
+				});
 			}
 
 		}
