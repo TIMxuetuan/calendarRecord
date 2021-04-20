@@ -22,8 +22,9 @@
             "path" : "pages/yearCalendar/yearCalendar",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
+                // "navigationBarTitleText": "年记录详情"
+                // "enablePullDownRefresh": false
+				"navigationStyle": "custom"
             }
             
         }

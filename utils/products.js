@@ -63,6 +63,17 @@ let products = {
 				return num + ""
 			}
 		}
+	},
+	
+	//判断一个数组里是否包含这个对象值
+	isIndexOf(item,list){
+		let isTrueFalse = false;
+		list.forEach(value=>{
+			if(value.idTime == item){
+				isTrueFalse = true;
+			}
+		})
+		return isTrueFalse
 	}
 }
 

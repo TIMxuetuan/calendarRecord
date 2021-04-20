@@ -851,9 +851,11 @@
 				if (type == "allRecord") {
 					itemIconSoleId = value.explainIconValue.iconSoleId
 					this.echartsNowItem = value.explainIconValue;
+					uni.setStorageSync("explainIconValue", value.explainIconValue)
 				} else if (type == "dianContent") {
 					itemIconSoleId = value.iconSoleId
 					this.echartsNowItem = value;
+					uni.setStorageSync("explainIconValue", value)
 				}
 
 				let listsAll = [];
