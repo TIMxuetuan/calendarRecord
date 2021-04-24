@@ -1,0 +1,92 @@
+[{
+	"name": "level"
+}, {
+	"name": "woman"
+}, {
+	"name": "man"
+}, {
+	"name": "arrow-left-double"
+}, {
+	"name": "arrow-right-double"
+}, {
+	"name": "chat"
+}, {
+	"name": "chat-fill"
+},{
+	"name": "red-packet"
+},{
+	"name": "red-packet-fill"
+},{
+	"name": "order"
+},{
+	"name": "checkbox-mark"
+},{
+	"name": "arrow-up-fill"
+},{
+	"name": "arrow-down-fill"
+},{
+	"name": "backspace"
+},{
+	"name": "photo"
+},{
+	"name": "photo-fill"
+},{
+	"name": "lock"
+},{
+	"name": "lock-fill"
+},
+{
+	"name": "lock-open"
+},
+{
+	"name": "lock-opened-fill"
+},
+{
+	"name": "hourglass"
+},
+{
+	"name": "hourglass-half-fill"
+},
+{
+	"name": "home"
+},
+{
+	"name": "home-fill"
+},
+{
+	"name": "fingerprint"
+},
+{
+	"name": "cut"
+},
+{
+	"name": "star"
+},
+{
+	"name": "star-fill"
+},
+{
+	"name": "share"
+},
+{
+	"name": "share-fill"
+},
+{
+	"name": "volume-up"
+},
+{
+	"name": "volume-up-fill"
+},
+{
+	"name": "volume-off"
+},
+{
+	"name": "volume-off-fill"
+},
+{
+	"name": "trash"
+},
+{
+	"name": "trash-fill"
+}
+]

@@ -74,7 +74,27 @@ let products = {
 			}
 		})
 		return isTrueFalse
-	}
+	},
+	
+	//传入年月日值，获取时间戳
+	getrc_sj(dayRecord){
+		let nowDate = new Date();
+		let year = dayRecord.currentYear
+		let month = dayRecord.currentMonth
+		let date = dayRecord.date
+		let hours = nowDate.getHours()
+		let minutes = nowDate.getMinutes()
+		let second = nowDate.getSeconds()
+		minutes = minutes < 10 ? '0' + minutes : minutes
+		let explainDateTime = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + second;
+		return explainDateTime;
+	},
+	
+	//将 2021-04-24 16:51:50截取为 2021-04-24
+	cutOutTime(value){
+		let newValue = value.split(" ")
+		return newValue[0]
+	} 
 }
 
 export default products

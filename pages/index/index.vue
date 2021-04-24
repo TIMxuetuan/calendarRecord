@@ -1,5 +1,6 @@
 <template>
 	<view class="allContent">
+		<button v-if="!isGet" class="all" @click="getUserInfo"></button>
 		<!--头部导航栏-->
 		<view class="left-jian">
 			<headNav :timeListTime="timeListTime" @openSetModel="openSetModel" @openCalendarModel="openCalendarModel">
@@ -11,7 +12,7 @@
 		<view class="calendarModel">
 			<calendar ref="calendar" @gotoPreMonth="gotoPreMonth" @gotoNextMonth="gotoNextMonth" :signLists="signLists"
 				:nowTime2="nowTime" :currentYear2='currentYear' :currentMonth2="currentMonth"
-				@openDayAllRecord="openDayAllRecord" @editNowTime="editNowTime">
+				@openDayAllRecord="openDayAllRecord" @editNowTime="editNowTime" :lastAllLists="lastAllLists">
 			</calendar>
 		</view>
 		<!--日历内容 结束-->
@@ -32,9 +33,9 @@
 					<view class="more-item" v-for="(item,index) in activityLists" :key="index"
 						@click="addDayRecord(item)">
 						<view class="more-item-icon">
-							<u-icon :name="item.icon.name" :color="item.icon.color" size="50"></u-icon>
+							<u-icon :name="item.tra_icons" :color="item.tra_color" size="50"></u-icon>
 						</view>
-						<view class="activity-head-text">{{item.value}}</view>
+						<view class="activity-head-text">{{item.bt}}</view>
 					</view>
 				</view>
 			</view>
@@ -60,7 +61,7 @@
 					<view class="rightText-titile">事件名称</view>
 					<view class="rightText-input">
 						<u-input :focus="false" auto-height v-model="rightInput" type="textarea" :border="false"
-							:clearable="false" :custom-style="rightTextCustom" />
+							:clearable="false" :custom-style="rightTextCustom" placeholder=" " />
 					</view>
 				</view>
 			</view>
@@ -71,24 +72,24 @@
 			<view class="explain-centent">
 				<view class="explain-head">
 					<view class="explainHead-icon">
-						<u-icon v-if="explainIconValue" :name="explainIconValue.icon.name"
-							:color="explainIconValue.icon.color" size="80"></u-icon>
+						<u-icon v-if="explainIconValue" :name="explainIconValue.tra_icons"
+							:color="explainIconValue.tra_color" size="80"></u-icon>
 					</view>
-					<view class="explainHead-text">{{explainIconValue.value}}</view>
+					<view class="explainHead-text">{{explainIconValue.bt}}</view>
 				</view>
 				<view class="explain-body">
 					<view class="explainBody-item">
 						<view class="explainBody-title">数值:</view>
 						<view class="explainBody-input">
 							<u-input v-model="explainValue" type="number" :border="false" :clearable="false"
-								:custom-style="explainCustom" placeholder="" />
+								:custom-style="explainCustom" placeholder=" " />
 						</view>
 					</view>
 					<view class="explainBody-item">
 						<view class="explainBody-title">备注:</view>
 						<view class="explainBody-input">
 							<u-input v-model="explainNote" type="text" :border="false" :clearable="false"
-								:custom-style="explainCustom" placeholder="" />
+								:custom-style="explainCustom" placeholder=" " />
 						</view>
 					</view>
 				</view>
@@ -160,10 +161,9 @@
 							<view class="recordLi-top">
 								<view class="recordTop-head">
 									<view class="recordHead-left">
-										<u-icon :name="item.explainIconValue.icon.name"
-											:color="item.explainIconValue.icon.color" size="40"></u-icon>
+										<u-icon :name="item.tra_icons" :color="item.tra_color" size="40"></u-icon>
 										<view class="recordHead-left-text">
-											{{item.explainIconValue.value}}
+											{{item.tra_bt}}
 										</view>
 									</view>
 									<view class="" @click.stop>
@@ -173,19 +173,21 @@
 											size="40"></u-icon>
 									</view>
 								</view>
-								<view class="recordTop-value">{{item.explainValue}}</view>
-								<view class="">{{item.explainNote}}</view>
+								<view class="recordTop-value">{{item.jl_num}}</view>
+								<view class="">{{item.remarks}}</view>
 							</view>
 							<view class="recordLi-hide" v-if="item.isOpen">
 								<view class="recordHide-top">
 									<view class="">创建时间:</view>
 									<view class="recordHide-time">
-										<view class="">
+										{{item.create_time}}
+
+										<!-- <view class="">
 											{{item.explainDateTime.year}}年{{item.explainDateTime.month}}月{{item.explainDateTime.date}}日
 										</view>
 										<view class="">
 											{{item.explainDateTime.hours < 12 ? '上午' + item.explainDateTime.hours : '下午' + (item.explainDateTime.hours - 12)}}:{{item.explainDateTime.minutes < 10 ? '0' + item.explainDateTime.minutes : item.explainDateTime.minutes }}
-										</view>
+										</view> -->
 									</view>
 								</view>
 								<view class="recordHide-btn">
@@ -213,118 +215,138 @@
 			@confirm="confirmRecord"></u-modal>
 
 		<!--点击某一天中的某条记录，查看此条记录的所有数据分析弹窗-->
-		<u-popup class="echartsModel" z-index="10085" v-model="echartsModel" mode="center" width="100%" height="100%">
+		<u-popup class="echartsModel" z-index="10085" v-model="echartsModel" mode="bottom" width="100%" height="100%">
 			<view class="echartsModel-body">
-				<u-navbar height="50" :is-back="false" :border-bottom="false" is-fixed :background="background">
-					<view class="echartsModel-top">
-						<view class="allRecord-left">
-							<u-icon @click="offEchartsModel" name="arrow-leftward" color="#ffffff" size="40"></u-icon>
-							<view class="explain-head echartsModel-head" v-if="echartsNowItem">
-								<view v-if="echartsNowItem.icon" class="explainHead-icon echartsModel-icon">
-									<u-icon :name="echartsNowItem.icon.name" :color="echartsNowItem.icon.color"
-										size="60"></u-icon>
-								</view>
-								<view class="explainHead-text echartsModel-text">
-									{{echartsNowItem.value}}
-								</view>
-							</view>
-						</view>
-						<view class="allRecord-right">
-							<u-icon @click="yearCalendar" name="list" color="#ffffff" size="50"></u-icon>
-						</view>
-					</view>
-				</u-navbar>
-				<view class="echarts-line" v-if="yearLists != ''">
-					<view class="charts-box">
-						<view class="charts-box">
-							<qiun-data-charts type="line" canvasId="scrolllineid" :eopts="ringOpts"
-								:chartData="chartDataOne" :animation="false" :ontouch="true" :canvas2d="true"
-								:echartsH5="true" :echartsApp="true" />
-						</view>
-					</view>
-				</view>
-				<view class="echartsModel-statistics" v-if="yearLists != ''">
-					<view class="echartsStatistics">
-						<view class="ecStatistics-start">
-							<view class="dataStart">
-								起止时间
-							</view>
-							<view class="dataStart-right">
-								所有时间
-							</view>
-						</view>
-						<view class="ecStatistics-analyse">
-							<view class="analyse-item">
-								<view class="analyseItem-title">
-									{{analyseList.countName}}
-								</view>
-								<view class="analyseItem-value">
-									{{analyseList.countValue}}
-								</view>
-							</view>
-							<view class="analyse-item">
-								<view class="analyseItem-title">
-									{{analyseList.sumName}}
-								</view>
-								<view class="analyseItem-value">
-									{{analyseList.sumValue}}
-								</view>
-							</view>
-							<view class="analyse-item">
-								<view class="analyseItem-title">
-									{{analyseList.avgName}}
-								</view>
-								<view class="analyseItem-value">
-									{{analyseList.avgValue}}
-								</view>
-							</view>
-							<view class="analyse-item">
-								<view class="analyseItem-title">
-									{{analyseList.peakName}}
-								</view>
-								<view class="analyseItem-value">
-									{{analyseList.peakValue}}
-								</view>
-							</view>
-							<view class="analyse-item">
-								<view class="analyseItem-title">
-									{{analyseList.minName}}
-								</view>
-								<view class="analyseItem-value">
-									{{analyseList.minValue}}
-								</view>
-							</view>
-						</view>
-					</view>
-				</view>
-				<view class="echartsModel-bottom" v-if="yearLists != ''">
-					<view class="echartsBottom">
-						<view class="ecbottomItem" v-for="(item,index) in yearLists" :key="index">
-							<!-- <view class="ecbottomItem"> -->
-							<view class="ecbottomItem-head">
-								{{item.yearItem}}
-							</view>
-							<view class="ecbottomItem-body">
-								<view class="ecbottomItem-body-item" v-for="(items,index) in item.dataItem"
-									:key="index">
-									<view class="ecbottomBody-top">
-										<view class="ecbottomBody-top-year">
-											{{timeSwitch(items.dayRecord,items.explainDateTime)}}
-										</view>
-										<view class="">
-											{{items.explainValue}}.00
-										</view>
+				<view class="">
+					<u-navbar height="50" :is-back="false" :border-bottom="false" :is-fixed="true"
+						:background="background">
+						<view class="echartsModel-top">
+							<view class="allRecord-left">
+								<u-icon @click="offEchartsModel" name="arrow-leftward" color="#ffffff" size="40">
+								</u-icon>
+								<view class="explain-head echartsModel-head" v-if="echartsNowItem">
+									<view v-if="echartsNowItem.icon" class="explainHead-icon echartsModel-icon">
+										<u-icon :name="echartsNowItem.icon.name" :color="echartsNowItem.icon.color"
+											size="60"></u-icon>
 									</view>
-									<view class="ecbottomBody-remark">
-										{{items.explainNote}}
+									<view class="explainHead-text echartsModel-text">
+										{{echartsNowItem.value}}
 									</view>
 								</view>
 							</view>
+							<view class="allRecord-right">
+								<u-icon @click="yearCalendar" name="list" color="#ffffff" size="50"></u-icon>
+							</view>
 						</view>
-					</view>
+					</u-navbar>
 				</view>
-				<view v-if="yearLists == ''" class="noData">
-					<image class="noData-img" src="../../static/noData.jpg" mode=""></image>
+				<view class="lineAndText">
+					<scroll-view scroll-y="true" class="scroll-Y" :enable-flex="true">
+						<view class="echartsLine-one" v-if="yearLists != ''">
+							<view class="lineOne">
+
+								<!-- #ifdef MP-WEIXIN -->
+								<!-- <qiun-data-charts type="line" canvasId="scrolllineid" :opts="ringOpts" :chartData="chartDataOne"
+								:animation="false" :ontouch="true" :canvas2d="true" :echartsH5="true" :echartsApp="true"
+								:inScrollView="true" /> -->
+
+								<qiun-data-charts type="line" canvasId="scrolllineid2" :opts="ringOpts"
+									:chartData="chartDataOne" :animation="false" :inScrollView="true" :echartsH5="true"
+									:echartsApp="true" :ontouch="true" />
+								<!-- #endif -->
+
+								<!-- #ifdef H5 || APP-PLUS -->
+								<qiun-data-charts type="line" canvasId="scrolllineid" :eopts="ringOpts"
+									:chartData="chartDataOne" :animation="false" :ontouch="true" :canvas2d="true"
+									:echartsH5="true" :echartsApp="true" :inScrollView="true" />
+								<!-- #endif -->
+
+							</view>
+						</view>
+						<view class="echartsModel-statistics" v-if="yearLists != ''">
+							<view class="echartsStatistics">
+								<view class="ecStatistics-start">
+									<view class="dataStart">
+										起止时间
+									</view>
+									<view class="dataStart-right">
+										所有时间
+									</view>
+								</view>
+								<view class="ecStatistics-analyse">
+									<view class="analyse-item">
+										<view class="analyseItem-title">
+											{{analyseList.countName}}
+										</view>
+										<view class="analyseItem-value">
+											{{analyseList.countValue}}
+										</view>
+									</view>
+									<view class="analyse-item">
+										<view class="analyseItem-title">
+											{{analyseList.sumName}}
+										</view>
+										<view class="analyseItem-value">
+											{{analyseList.sumValue}}
+										</view>
+									</view>
+									<view class="analyse-item">
+										<view class="analyseItem-title">
+											{{analyseList.avgName}}
+										</view>
+										<view class="analyseItem-value">
+											{{analyseList.avgValue}}
+										</view>
+									</view>
+									<view class="analyse-item">
+										<view class="analyseItem-title">
+											{{analyseList.peakName}}
+										</view>
+										<view class="analyseItem-value">
+											{{analyseList.peakValue}}
+										</view>
+									</view>
+									<view class="analyse-item">
+										<view class="analyseItem-title">
+											{{analyseList.minName}}
+										</view>
+										<view class="analyseItem-value">
+											{{analyseList.minValue}}
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<view class="echartsModel-bottom" v-if="yearLists != ''">
+							<view class="echartsBottom">
+								<view class="ecbottomItem" v-for="(item,index) in yearLists" :key="index">
+									<!-- <view class="ecbottomItem"> -->
+									<view class="ecbottomItem-head">
+										{{item.yearItem}}
+									</view>
+									<view class="ecbottomItem-body">
+										<view class="ecbottomItem-body-item" v-for="(items,index) in item.dataItem"
+											:key="index">
+											<view class="ecbottomBody-top">
+												<view class="ecbottomBody-top-year">
+													{{timeSwitch(items.dayRecord,items.explainDateTime)}}
+												</view>
+												<view class="">
+													{{items.explainValue}}.00
+												</view>
+											</view>
+											<view class="ecbottomBody-remark">
+												{{items.explainNote}}
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+						<view v-if="yearLists == ''" class="noData">
+							<image class="noData-img" src="../../static/noData.jpg" mode=""></image>
+						</view>
+					</scroll-view>
 				</view>
 			</view>
 
@@ -343,7 +365,7 @@
 					<scroll-view scroll-y="true" class="scroll-Y" :enable-flex="true">
 						<view class="settingIcon">
 							<u-swipe-action :show="item.show" :index="index" v-for="(item,index) in setModelIcon"
-								:key="index" @content-click="dianContent" @click="clickSettingIcon"
+								:key="item.iconSoleId" @content-click="dianContent" @click="clickSettingIcon"
 								@open="openSettingIcon" :options="setOptions">
 								<view class="settingIcon-item">
 									<view class="setIconItem-left">
@@ -371,13 +393,23 @@
 		<u-modal v-model="deleteSetIcon" z-index="10085" show-cancel-button content="确定删除这条记录吗？" confirm-color="red"
 			@confirm="confirmSetIcon"></u-modal>
 
+		<!--提示登录弹窗-->
+		<u-popup z-index="10085" v-model="hintLogin" mode="center" width="80%" height="30%" border-radius="14"
+			:mask-close-able="false">
+			<view class="hintLogin">
+				<view class="hintLogin-title">
+					请登录授权使用此程序
+				</view>
+			</view>
+		</u-popup>
+
 		<!--保存时，提示-->
 		<u-toast ref="uToast" />
 	</view>
 </template>
 
 <script>
-	// import uCharts from '@/components/u-charts.js';
+	import allApi from '../../utils/api_methods.js'
 	import headNav from '../../components/headNav/index.vue'; //头部导航组件
 	import calendar from '../../components/calendar/calendarNew.vue'; //日历组件--自己写的
 	// import calendar from '../../components/lx-calendar/lx-calendar.vue'; //日历组件--=可以使用，但是没有注释，很不好理解
@@ -387,6 +419,10 @@
 	export default {
 		data() {
 			return {
+				hintLogin: false,
+				isGet: false, //是否授权个人信息
+				user_info: '', //用户信息
+				lastAllLists: [], //获得的记录数据
 				background: {
 					backgroundColor: '#2196F3',
 				},
@@ -475,10 +511,80 @@
 			this.cWidth = uni.upx2px(750);
 			this.cHeight = uni.upx2px(500);
 			this.iconLists = this.shencopy(iconAll);
+			this.user_info = uni.getStorageSync('user_info');
+			this.isGet = uni.getStorageSync("isGet");
+			console.log("this.isGet", this.isGet)
+			if (this.isGet) {
+				this.getListtrarecord(this.currentYear, this.currentMonth, this.currentDate = "");
+			}
 			this.getNowDate();
 		},
 		methods: {
 			...products,
+			//储微信用户信息
+			getUserInfo() {
+				uni.getUserProfile({
+					desc: '用于完善资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+					success: (res) => {
+						console.log("新的", res)
+						let resProfile = res;
+						if (res.errMsg === "getUserProfile:ok") {
+							let userInfo = res.userInfo;
+							allApi.userxx({
+								"info[wechat_id]": this.user_info.id,
+								"info[nickName]": userInfo.nickName,
+								"info[avatarUrl]": userInfo.avatarUrl,
+								"info[gender]": userInfo.gender,
+								"info[city]": userInfo.city,
+								"info[province]": userInfo.province,
+								"info[country]": userInfo.country,
+							}).then(res => {
+								if (res.event == 100) {
+									console.log("储存成功", res)
+									this.isGet = true
+									uni.setStorageSync("isGet", this.isGet);
+									this.getListtrarecord(this.currentYear, this.currentMonth, this
+										.currentDate = "");
+									// this.getPhone(resProfile)
+								}
+							})
+						}
+					}
+				})
+
+			},
+
+			//获取手机号，将encryptedData，iv等传给后台
+			getPhone(resProfile) {
+				console.log("手机号", resProfile)
+				allApi.number({
+					encryptedData: resProfile.encryptedData,
+					iv: resProfile.iv,
+					wechat_id: this.user_info.id
+				}).then(res => {
+					if (res.event == 100) {
+						console.log("获取手机号", res)
+					}
+				})
+			},
+
+			//获取当月的记录数据信息
+			getListtrarecord(year, month, date) {
+				console.log("现在的年月日", year, month, date)
+				month = month < 10 ? "0" + month : month
+				allApi.listtrarecord({
+					wechat_id: this.user_info.id,
+					year: year,
+					month: month,
+					day: date,
+				}).then(res => {
+					if (res.event == 100) {
+						console.log("获取四月记录数据", res)
+						this.lastAllLists = res.list;
+					}
+				})
+			},
+
 			//为图标数组深拷贝出来一份
 			shencopy(obj) {
 				if (typeof obj !== 'object') {
@@ -503,9 +609,10 @@
 				} else {
 					this.currentDate = currentDate
 				}
-				this.nowTime = this.currentYear + "-" + this.currentMonth + "-" + this.currentDate
+				this.nowTime = this.currentYear + "-" + (this.currentMonth < 10 ? "0" + this.currentMonth : this
+					.currentMonth) + "-" + this.currentDate
 				this.timeListTime = this.currentMonth + "月" + "-" + this.currentYear;
-				console.log("滴滴滴", this.timeListTime, this.currentYear, this.currentMonth, this.nowTime)
+				// console.log("滴滴滴", this.timeListTime, this.currentYear, this.currentMonth, this.nowTime)
 			},
 
 			//点击上一月
@@ -527,15 +634,25 @@
 			//点击右下角，打开事件弹窗
 			openRightModel() {
 				this.activityShow = true;
-				let activityLists = [];
-				let getLoca = uni.getStorageSync("activityLists");
-				console.log("getLoca", getLoca)
-				if (getLoca != null && getLoca != "") {
-					activityLists = getLoca;
-				} else {
-					activityLists = [];
-				}
-				this.activityLists = activityLists;
+				// let activityLists = [];
+				// let getLoca = uni.getStorageSync("activityLists");
+				// console.log("getLoca", getLoca)
+
+				// if (getLoca != null && getLoca != "") {
+				// 	activityLists = getLoca;
+				// } else {
+				// 	activityLists = [];
+				// }
+
+				allApi.listtralb({
+					wechat_id: this.user_info.id,
+				}).then(res => {
+					if (res.event == 100) {
+						console.log("获取类别列表", res)
+						this.activityLists = res.list;
+					}
+				})
+
 			},
 
 			//打开添加事件弹窗--并给icon
@@ -560,24 +677,37 @@
 					})
 					return
 				}
-
-				let linLists = [];
-				let timestamp = (new Date()).getTime();
-				let iconSoleId = timestamp + products.randomNum();
-				let activityLists = [];
-				let activityItem = {
-					icon: this.newActivityItem,
-					value: this.rightInput,
-					iconSoleId: iconSoleId,
-					show: false
-				}
-				activityLists.push(activityItem);
-				linLists = this.activityLists.concat(activityLists);
-				uni.setStorageSync("activityLists", linLists);
-				this.$nextTick(() => {
-					this.activityLists = linLists;
-				});
+				console.log("this.newActivityItem,", this.newActivityItem)
+				allApi.addtralb({
+					wechat_id: this.user_info.id,
+					tra_icons: this.newActivityItem.name,
+					tra_color: this.newActivityItem.color,
+					bt: this.rightInput,
+				}).then(res => {
+					if (res.event == 100) {
+						console.log("添加成功", res)
+					}
+				})
 				this.addActivityClose();
+
+				// let linLists = [];
+				// let timestamp = (new Date()).getTime();
+				// let iconSoleId = timestamp + products.randomNum();
+				// let activityLists = [];
+				// let activityItem = {
+				// 	icon: this.newActivityItem,
+				// 	value: this.rightInput,
+				// 	iconSoleId: iconSoleId,
+				// 	show: false
+				// }
+				// activityLists.push(activityItem);
+				// linLists = this.activityLists.concat(activityLists);
+				// uni.setStorageSync("activityLists", linLists);
+				// this.$nextTick(() => {
+				// 	this.activityLists = linLists;
+				// });
+
+
 			},
 
 			//打开icon图标弹窗
@@ -598,7 +728,7 @@
 			//颜色选择器 选中的颜色
 			confirm(event) {
 				this.colorShow = false;
-				console.log('颜色选择器返回值：', event)
+				//console.log('颜色选择器返回值：', event)
 				this.color = event.rgba;
 				this.newColor = event.hex;
 				this.disposeIcon(event.hex);
@@ -659,6 +789,7 @@
 
 			//为某一天添加活动事件 ，打开弹窗，并初始化--例如，为2021-4-02添加 跑步事件
 			addDayRecord(item) {
+				console.log("点击某一个类别", item)
 				this.explainShow = true;
 				this.activityShow = false;
 				this.explainIconValue = item;
@@ -685,46 +816,92 @@
 					this.explainTime = "下午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes)
 				}
 
-				console.log("item", this.explainDateTime)
+				//console.log("item", this.explainDateTime)
 			},
 
 			//添加活动事件弹窗,最终添加按钮事件
 			explainComfig() {
 				if (this.editLinShi == "") {
 					//新增
-					let timestamp = (new Date()).getTime();
-					let idTime = timestamp + products.randomNum();
-					console.log("idTime", idTime)
-					let lastAllLists = uni.getStorageSync("lastAllLists");
-					if (lastAllLists != null && lastAllLists != "") {
-						lastAllLists = lastAllLists;
-					} else {
-						lastAllLists = [];
-					}
+
+					// let timestamp = (new Date()).getTime();
+					// let idTime = timestamp + products.randomNum();
+					// console.log("idTime", idTime)
+					// let lastAllLists = uni.getStorageSync("lastAllLists");
+					// if (lastAllLists != null && lastAllLists != "") {
+					// 	lastAllLists = lastAllLists;
+					// } else {
+					// 	lastAllLists = [];
+					// }
+
+					// let dayRecord = uni.getStorageSync("dayRecord")
+					// let linLists = []
+					// let lastAllItem = {
+					// 	idTime: dayRecord.ziDate,
+					// 	dayRecord,
+					// 	explainValue: this.explainValue,
+					// 	explainNote: this.explainNote,
+					// 	explainDateTime: this.explainDateTime,
+					// 	explainIconValue: this.explainIconValue,
+					// 	isOpen: false,
+					// 	soleId: idTime,
+					// 	presentYear: dayRecord.currentYear
+					// }
+					// linLists.push(lastAllItem)
+					// lastAllLists = lastAllLists.concat(linLists);
+					// uni.setStorageSync("lastAllLists", lastAllLists)
+					// if (this.dayAllRecordList.lastAllItem != undefined) {
+					// 	this.dayAllRecordList.lastAllItem = this.dayAllRecordList.lastAllItem.concat(linLists);
+					// 	//console.log("对了", this.dayAllRecordList.lastAllItem)
+					// }
 
 					let dayRecord = uni.getStorageSync("dayRecord")
-					let linLists = []
-					let lastAllItem = {
-						idTime: dayRecord.ziDate,
-						dayRecord,
-						explainValue: this.explainValue,
-						explainNote: this.explainNote,
-						explainDateTime: this.explainDateTime,
-						explainIconValue: this.explainIconValue,
-						isOpen: false,
-						soleId: idTime,
-						presentYear: dayRecord.currentYear
-					}
-					linLists.push(lastAllItem)
-					lastAllLists = lastAllLists.concat(linLists);
-					uni.setStorageSync("lastAllLists", lastAllLists)
-					if (this.dayAllRecordList.lastAllItem != undefined) {
-						this.dayAllRecordList.lastAllItem = this.dayAllRecordList.lastAllItem.concat(linLists);
-						console.log("对了", this.dayAllRecordList.lastAllItem)
-					}
+					let rcSj = products.getrc_sj(dayRecord);
+					var str2 = Date.parse(new Date(rcSj));
+					console.log("记录时间", rcSj, str2)
+
+					console.log("新增", this.explainIconValue)
+					allApi.addtrarecord({
+						wechat_id: this.user_info.id,
+						lb_id: this.explainIconValue.id,
+						jl_num: this.explainValue,
+						remarks: this.explainNote,
+						rc_sj: str2
+					}).then(res => {
+						if (res.event == 100) {
+							uni.showToast({
+								title: res.msg,
+								icon: "none",
+								duration: 2000
+							});
+
+							//给day详情页内数据更新添加
+							// let lastAllItem = this.dayAllRecordList.lastAllItem;
+							// lastAllItem.forEach(item => {
+							// 	if (this.deleteRecordItem.id == item.id) {
+							// 		console.log("这一条", item, lastAllItem.indexOf(item))
+							// 		lastAllItem.splice(lastAllItem.indexOf(item), 1)
+							// 	}
+							// })
+							// this.dayAllRecordList.lastAllItem = lastAllItem;
+
+							return this.getListtrarecord(this.currentYear, this.currentMonth, this.currentDate =
+								"");
+							// this.$refs.calendar.shuaLists()
+						} else {
+							uni.showToast({
+								title: res.msg,
+								icon: "none",
+								duration: 2000
+							});
+						}
+					}).then(res=>{
+						var that = this
+						console.log("添加成功",that.dayAllRecordList, that.$refs.calendar
+							.timeList)
+					})
+
 					this.explainShow = false;
-					this.$refs.calendar.shuaLists()
-					console.log("最终添加", lastAllLists)
 
 				} else {
 					//编辑
@@ -734,7 +911,7 @@
 					} else {
 						lastAllLists = [];
 					}
-					console.log("编辑", this.editLinShi, lastAllLists)
+					//console.log("编辑", this.editLinShi, lastAllLists)
 					//更新事件集合内容，并重新存入缓存
 					lastAllLists.forEach(item => {
 						if (this.editLinShi.soleId == item.soleId) {
@@ -748,7 +925,7 @@
 					let lastAllItem = this.dayAllRecordList.lastAllItem;
 					lastAllItem.forEach(item => {
 						if (this.editLinShi.soleId == item.soleId) {
-							console.log("这一条", item)
+							//console.log("这一条", item)
 							item.explainValue = this.explainValue;
 							item.explainNote = this.explainNote;
 						}
@@ -797,7 +974,7 @@
 
 			//点击删除图标，获得值并打开弹窗
 			recordDelete(item) {
-				console.log("删除", item)
+				console.log("item", item)
 				this.deleteRecordItem = item;
 				this.deleteShow = true;
 			},
@@ -805,39 +982,45 @@
 			//点击删除弹窗确认按钮
 			confirmRecord() {
 				console.log("确定", this.deleteRecordItem)
-				let lastAllLists = uni.getStorageSync("lastAllLists");
-				if (lastAllLists != null && lastAllLists != "") {
-					lastAllLists = lastAllLists;
-				} else {
-					lastAllLists = [];
-				}
-				console.log("lastAllLists", lastAllLists)
-				//删除,更新事件集合内容，并重新存入缓存
-				lastAllLists.forEach(item => {
-					if (this.deleteRecordItem.soleId == item.soleId) {
-						console.log("sss", item, lastAllLists.indexOf(item))
-						lastAllLists.splice(lastAllLists.indexOf(item), 1)
-					}
-				})
-				console.log("删除", lastAllLists)
-				uni.setStorageSync("lastAllLists", lastAllLists)
+				allApi.deltrarecord({
+					id: this.deleteRecordItem.id
+				}).then(res => {
+					if (res.event == 100) {
+						console.log("添加成功", res)
+						uni.showToast({
+							title: res.msg,
+							icon: "none",
+							duration: 2000
+						});
 
-				//删除当前日子里面的记录事件数组，用于页面更新渲染
-				let lastAllItem = this.dayAllRecordList.lastAllItem;
-				console.log("this.dayAllRecordList.lastAllItem", this.dayAllRecordList.lastAllItem)
-				lastAllItem.forEach(item => {
-					if (this.deleteRecordItem.soleId == item.soleId) {
-						console.log("这一条", item, lastAllItem.indexOf(item))
-						lastAllItem.splice(lastAllItem.indexOf(item), 1)
+						//删除当前日子里面的记录事件数组，用于页面更新渲染
+						let lastAllItem = this.dayAllRecordList.lastAllItem;
+						//console.log("this.dayAllRecordList.lastAllItem", this.dayAllRecordList.lastAllItem)
+						lastAllItem.forEach(item => {
+							if (this.deleteRecordItem.id == item.id) {
+								console.log("这一条", item, lastAllItem.indexOf(item))
+								lastAllItem.splice(lastAllItem.indexOf(item), 1)
+							}
+						})
+						this.dayAllRecordList.lastAllItem = lastAllItem;
+						// this.$refs.calendar.shuaLists()
+						console.log("ddd", this.currentYear, this.currentMonth)
+						this.getListtrarecord(this.currentYear, this.currentMonth, this.currentDate = "");
+						// this.$forceUpdate()
+					} else {
+						uni.showToast({
+							title: res.msg,
+							icon: "none",
+							duration: 2000
+						});
 					}
 				})
-				this.dayAllRecordList.lastAllItem = lastAllItem;
-				this.$refs.calendar.shuaLists()
+
 			},
 
 			//点击记录中的某一条，获得数据，并打开数据分析弹窗
 			lineItem(value, type) {
-				console.log("底", value, type)
+				//console.log("底", value, type)
 				let lastAllLists = uni.getStorageSync("lastAllLists");
 				if (lastAllLists != null && lastAllLists != "") {
 					lastAllLists = lastAllLists;
@@ -865,7 +1048,7 @@
 				lastAllLists.sort(function(a, b) {
 					return b.presentYear - a.presentYear;
 				})
-				console.log("lastAllLists", item, lastAllLists)
+				//console.log("lastAllLists", item, lastAllLists)
 
 				let peakMinList = [];
 				let sumValue = 0;
@@ -902,18 +1085,18 @@
 						})
 					}
 				}
-				console.log("sumValue", sumValue, avgValue, peakMinList)
+				//console.log("sumValue", sumValue, avgValue, peakMinList)
 				this.analyseList = {
-						countName: "数量",
-						countValue: peakMinList.length,
-						sumName: "总数",
-						sumValue: sumValue,
-						avgName: "平均值",
-						avgValue: avgValue.toFixed(2),
-						peakName: "最高值",
-						peakValue: peakMinList[0],
-						minName: "最低值",
-						minValue: peakMinList[peakMinList.length - 1],
+					countName: "数量",
+					countValue: peakMinList.length,
+					sumName: "总数",
+					sumValue: sumValue,
+					avgName: "平均值",
+					avgValue: avgValue.toFixed(2),
+					peakName: "最高值",
+					peakValue: peakMinList[0],
+					minName: "最低值",
+					minValue: peakMinList[peakMinList.length - 1],
 				}
 
 				//将对象转为数组
@@ -928,23 +1111,23 @@
 				newRes.sort(function(a, b) {
 					return b.yearItem - a.yearItem;
 				})
-				console.log("newRes", newRes)
+				//console.log("newRes", newRes)
 				this.yearLists = newRes
-				console.log("this.yearLists", this.yearLists)
+				//console.log("this.yearLists", this.yearLists)
 
-
-				//渐变色区域图
+				//在h5和app里用这个
+				//#ifdef H5 || APP-PLUS 
 				let linearareadata = {
 					// categories: ["1","2","3","4","5","6","7","8","9","10"],
 					categories: timeJointAll,
 					series: [{
 						data: seriesData,
 						type: 'line',
-						symbolSize: 10
+						symbolSize: 10,
+						smooth: true,
 					}],
 				}
 				let ringOpts = {
-					// 缩放平移组件
 					tooltip: {
 						trigger: 'item'
 					},
@@ -974,6 +1157,42 @@
 						handleSize: 8
 					}],
 				}
+				//#endif
+
+				//在微信小程序里用这个
+				//#ifdef MP-WEIXIN 
+				let linearareadata = {
+					categories: timeJointAll,
+					series: [{
+						name: "月收入",
+						smooth: true,
+						data: seriesData
+					}]
+				}
+
+				let ringOpts = {
+					legend: {
+						show: false,
+					},
+					yAxis: {
+						data: [{
+							min: 0
+						}]
+					},
+					extra: {
+						line: {
+							type: 'curve'
+						}
+					},
+					enableScroll: true,
+					xAxis: {
+						disabled: true,
+						scrollShow: false,
+						itemCount: 5,
+						disableGrid: true
+					}
+				}
+				//#endif
 				this.ringOpts = ringOpts
 				this.chartDataOne = linearareadata;
 				this.$forceUpdate();
@@ -994,7 +1213,7 @@
 			changeTimeModel(value) {
 				let oneTime = this.currentYear + "-" + this.currentMonth;
 				let twoTime = value.year + "-" + value.month;
-				console.log("value", oneTime, twoTime, value)
+				//console.log("value", oneTime, twoTime, value)
 				this.currentYear = value.year
 				this.currentMonth = value.month
 				let currentDate = value.day
@@ -1005,15 +1224,15 @@
 				}
 				this.nowTime = this.currentYear + "-" + this.currentMonth + "-" + this.currentDate
 				this.timeListTime = this.currentMonth + "月" + "-" + this.currentYear;
-				console.log("点击确定", this.timeListTime, this.currentYear, this.currentMonth, this.nowTime)
+				//console.log("点击确定", this.timeListTime, this.currentYear, this.currentMonth, this.nowTime)
 				if (oneTime == twoTime) {
-					console.log("还在这一月")
+					//console.log("还在这一月")
 				}
 			},
 
 			//点击某一天后修改 nowTime2 的值
 			editNowTime(value) {
-				console.log("value", value)
+				//console.log("value", value)
 				this.nowTime = value.ziDate;
 			},
 
@@ -1028,12 +1247,12 @@
 					activityLists = [];
 				}
 				this.setModelIcon = activityLists;
-				console.log("this.setModelIcon", this.setModelIcon)
+				//console.log("this.setModelIcon", this.setModelIcon)
 			},
 
 			//左侧的设置弹窗--点击内容事件（与下面的不同）
 			dianContent(index) {
-				console.log("index", index, this.setModelIcon[index])
+				//console.log("index", index, this.setModelIcon[index])
 				this.lineItem(this.setModelIcon[index], "dianContent")
 				this.settingModel = false;
 			},
@@ -1054,7 +1273,7 @@
 			openSettingIcon(index) {
 				// 先将正在被操作的swipeAction标记为打开状态，否则由于props的特性限制，
 				// 原本为'false'，再次设置为'false'会无效
-				console.log("划开", index, this.setModelIcon)
+				//console.log("划开", index, this.setModelIcon)
 				let lsList = this.setModelIcon
 				lsList[index].show = true;
 				lsList.map((val, idx) => {
@@ -1062,12 +1281,12 @@
 				})
 				this.setModelIcon = lsList;
 			},
-			
+
 			//点击跳转到年历页面
-			yearCalendar(){
-				console.log("跳转")
+			yearCalendar() {
+				//console.log("跳转")
 				uni.navigateTo({
-				    url: '/pages/yearCalendar/yearCalendar'
+					url: '/pages/yearCalendar/yearCalendar'
 				});
 			}
 
@@ -1076,5 +1295,5 @@
 </script>
 
 <style lang="scss" scoped>
-	@import "./index.css";
+	@import "./index.scss";
 </style>

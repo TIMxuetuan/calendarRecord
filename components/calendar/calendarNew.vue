@@ -24,12 +24,12 @@
 							{{items.date}}
 						</view>
 						<view class="lastAll">
-							<view class="lastAll-item" v-for="(last,index) in items.lastAllItem" :key="index">
+							<view class="lastAll-item" v-for="(last,indexs) in items.lastAllItem" :key="indexs">
 								<view class="lastItem-icon">
-									<u-icon :name="last.explainIconValue.icon.name"
-										:color="last.explainIconValue.icon.color" size="30"></u-icon>
+									<u-icon :name="last.tra_icons"
+										:color="last.tra_color" size="30"></u-icon>
 								</view>
-								<view class="lastItem-text">{{last.explainIconValue.value}}</view>
+								<view class="lastItem-text">{{last.jl_num}}</view>
 							</view>
 						</view>
 					</view>
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+	import allApi from '../../utils/api_methods.js'
+	import products from "../../utils/products.js"
 	export default {
 		props: {
 			currentYear2: { // 当前显示的年
@@ -59,6 +61,10 @@
 			signLists: {
 				type: Array,
 				default: []
+			},
+
+			lastAllLists: { //记录的数组
+				type: Array
 			}
 
 		},
@@ -69,7 +75,7 @@
 				current: 0, //初始显示页下标
 				currentYear: "",
 				currentMonth: "",
-				nowTime:"",
+				nowTime: "",
 				currentMonthDateLen: 0, // 当月天数
 				preMonthDateLen: 0, // 当月中，上月多余天数
 				allArr: [], // 当月所有数据
@@ -78,40 +84,48 @@
 				timeList: {}, //当前的临时数据
 				preYearMonth: {},
 				nextYearMonth: {},
-				startData: {}
+				startData: {},
+				lastAllLists2: [], //某月的记录数据
 			};
 		},
 		watch: {
 			currentYear2: {
 				handler(val, oldVal) {
-					console.log("currentYear2 ",val, oldVal);
+					//console.log("currentYear2 ",val, oldVal);
 					this.currentYear = val;
 					// this.editTime()
 				},
-				deep: true 
+				deep: true
 			},
-			currentMonth2: { 
+			currentMonth2: {
 				handler(val, oldVal) {
-					console.log("currentMonth2 ",val, oldVal);
+					//console.log("currentMonth2 ",val, oldVal);
 					this.currentMonth = val;
 					// this.editTime()
 				},
-				deep: true 
+				deep: true
 			},
 			nowTime2: {
 				handler(val, oldVal) {
-					console.log("nowTime ",val, oldVal);
+					//console.log("nowTime ",val, oldVal);
 					this.nowTime = val;
 					this.editTime()
 				},
-				deep: true 
+				deep: true
+			},
+			lastAllLists: {
+				handler(val, oldVal) {
+					this.lastAllLists2 = val;
+					this.editTime()
+				},
+				deep: true
 			}
 		},
 		created() {
 
 		},
 		mounted() {
-			console.log("signLists", this.signLists)
+			//console.log("signLists", this.signLists)
 			this.currentYear = this.currentYear2
 			this.currentMonth = this.currentMonth2
 			this.nowTime = this.nowTime2;
@@ -119,16 +133,17 @@
 
 		},
 		methods: {
-			
+			...products,
+
 			//修改日期--当通过日历弹窗选择时间时，触发这个事件
-			editTime(){
+			editTime() {
 				this.getAllArr(this.currentYear, this.currentMonth);
 				let items = this.nowTime
-				console.log("修改时间",this.timeList,items)
+				//console.log("修改时间",this.timeList,items)
 				let allLists = this.timeList;
 				for (let item of allLists.allArr) {
 					if (item.ziDate == items) {
-						console.log("这一条",item)
+						//console.log("这一条",item)
 						item.isOpen = true
 						uni.setStorageSync("dayRecord", item)
 					} else {
@@ -138,13 +153,13 @@
 				this.timeList = allLists;
 				this.$forceUpdate()
 			},
-			
+
 
 			//点击日期获得数据
 			daysAdd(items) {
 				console.log("items", items)
 				if (items.isOpen) {
-					console.log("已经选择了")
+					//console.log("已经选择了")
 					this.$emit("openDayAllRecord", items)
 				} else {
 					let allLists = this.timeList;
@@ -153,7 +168,7 @@
 						if (item.ziDate == items.ziDate) {
 							item.isOpen = true
 							uni.setStorageSync("dayRecord", items)
-							this.$emit("editNowTime",items)
+							this.$emit("editNowTime", items)
 						} else {
 							item.isOpen = false;
 						}
@@ -172,20 +187,20 @@
 
 			//监听滑动结束
 			end(e) {
-				// console.log(e)
+				// //console.log(e)
 				const subX = e.changedTouches[0].clientX - this.startData.clientX;
 				const subY = e.changedTouches[0].clientY - this.startData.clientY;
 				if (subY > 50 || subY < -50) {
-					// console.log('上下滑')
+					// //console.log('上下滑')
 				} else {
 					if (subX > 50) {
-						console.log('右滑看上一个月')
+						//console.log('右滑看上一个月')
 						this.gotoPreMonth()
 					} else if (subX < -50) {
-						console.log('左滑看下一个月')
+						//console.log('左滑看下一个月')
 						this.gotoNextMonth()
 					} else {
-						// console.log('无效')
+						// //console.log('无效')
 					}
 				}
 			},
@@ -244,7 +259,8 @@
 							currentYear: currentYear,
 							currentMonth: currentMonth,
 							date: newi,
-							ziDate: currentYear + "-" + currentMonth + "-" + newi,
+							ziDate: currentYear + "-" + (currentMonth < 10 ? "0" + currentMonth : currentMonth) +
+								"-" + newi,
 
 						})
 					}
@@ -268,7 +284,7 @@
 							currentYear: year,
 							currentMonth: month,
 							date: date,
-							ziDate: year + "-" + month + "-" + date,
+							ziDate: year + "-" + (month < 10 ? "0" + month : month) + "-" + date,
 						})
 						date--
 					}
@@ -296,7 +312,7 @@
 							currentYear: year,
 							currentMonth: month,
 							date: newi,
-							ziDate: year + "-" + month + "-" + newi,
+							ziDate: year + "-" + (month < 10 ? "0" + month : month) + "-" + newi,
 						})
 					}
 				}
@@ -344,14 +360,15 @@
 					allArr: this.isTimeAll(allArr)
 				}
 				this.timeList = sendObj;
-				console.log("newAllArr", newAllArr)
-				console.log("当前月份", newi, currentMonth, this.timeList)
+				//console.log("newAllArr", newAllArr)
+				console.log("当前月份this.timeList",this.timeList)
 			},
 
 			//获取本地数据，与当月数据进行对比，如果有记录则将缓存数据添加整合
 			isTimeAll(allArr) {
-				console.log("all", allArr)
-				let lastAllLists = uni.getStorageSync('lastAllLists');
+				// let lastAllLists = uni.getStorageSync('lastAllLists');
+				let lastAllLists = this.lastAllLists2;
+				// console.log("all", allArr, this.lastAllLists)
 				if (lastAllLists != null && lastAllLists != "") {
 					lastAllLists = lastAllLists;
 				} else {
@@ -362,20 +379,20 @@
 					for (var i = 0; i < lastAllLists.length; i++) {
 						for (var j = 0; j < allArr.length; j++) {
 							let lastAllItem = []
-							if (lastAllLists[i].idTime == allArr[j].ziDate) {
+							if (products.cutOutTime(lastAllLists[i].rc_sj) == allArr[j].ziDate) {
 								lastAllItem.push(lastAllLists[i])
 								allArr[j].lastAllItem = allArr[j].lastAllItem.concat(lastAllItem)
 							}
 						}
 					}
 				}
-				console.log("lastAllLists", allArr)
+				// console.log("lastAllLists", allArr)
 				return allArr
 
 			},
 
 			shuaLists() {
-				console.log("执行了", this.currentYear, this.currentMonth, this.timeList)
+				//console.log("执行了", this.currentYear, this.currentMonth, this.timeList)
 				this.getAllArr(this.currentYear, this.currentMonth)
 			},
 
@@ -407,7 +424,7 @@
 
 			//滑动事件
 			swiperChange(event) {
-				console.log("swiper", event.detail)
+				//console.log("swiper", event.detail)
 			},
 		}
 	}

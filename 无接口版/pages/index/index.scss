@@ -3,6 +3,36 @@ page {
 	height: 100%;
 }
 
+/*授权登录弹窗*/
+.hintLogin{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+}
+
+.hintLogin-title{
+	font-size: 32rpx;
+	color: #000;
+	margin-top: 20%;
+	font-weight: bold;
+	box-sizing: border-box;
+}
+
+button.all {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9;
+	background-color: transparent;
+	&::after {
+		border: none;
+	}
+}
+
 .allContent {
 	display: flex;
 	width: 100vw;
@@ -148,12 +178,8 @@ page {
 .rightText-input {
 	width: 100%;
 	height: 100%;
-
-	/deep/ .uni-textarea-textarea {
-		font-size: 40rpx;
-		color: red;
-	}
 }
+
 
 
 /*icon集合弹窗*/
@@ -195,10 +221,9 @@ page {
 .scroll-Y {
 	width: 100%;
 	height: 100%;
-
 }
 
-.iconCentent /deep/ .uni-scroll-view-content {
+.iconCentent /deep/ .uni-scroll-view-content { 
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -265,12 +290,13 @@ page {
 .explainBody-input {
 	width: 100%;
 	height: 100%;
-
+	
 	/deep/ .uni-textarea-textarea {
 		font-size: 40rpx;
 		color: red;
 	}
 }
+
 
 .explain-time {
 	margin-top: 50rpx;
@@ -299,8 +325,10 @@ page {
 	padding: 0 0 30rpx 0;
 }
 
-.allRecord /deep/ .u-mode-center-box {
-	background-color: #E4E4E4;
+.allRecord{
+	/deep/ .u-mode-center-box {
+		background-color: #E4E4E4;
+	}
 }
 
 .allRecord-head {
@@ -412,6 +440,7 @@ page {
 	padding: 0 0 30rpx 0;
 	/* height: 100%; */
 	box-sizing: border-box;
+	background-color: #E4E4E4;
 }
 
 .echartsModel-top {
@@ -436,13 +465,17 @@ page {
 	margin-left: 30rpx;
 }
 
-.echarts-line {
-	width: 100%;
-	display: flex;
+.echartsLine-one {
+	// display: flex;
 	background-color: #fff;
+	padding: 0 20rpx;
 }
 
-.charts-box {
+.lineAndText{
+	// overflow-y: scroll;
+}
+
+.lineOne {
 	width: 100%;
 	height: 400px;
 }
@@ -457,37 +490,37 @@ page {
 	padding: 0 20rpx;
 }
 
-.echartsStatistics{
+.echartsStatistics {
 	width: 100%;
 	background-color: #fff;
 	border-radius: 10rpx;
 	padding: 30rpx 20rpx;
 }
 
-.ecStatistics-start{
+.ecStatistics-start {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	font-size: 30rpx;
 }
 
-.dataStart{
+.dataStart {
 	color: #000;
 	font-weight: bold;
 }
 
-.dataStart-right{
+.dataStart-right {
 	color: #2196F3;
 }
 
-.ecStatistics-analyse{
+.ecStatistics-analyse {
 	padding: 0 20rpx;
 	margin-top: 40rpx;
 	display: flex;
 	flex-wrap: wrap;
 }
 
-.analyse-item{
+.analyse-item {
 	width: 25%;
 	display: flex;
 	flex-direction: column;
@@ -496,12 +529,12 @@ page {
 	margin-bottom: 20rpx;
 }
 
-.analyseItem-title{
+.analyseItem-title {
 	color: #000;
 	font-weight: bold;
 }
 
-.analyseItem-value{
+.analyseItem-value {
 	color: #2196F3;
 	margin-top: 10rpx;
 }
@@ -574,7 +607,15 @@ page {
 	padding: 40rpx;
 }
 
-.settingModel-icon {}
+.settingModel-icon {
+	width: 100%;
+	height: 100%;
+}
+
+.settingIcon{
+	width: 100%;
+	height: 100%;
+}
 
 .settingIcon-item {
 	display: flex;
