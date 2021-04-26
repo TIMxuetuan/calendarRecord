@@ -99,6 +99,15 @@ function deltrarecord (data){ // 小程序记录信息删除接口
 	})
 }
 
+function tjttrarecord (data){ // 小程序记录信息单类别统计信息接口
+	return request({
+		url:'/tjttrarecord',
+		method:'POST',
+		type:true,
+		data
+	})
+}
+
 
 export default {
 	userlogin,
@@ -106,11 +115,12 @@ export default {
 	number,
 	addtralb,
 	listtralb,
-	edittralb, //暂时没对
-	deltralb, //暂时没对
+	edittralb,
+	deltralb, 
 	addtrarecord,
 	listtrarecord,
-	edittrarecord, //暂时没对
+	edittrarecord, 
 	deltrarecord,
+	tjttrarecord,
 	
 }

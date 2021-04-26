@@ -70,16 +70,14 @@
 	height: calc(100% - 50px);
 	background-color: #333333;
 	color: #AAAAAA;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .yearModel-title.data-v-ee59c834{
 	text-align: center;
 	font-size: 40rpx;
 	font-weight: bold;
 	margin: 50rpx 0 20rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .yearModel-list.data-v-ee59c834{
 	width: 100%;
@@ -113,12 +111,10 @@
 .body-item.data-v-ee59c834{
 	width: 20rpx;
 	height: 20rpx;
-	-webkit-border-radius: 5rpx;
-	        border-radius: 5rpx;
+	border-radius: 5rpx;
 	background-color: #747474;
 	margin: 10rpx 10rpx 0 0;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	visibility: hidden;
 }
 .body-item.data-v-ee59c834:nth-child(7n){

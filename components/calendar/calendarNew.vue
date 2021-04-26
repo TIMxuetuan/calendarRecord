@@ -7,27 +7,27 @@
 				<view class='next leftRight' @click='gotoNextMonth'>》</view>
 			</view> -->
 			<view class='content'>
-				<view>日</view>
 				<view>一</view>
 				<view>二</view>
 				<view>三</view>
 				<view>四</view>
 				<view>五</view>
 				<view>六</view>
+				<view>日</view>
 			</view>
 			<view style="height:100%" @touchstart="start" @touchend="end">
 				<view class='daysItem'>
 					<view @click="daysAdd(items)" v-for="(items,index) in timeList.allArr" :key="index"
 						class="daysItem-li"
 						:class="items.month != 'current' ? 'noCurrent' : (items.isOpen == true ? 'nowZiDate' :'') ">
-						<view class="item-date" :class="items.isOpen == true ? 'nowZiDate-text' :''">
+						<view class="item-date" :class="items.ziDate == nowTimeNew ? 'nowZiDate-text' :''">
 							{{items.date}}
 						</view>
 						<view class="lastAll">
 							<view class="lastAll-item" v-for="(last,indexs) in items.lastAllItem" :key="indexs">
 								<view class="lastItem-icon">
 									<u-icon :name="last.tra_icons"
-										:color="last.tra_color" size="30"></u-icon>
+										:color="last.tra_color" size="20"></u-icon>
 								</view>
 								<view class="lastItem-text">{{last.jl_num}}</view>
 							</view>
@@ -70,6 +70,7 @@
 		},
 		data() {
 			return {
+				nowTimeNew:"",
 				swiperHeight: "",
 				swiperDuration: 100, // 值为0禁止切换动画
 				current: 0, //初始显示页下标
@@ -130,7 +131,9 @@
 			this.currentMonth = this.currentMonth2
 			this.nowTime = this.nowTime2;
 			this.getAllArr(this.currentYear, this.currentMonth);
-
+			let nowTime = uni.getStorageSync("nowTime");
+			this.nowTimeNew = nowTime;
+			
 		},
 		methods: {
 			...products,
@@ -139,7 +142,7 @@
 			editTime() {
 				this.getAllArr(this.currentYear, this.currentMonth);
 				let items = this.nowTime
-				//console.log("修改时间",this.timeList,items)
+				console.log("修改时间",this.timeList,items)
 				let allLists = this.timeList;
 				for (let item of allLists.allArr) {
 					if (item.ziDate == items) {
@@ -270,7 +273,7 @@
 			},
 			// 获取当月中，上月多余数据，返回数组
 			getPreArr(currentYear, currentMonth) {
-				let preMonthDateLen = this.getFirstDateWeek(currentYear, currentMonth) // 当月1号是周几 == 上月残余天数）
+				let preMonthDateLen = this.getFirstDateWeek(currentYear, currentMonth) - 1 // 当月1号是周几 == 上月残余天数）
 				let preMonthDateArr = [] // 定义空数组
 				if (preMonthDateLen > 0) {
 					let {
@@ -486,11 +489,11 @@
 			font-size: 26rpx;
 			color: #333333;
 			border-bottom: 2rpx solid #F5F5F5;
-			font-weight: bold;
+			// font-weight: bold;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-start;
-			padding: 10rpx 0 0 10rpx;
+			padding: 10rpx 0 0 0;
 			box-sizing: border-box;
 			overflow: hidden;
 		}
@@ -538,26 +541,32 @@
 
 	.lastAll-item {
 		width: 100%;
+		// line-height: 1;
 		display: flex;
 		align-items: center;
 	}
 
 	.lastItem-icon {
-		display: inline-block;
-		width: 30rpx !important;
-		height: 30rpx;
+		display: flex;
+		align-items: center;
+		width: 20rpx !important;
+		height: 20rpx;
 		box-sizing: border-box;
+		
 	}
 
 	.lastItem-text {
+		font-size: 24rpx;
+		 // transform:scale(0.5);
 		flex: 1;
 		width: 100%;
-		margin-left: 4rpx;
+		margin-left: 2rpx;
 		overflow: hidden;
 		/*超出部分隐藏*/
 		white-space: nowrap;
 		/*不换行*/
-		text-overflow: ellipsis;
+		// text-overflow: ellipsis;
+		text-overflow: clip;
 		/*超出部分文字以...显示*/
 	}
 </style>

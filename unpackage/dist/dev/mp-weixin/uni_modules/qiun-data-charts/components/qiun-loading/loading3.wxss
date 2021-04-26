@@ -9,27 +9,22 @@
           animation: rotation 1s infinite;
 }
 .container.loading3 .shape1.data-v-e4af0bea {
-  -webkit-border-top-left-radius: 10px;
-          border-top-left-radius: 10px;
+  border-top-left-radius: 10px;
 }
 .container.loading3 .shape2.data-v-e4af0bea {
-  -webkit-border-top-right-radius: 10px;
-          border-top-right-radius: 10px;
+  border-top-right-radius: 10px;
 }
 .container.loading3 .shape3.data-v-e4af0bea {
-  -webkit-border-bottom-left-radius: 10px;
-          border-bottom-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .container.loading3 .shape4.data-v-e4af0bea {
-  -webkit-border-bottom-right-radius: 10px;
-          border-bottom-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .container .shape.data-v-e4af0bea {
   position: absolute;
   width: 10px;
   height: 10px;
-  -webkit-border-radius: 1px;
-          border-radius: 1px;
+  border-radius: 1px;
 }
 .container .shape.shape1.data-v-e4af0bea {
   left: 0;

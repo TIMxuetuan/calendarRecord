@@ -55,11 +55,24 @@ button.all {
 /*右下角添加图表*/
 .rightAdd {
 	position: fixed;
+	right: 120rpx;
+	bottom: 30rpx;
+	width: 60rpx;
+	height: 60rpx;
+	background-color: #CDDC39;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.rightLists{
+	position: fixed;
 	right: 30rpx;
 	bottom: 30rpx;
-	width: 100rpx;
-	height: 100rpx;
-	background-color: #CDDC39;
+	width: 60rpx;
+	height: 60rpx;
+	background-color: #2196F3;
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
@@ -218,6 +231,13 @@ button.all {
 	flex-wrap: wrap;
 }
 
+.scroll-Y-tu{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
 .scroll-Y {
 	width: 100%;
 	height: 100%;
@@ -309,6 +329,7 @@ button.all {
 .explainTime-year {
 	color: #2196F3;
 	margin-left: 10rpx;
+	flex: 1;
 }
 
 .explain-affirm {
@@ -322,7 +343,8 @@ button.all {
 /*某一天所有记录弹窗*/
 
 .allRecord-body {
-	padding: 0 0 30rpx 0;
+	// padding: 0 0 30rpx 0;
+	padding: 0 0 100rpx 0;
 }
 
 .allRecord{
@@ -342,7 +364,7 @@ button.all {
 }
 
 .allRecord-text {
-	margin-left: 50rpx;
+	// margin-left: 50rpx;
 	color: #fff;
 	font-size: 40rpx;
 	font-weight: 500;
@@ -438,8 +460,8 @@ button.all {
 }
 
 .echartsModel-body {
-	padding: 0 0 30rpx 0;
-	/* height: 100%; */
+	padding: 0 0 100rpx 0;
+	height: 100%; 
 	box-sizing: border-box;
 	background-color: #E4E4E4;
 }
@@ -455,7 +477,7 @@ button.all {
 }
 
 .echartsModel-head {
-	margin-left: 80rpx;
+	// margin-left: 80rpx;
 }
 
 
@@ -473,6 +495,8 @@ button.all {
 }
 
 .lineAndText{
+	width: 100%;
+	height: calc(100% - 50px);
 	// overflow-y: scroll;
 }
 
@@ -506,7 +530,7 @@ button.all {
 }
 
 .dataStart {
-	color: #000;
+	color: #2196F3;
 	font-weight: bold;
 }
 
@@ -522,7 +546,8 @@ button.all {
 }
 
 .analyse-item {
-	width: 25%;
+	// width: 25%;
+	width: 20%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -592,6 +617,7 @@ button.all {
 
 .noData {
 	width: 100%;
+	height: 100%;
 }
 
 .noData-img {
@@ -603,8 +629,72 @@ button.all {
 	transform: translate(-50%, -50%);
 }
 
+
+/*时间段选择弹窗样式*/
+.timeSelect{
+	padding: 0 40rpx;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+
+.timeSelect-title{
+	color: #000000;
+	font-size: 40rpx;
+	font-weight: bold;
+	margin: 20rpx 0;
+}
+
+.timeSelect-time{
+	
+	
+	/deep/ .u-radio{
+		margin-bottom: 20rpx;
+	}
+	
+	/deep/ .u-radio__label{
+		width: 100%;
+		margin-left: 20rpx;
+	}
+	
+	.timeQuantum{
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.timeColor{
+	color: #2196F3;
+	font-weight: bold;
+}
+
+.disabledColor{
+	color: #727272;
+	font-weight: bold;
+}
+
+.affirmBtn{
+	font-size: 40rpx;
+	text-align: right;
+	color: #2196F3;
+	margin-top:20rpx;
+	padding-bottom: 40rpx;
+}
+
+
+
+
+
+
+
+
 /*左侧设置弹窗样式*/
 .settingModel {
+	width: 100%;
+	height: 100%;
 	padding: 40rpx;
 }
 

@@ -101,8 +101,7 @@ page.data-v-57280228 {
   color: #000;
   margin-top: 20%;
   font-weight: bold;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 button.all.data-v-57280228 {
   position: fixed;
@@ -131,8 +130,7 @@ button.all.data-v-57280228::after {
 .left-jian.data-v-57280228 {
   width: 100%;
   z-index: 1000;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 .calendarModel.data-v-57280228 {
   width: 100%;
@@ -141,13 +139,30 @@ button.all.data-v-57280228::after {
 /*右下角添加图表*/
 .rightAdd.data-v-57280228 {
   position: fixed;
+  right: 120rpx;
+  bottom: 30rpx;
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #CDDC39;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.rightLists.data-v-57280228 {
+  position: fixed;
   right: 30rpx;
   bottom: 30rpx;
-  width: 100rpx;
-  height: 100rpx;
-  background-color: #CDDC39;
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #2196F3;
+  border-radius: 50%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -176,16 +191,14 @@ button.all.data-v-57280228::after {
 .activity-head-text.data-v-57280228 {
   font-size: 32rpx;
   margin-left: 60rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   color: #727272;
 }
 .activityMore.data-v-57280228 {
   width: 100%;
   height: calc(100% - 90rpx);
   overflow-y: scroll;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   margin-top: 30rpx;
 }
 .more-item.data-v-57280228 {
@@ -324,14 +337,22 @@ button.all.data-v-57280228::after {
 .iconTop-color.data-v-57280228 {
   width: 120rpx;
   height: 120rpx;
-  -webkit-border-radius: 4rpx;
-          border-radius: 4rpx;
+  border-radius: 4rpx;
   margin-left: 30rpx;
 }
 .iconCentent.data-v-57280228 {
   width: 100%;
   height: 75%;
   margin-top: 30rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+.scroll-Y-tu.data-v-57280228 {
+  width: 100%;
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -438,6 +459,9 @@ button.all.data-v-57280228::after {
 .explainTime-year.data-v-57280228 {
   color: #2196F3;
   margin-left: 10rpx;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
 }
 .explain-affirm.data-v-57280228 {
   font-size: 36rpx;
@@ -448,7 +472,7 @@ button.all.data-v-57280228::after {
 }
 /*某一天所有记录弹窗*/
 .allRecord-body.data-v-57280228 {
-  padding: 0 0 30rpx 0;
+  padding: 0 0 100rpx 0;
 }
 .allRecord.data-v-57280228 .u-mode-center-box {
   background-color: #E4E4E4;
@@ -469,7 +493,6 @@ button.all.data-v-57280228::after {
   padding: 0 50rpx;
 }
 .allRecord-text.data-v-57280228 {
-  margin-left: 50rpx;
   color: #fff;
   font-size: 40rpx;
   font-weight: 500;
@@ -504,8 +527,7 @@ button.all.data-v-57280228::after {
   padding: 20rpx 20rpx;
   background-color: #fff;
   margin-bottom: 20rpx;
-  -webkit-border-radius: 10rpx;
-          border-radius: 10rpx;
+  border-radius: 10rpx;
 }
 .recordTop-head.data-v-57280228 {
   display: -webkit-box;
@@ -578,10 +600,9 @@ button.all.data-v-57280228::after {
   background-color: #E4E4E4;
 }
 .echartsModel-body.data-v-57280228 {
-  padding: 0 0 30rpx 0;
-  /* height: 100%; */
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  padding: 0 0 100rpx 0;
+  height: 100%;
+  box-sizing: border-box;
   background-color: #E4E4E4;
 }
 .echartsModel-top.data-v-57280228 {
@@ -597,11 +618,7 @@ button.all.data-v-57280228::after {
   -webkit-align-items: center;
           align-items: center;
   padding: 0 50rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-.echartsModel-head.data-v-57280228 {
-  margin-left: 80rpx;
+  box-sizing: border-box;
 }
 .echartsModel-text.data-v-57280228 {
   color: #fff;
@@ -610,6 +627,10 @@ button.all.data-v-57280228::after {
 .echartsLine-one.data-v-57280228 {
   background-color: #fff;
   padding: 0 20rpx;
+}
+.lineAndText.data-v-57280228 {
+  width: 100%;
+  height: calc(100% - 50px);
 }
 .lineOne.data-v-57280228 {
   width: 100%;
@@ -626,8 +647,7 @@ button.all.data-v-57280228::after {
 .echartsStatistics.data-v-57280228 {
   width: 100%;
   background-color: #fff;
-  -webkit-border-radius: 10rpx;
-          border-radius: 10rpx;
+  border-radius: 10rpx;
   padding: 30rpx 20rpx;
 }
 .ecStatistics-start.data-v-57280228 {
@@ -643,7 +663,7 @@ button.all.data-v-57280228::after {
   font-size: 30rpx;
 }
 .dataStart.data-v-57280228 {
-  color: #000;
+  color: #2196F3;
   font-weight: bold;
 }
 .dataStart-right.data-v-57280228 {
@@ -659,7 +679,7 @@ button.all.data-v-57280228::after {
           flex-wrap: wrap;
 }
 .analyse-item.data-v-57280228 {
-  width: 25%;
+  width: 20%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -684,8 +704,7 @@ button.all.data-v-57280228::after {
 .echartsBottom.data-v-57280228 {
   width: 100%;
   background-color: #fff;
-  -webkit-border-radius: 10rpx;
-          border-radius: 10rpx;
+  border-radius: 10rpx;
   padding: 0 20rpx 30rpx 20rpx;
 }
 .ecbottomItem.data-v-57280228 {
@@ -732,6 +751,7 @@ button.all.data-v-57280228::after {
 }
 .noData.data-v-57280228 {
   width: 100%;
+  height: 100%;
 }
 .noData-img.data-v-57280228 {
   width: 400rpx;
@@ -742,8 +762,57 @@ button.all.data-v-57280228::after {
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
 }
+/*时间段选择弹窗样式*/
+.timeSelect.data-v-57280228 {
+  padding: 0 40rpx;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.timeSelect-title.data-v-57280228 {
+  color: #000000;
+  font-size: 40rpx;
+  font-weight: bold;
+  margin: 20rpx 0;
+}
+.timeSelect-time.data-v-57280228 .u-radio {
+  margin-bottom: 20rpx;
+}
+.timeSelect-time.data-v-57280228 .u-radio__label {
+  width: 100%;
+  margin-left: 20rpx;
+}
+.timeSelect-time .timeQuantum.data-v-57280228 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.timeColor.data-v-57280228 {
+  color: #2196F3;
+  font-weight: bold;
+}
+.disabledColor.data-v-57280228 {
+  color: #727272;
+  font-weight: bold;
+}
+.affirmBtn.data-v-57280228 {
+  font-size: 40rpx;
+  text-align: right;
+  color: #2196F3;
+  margin-top: 20rpx;
+  padding-bottom: 40rpx;
+}
 /*左侧设置弹窗样式*/
 .settingModel.data-v-57280228 {
+  width: 100%;
+  height: 100%;
   padding: 40rpx;
 }
 .settingModel-icon.data-v-57280228 {

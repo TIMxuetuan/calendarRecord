@@ -8,7 +8,7 @@
 							<u-icon @click="goBack" name="arrow-left" color="#ffffff" size="44"></u-icon>
 						</view>
 						<view class="timeValue">
-							记录详情
+							{{echartsNowItem.bt}}  年历
 						</view>
 					</view>
 					<!-- <view class="rightIcon">
@@ -49,7 +49,8 @@
 				yearLists: [], //一年所有的天数数据
 				newLastAllLists: [], //这个记录的数据值--新的，将同一事件循环进一个数组里
 				explainIconValue: {}, //当前查看的记录事件
-				year:"2021"
+				year:"",
+				echartsNowItem:"",
 			};
 		},
 		onLoad() {
@@ -58,6 +59,8 @@
 			this.year = currentYear;
 			this.disposeLastAllLists(); //从lastAllLists中，将同一事件的数据记录循环遍历出，放在一起
 			this.getYearMonth(); //获得一年12个月的数据
+			this.echartsNowItem = uni.getStorageSync("echartsNowItem");
+			console.log("this.echartsNowItem",this.echartsNowItem)
 		},
 		methods: {
 			...products,
@@ -93,16 +96,10 @@
 
 			//从lastAllLists中，将同一事件的数据记录循环遍历出，放在一起
 			disposeLastAllLists() {
-				let explainIconValue = uni.getStorageSync("explainIconValue");
-				let getLoca = uni.getStorageSync("lastAllLists");
-				let newLastAllLists = [];
-				getLoca.forEach(item => {
-					if (explainIconValue.iconSoleId == item.explainIconValue.iconSoleId) {
-						newLastAllLists.push(item);
-					}
-				})
-				this.newLastAllLists = newLastAllLists;
-				// console.log("this.newLastAllLists", this.newLastAllLists)
+				// let explainIconValue = uni.getStorageSync("explainIconValue");
+				
+				this.newLastAllLists = uni.getStorageSync("lastAllLists");
+				console.log("this.newLastAllLists", this.newLastAllLists)
 			},
 
 			//返回上一页
@@ -134,7 +131,7 @@
 					yearLists.push(this.timeList);
 				})
 				this.yearLists = yearLists;
-				// console.log("一年的十二月数据", yearLists)
+				console.log("一年的十二月数据", yearLists)
 			},
 
 
@@ -220,7 +217,7 @@
 							var newi = i
 						}
 
-						var conformity = currentYear + "-" + currentMonth + "-" + newi;
+						var conformity = currentYear + "-" + (currentMonth < 10 ? "0" + currentMonth : currentMonth) + "-" + newi;
 
 						currentMonthDateArr.push({
 							month: 'current', // 只是为了增加标识，区分上下月
@@ -238,7 +235,6 @@
 			// 获取当月中，上月多余数据，返回数组
 			getPreArr(currentYear, currentMonth) {
 				let preMonthDateLen = this.getFirstDateWeek(currentYear, currentMonth) - 1 // 当月1号是周几 == 上月残余天数）
-				console.log("周几",preMonthDateLen)
 				let preMonthDateArr = [] // 定义空数组
 				if (preMonthDateLen > 0) {
 					let {

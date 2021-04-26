@@ -1,6 +1,5 @@
 <template>
 	<view class="allContent">
-		<button v-if="!isGet" class="all" @click="getUserInfo"></button>
 		<!--头部导航栏-->
 		<view class="left-jian">
 			<headNav :timeListTime="timeListTime" @openSetModel="openSetModel" @openCalendarModel="openCalendarModel">
@@ -33,9 +32,9 @@
 					<view class="more-item" v-for="(item,index) in activityLists" :key="index"
 						@click="addDayRecord(item)">
 						<view class="more-item-icon">
-							<u-icon :name="item.tra_icons" :color="item.tra_color" size="50"></u-icon>
+							<u-icon :name="item.icon.name" :color="item.icon.color" size="50"></u-icon>
 						</view>
-						<view class="activity-head-text">{{item.bt}}</view>
+						<view class="activity-head-text">{{item.value}}</view>
 					</view>
 				</view>
 			</view>
@@ -72,10 +71,10 @@
 			<view class="explain-centent">
 				<view class="explain-head">
 					<view class="explainHead-icon">
-						<u-icon v-if="explainIconValue" :name="explainIconValue.tra_icons"
-							:color="explainIconValue.tra_color" size="80"></u-icon>
+						<u-icon v-if="explainIconValue" :name="explainIconValue.icon.name"
+							:color="explainIconValue.icon.color" size="80"></u-icon>
 					</view>
-					<view class="explainHead-text">{{explainIconValue.bt}}</view>
+					<view class="explainHead-text">{{explainIconValue.value}}</view>
 				</view>
 				<view class="explain-body">
 					<view class="explainBody-item">
@@ -408,7 +407,6 @@
 </template>
 
 <script>
-	import allApi from '../../utils/api_methods.js'
 	import headNav from '../../components/headNav/index.vue'; //头部导航组件
 	import calendar from '../../components/calendar/calendarNew.vue'; //日历组件--自己写的
 	// import calendar from '../../components/lx-calendar/lx-calendar.vue'; //日历组件--=可以使用，但是没有注释，很不好理解
@@ -516,50 +514,6 @@
 		},
 		methods: {
 			...products,
-			//储微信用户信息
-			getUserInfo() {
-				uni.getUserProfile({
-					desc: '用于完善资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-					success: (res) => {
-						console.log("新的", res)
-						let resProfile = res;
-						if (res.errMsg === "getUserProfile:ok") {
-							let userInfo = res.userInfo;
-							allApi.userxx({
-								"info[wechat_id]":this.user_info.id,
-								"info[nickName]":userInfo.nickName,
-								"info[avatarUrl]":userInfo.avatarUrl,
-								"info[gender]":userInfo.gender,
-								"info[city]":userInfo.city,
-								"info[province]":userInfo.province,
-								"info[country]":userInfo.country,
-							}).then(res => {
-								if (res.event == 100) {
-									console.log("储存成功", res)
-									this.isGet = true
-									uni.setStorageSync("isGet",this.isGet);
-									this.getPhone(resProfile)
-								}
-							})
-						}
-					}
-				})
-			
-			},
-			
-			//获取手机号，将encryptedData，iv等传给后台
-			getPhone(resProfile){
-				console.log("手机号",resProfile)
-				allApi.number({
-					encryptedData:resProfile.encryptedData,
-					iv:resProfile.iv,
-					wechat_id:this.user_info.id
-				}).then(res => {
-					if (res.event == 100) {
-						console.log("获取手机号", res)
-					}
-				})
-			},
 
 			//为图标数组深拷贝出来一份
 			shencopy(obj) {
@@ -609,25 +563,17 @@
 			//点击右下角，打开事件弹窗
 			openRightModel() {
 				this.activityShow = true;
-				// let activityLists = [];
-				// let getLoca = uni.getStorageSync("activityLists");
-				// console.log("getLoca", getLoca)
+				let activityLists = [];
+				let getLoca = uni.getStorageSync("activityLists");
+				console.log("getLoca", getLoca)
 				
-				// if (getLoca != null && getLoca != "") {
-				// 	activityLists = getLoca;
-				// } else {
-				// 	activityLists = [];
-				// }
+				if (getLoca != null && getLoca != "") {
+					activityLists = getLoca;
+				} else {
+					activityLists = [];
+				}
 				
-				allApi.listtralb({
-					wechat_id:this.user_info.id,
-				}).then(res => {
-					if (res.event == 100) {
-						console.log("获取类别列表", res)
-						this.activityLists = res.list;
-					}
-				})
-				
+				this.activityLists = activityLists
 			},
 
 			//打开添加事件弹窗--并给icon
@@ -653,35 +599,26 @@
 					return
 				}
 				console.log("this.newActivityItem,",this.newActivityItem)
-				allApi.addtralb({
-					wechat_id:this.user_info.id,
-					tra_icons:this.newActivityItem.name,
-					tra_color:this.newActivityItem.color,
-					bt:this.rightInput,
-				}).then(res => {
-					if (res.event == 100) {
-						console.log("添加成功", res)
-					}
-				})
+				
+				
+				let linLists = [];
+				let timestamp = (new Date()).getTime();
+				let iconSoleId = timestamp + products.randomNum();
+				let activityLists = [];
+				let activityItem = {
+					icon: this.newActivityItem,
+					value: this.rightInput,
+					iconSoleId: iconSoleId,
+					show: false
+				}
+				activityLists.push(activityItem);
+				linLists = this.activityLists.concat(activityLists);
+				uni.setStorageSync("activityLists", linLists);
+				this.$nextTick(() => {
+					this.activityLists = linLists;
+				});
+				
 				this.addActivityClose();
-				
-				// let linLists = [];
-				// let timestamp = (new Date()).getTime();
-				// let iconSoleId = timestamp + products.randomNum();
-				// let activityLists = [];
-				// let activityItem = {
-				// 	icon: this.newActivityItem,
-				// 	value: this.rightInput,
-				// 	iconSoleId: iconSoleId,
-				// 	show: false
-				// }
-				// activityLists.push(activityItem);
-				// linLists = this.activityLists.concat(activityLists);
-				// uni.setStorageSync("activityLists", linLists);
-				// this.$nextTick(() => {
-				// 	this.activityLists = linLists;
-				// });
-				
 				
 			},
 
@@ -1023,6 +960,7 @@
 				}
 
 				//将对象转为数组
+				console.log("zzz",res)
 				let newRes = []
 				for (let items in res) {
 					let newItem = {
@@ -1034,7 +972,7 @@
 				newRes.sort(function(a, b) {
 					return b.yearItem - a.yearItem;
 				})
-				//console.log("newRes", newRes)
+				console.log("newRes", newRes)
 				this.yearLists = newRes
 				//console.log("this.yearLists", this.yearLists)
 

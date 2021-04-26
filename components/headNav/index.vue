@@ -3,16 +3,16 @@
 		<u-navbar height="50" :is-back="false" :border-bottom="false" is-fixed :background="background">
 			<view class="container-title">
 				<view class="leftIcon">
-					<view>
+					<!-- <view>
 						<u-icon @click="openSetModel" name="list" color="#ffffff" size="36"></u-icon>
-					</view>
-					<view class="timeValue">
+					</view> -->
+					<view class="timeValue" @click="openCalendarModel">
 						{{timeListTime}}
 					</view>
 				</view>
-				<view class="rightIcon">
-					<u-icon @click="openCalendarModel" name="calendar" color="#ffffff" size="36"></u-icon>
-				</view>
+				<!-- <view class="rightIcon">
+					<u-icon name="calendar" color="#ffffff" size="36"></u-icon>
+				</view> -->
 			</view>
 		</u-navbar>
 	</view>

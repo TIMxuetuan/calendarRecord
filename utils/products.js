@@ -69,7 +69,7 @@ let products = {
 	isIndexOf(item,list){
 		let isTrueFalse = false;
 		list.forEach(value=>{
-			if(value.idTime == item){
+			if(value.rq == item){
 				isTrueFalse = true;
 			}
 		})
@@ -94,7 +94,24 @@ let products = {
 	cutOutTime(value){
 		let newValue = value.split(" ")
 		return newValue[0]
-	} 
+	},
+	
+	//将 2021-4-26转为 2021年4月26日
+	formatSwitchTime(value){
+		let newItem = value.split("-")
+		let timeNew = newItem[0] + "年" + newItem[1] + "月" + newItem[2] + "日"
+		return timeNew
+	},
+	
+	//判断值是否为数字
+	isNumber(val){
+	   if (parseFloat(val).toString() == "NaN") {
+	   　　　　return false;
+	   　　} else {
+	   　　　　return true;
+	   　　}
+	}
+	
 }
 
 export default products

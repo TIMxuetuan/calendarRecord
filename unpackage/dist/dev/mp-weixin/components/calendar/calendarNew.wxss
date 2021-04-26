@@ -61,8 +61,7 @@
   display: flex;
   -webkit-flex-wrap: wrap;
           flex-wrap: wrap;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 .calendar .content view.data-v-3db7076c {
   width: 14%;
@@ -81,8 +80,7 @@
   display: flex;
   -webkit-flex-wrap: wrap;
           flex-wrap: wrap;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 .daysItem .daysItem-li.data-v-3db7076c {
   margin: 0 !important;
@@ -93,7 +91,6 @@
   font-size: 26rpx;
   color: #333333;
   border-bottom: 2rpx solid #F5F5F5;
-  font-weight: bold;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -104,19 +101,16 @@
   -webkit-box-align: start;
   -webkit-align-items: flex-start;
           align-items: flex-start;
-  padding: 10rpx 0 0 10rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  padding: 10rpx 0 0 0;
+  box-sizing: border-box;
   overflow: hidden;
 }
 .daysItem .item-date.data-v-3db7076c {
   height: -webkit-fit-content;
   height: fit-content;
   padding: 8rpx;
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  border-radius: 50%;
+  box-sizing: border-box;
   font-size: 24rpx;
 }
 .noCurrent.data-v-3db7076c {
@@ -158,23 +152,28 @@
           align-items: center;
 }
 .lastItem-icon.data-v-3db7076c {
-  display: inline-block;
-  width: 30rpx !important;
-  height: 30rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 20rpx !important;
+  height: 20rpx;
+  box-sizing: border-box;
 }
 .lastItem-text.data-v-3db7076c {
+  font-size: 24rpx;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
   width: 100%;
-  margin-left: 4rpx;
+  margin-left: 2rpx;
   overflow: hidden;
   /*超出部分隐藏*/
   white-space: nowrap;
   /*不换行*/
-  text-overflow: ellipsis;
+  text-overflow: clip;
   /*超出部分文字以...显示*/
 }
 

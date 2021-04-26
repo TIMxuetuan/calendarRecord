@@ -12,8 +12,7 @@
   position: absolute;
   width: 10px;
   height: 10px;
-  -webkit-border-radius: 1px;
-          border-radius: 1px;
+  border-radius: 1px;
 }
 .container .shape.shape1.data-v-e492dce8 {
   left: 0;
