@@ -159,8 +159,18 @@ button.all {
 	margin-top: 40rpx;
 	width: 100%;
 	padding: 0 30rpx;
-	display: flex;
+}
 
+.addModeBody-top{
+	width: 100%;
+	display: flex;
+}
+
+.addMode-center{
+	margin-top: 100rpx;
+	width: 100%;
+	display: flex;
+	justify-content: center;
 }
 
 .leftIcon {
@@ -294,11 +304,14 @@ button.all {
 	align-items: center;
 }
 
+.explainHead-icon{
+	margin-right: 30rpx;
+}
+
 .explainHead-text {
 	color: #000000;
 	font-weight: bold;
 	font-size: 36rpx;
-	margin-left: 30rpx;
 }
 
 .explainBody-title {
@@ -313,7 +326,12 @@ button.all {
 	
 	/deep/ .uni-textarea-textarea {
 		font-size: 40rpx;
-		color: red;
+	}
+	
+	/deep/ .uni-input{
+		font-size: 40rpx;
+		min-height: 35px;
+		border-bottom: 2px solid #2196F3;
 	}
 }
 
@@ -502,7 +520,8 @@ button.all {
 
 .lineOne {
 	width: 100%;
-	height: 400px;
+	// height: 400px;
+	height: 200px;
 }
 
 .echartsModel-bottom {
@@ -546,8 +565,8 @@ button.all {
 }
 
 .analyse-item {
-	// width: 25%;
-	width: 20%;
+	width: 25%;
+	// width: 20%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -608,11 +627,28 @@ button.all {
 
 .ecbottomBody-top-year {
 	font-weight: bold;
+	
+	text{
+		margin-left: 10rpx;
+	}
 }
 
 .ecbottomBody-remark {
+	height: 40rpx;
+	line-height: 40rpx;
 	font-size: 26rpx;
 	margin: 10rpx 0;
+	display: flex;
+	align-items: center;
+}
+
+.ecbottomBody-long{
+	width: 1px;
+	height: 28rpx;
+	line-height: 28rpx;
+	background-color: #000000;
+	margin-right: 10rpx;
+	vertical-align: middle;
 }
 
 .noData {
@@ -627,6 +663,17 @@ button.all {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+
+.ecbmodel{
+	padding: 50rpx 40rpx;
+	font-size: 40rpx;
+	// font-weight: bold;
+}
+
+.ecbmodel-del{
+	color: #FF5555;
+	margin-top: 50rpx;
 }
 
 

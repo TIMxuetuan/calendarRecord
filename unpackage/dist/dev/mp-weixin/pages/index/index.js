@@ -107,29 +107,32 @@ try {
     uInput: function() {
       return Promise.all(/*! import() | uview-ui/components/u-input/u-input */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-input/u-input")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-input/u-input.vue */ 89))
     },
+    uButton: function() {
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-button/u-button */ "uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-button/u-button.vue */ 174))
+    },
     tColorPicker: function() {
       return __webpack_require__.e(/*! import() | components/t-color-picker/t-color-picker */ "components/t-color-picker/t-color-picker").then(__webpack_require__.bind(null, /*! @/components/t-color-picker/t-color-picker.vue */ 97))
     },
     uCalendar: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-calendar/u-calendar */ "uview-ui/components/u-calendar/u-calendar").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-calendar/u-calendar.vue */ 125))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-calendar/u-calendar */ "uview-ui/components/u-calendar/u-calendar").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-calendar/u-calendar.vue */ 104))
     },
     uModal: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-modal/u-modal */ "uview-ui/components/u-modal/u-modal").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-modal/u-modal.vue */ 104))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-modal/u-modal */ "uview-ui/components/u-modal/u-modal").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-modal/u-modal.vue */ 111))
     },
     qiunDataCharts: function() {
-      return Promise.all(/*! import() | uni_modules/qiun-data-charts/components/qiun-data-charts/qiun-data-charts */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/qiun-data-charts/components/qiun-data-charts/qiun-data-charts")]).then(__webpack_require__.bind(null, /*! @/uni_modules/qiun-data-charts/components/qiun-data-charts/qiun-data-charts.vue */ 111))
+      return Promise.all(/*! import() | uni_modules/qiun-data-charts/components/qiun-data-charts/qiun-data-charts */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/qiun-data-charts/components/qiun-data-charts/qiun-data-charts")]).then(__webpack_require__.bind(null, /*! @/uni_modules/qiun-data-charts/components/qiun-data-charts/qiun-data-charts.vue */ 118))
     },
     uRadioGroup: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-radio-group/u-radio-group */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-radio-group/u-radio-group")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-radio-group/u-radio-group.vue */ 245))
+      return Promise.all(/*! import() | uview-ui/components/u-radio-group/u-radio-group */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-radio-group/u-radio-group")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-radio-group/u-radio-group.vue */ 132))
     },
     uRadio: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-radio/u-radio */ "uview-ui/components/u-radio/u-radio").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-radio/u-radio.vue */ 252))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-radio/u-radio */ "uview-ui/components/u-radio/u-radio").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-radio/u-radio.vue */ 139))
     },
     uSwipeAction: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-swipe-action/u-swipe-action */ "uview-ui/components/u-swipe-action/u-swipe-action").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-swipe-action/u-swipe-action.vue */ 132))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-swipe-action/u-swipe-action */ "uview-ui/components/u-swipe-action/u-swipe-action").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-swipe-action/u-swipe-action.vue */ 146))
     },
     uToast: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-toast/u-toast */ "uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-toast/u-toast.vue */ 139))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-toast/u-toast */ "uview-ui/components/u-toast/u-toast").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-toast/u-toast.vue */ 153))
     }
   }
 } catch (e) {
@@ -645,16 +648,51 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/api_methods.js */ 8));
 var _index = _interopRequireDefault(__webpack_require__(/*! ../../components/headNav/index.vue */ 48));
 
 
 
 var _iconList = _interopRequireDefault(__webpack_require__(/*! ./iconList.json */ 55));
-var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/products.js */ 56));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var calendar = function calendar() {__webpack_require__.e(/*! require.ensure | components/calendar/calendarNew */ "components/calendar/calendarNew").then((function () {return resolve(__webpack_require__(/*! ../../components/calendar/calendarNew.vue */ 146));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tColorPicker = function tColorPicker() {__webpack_require__.e(/*! require.ensure | components/t-color-picker/t-color-picker */ "components/t-color-picker/t-color-picker").then((function () {return resolve(__webpack_require__(/*! @/components/t-color-picker/t-color-picker.vue */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/products.js */ 56));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var calendar = function calendar() {__webpack_require__.e(/*! require.ensure | components/calendar/calendarNew */ "components/calendar/calendarNew").then((function () {return resolve(__webpack_require__(/*! ../../components/calendar/calendarNew.vue */ 160));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tColorPicker = function tColorPicker() {__webpack_require__.e(/*! require.ensure | components/t-color-picker/t-color-picker */ "components/t-color-picker/t-color-picker").then((function () {return resolve(__webpack_require__(/*! @/components/t-color-picker/t-color-picker.vue */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   data: function data() {
     return {
+      buttonStyle: {
+        width: "200px",
+        color: '#fff',
+        backgroundColor: '#2196F3' },
+
       hintLogin: false,
       isGet: false, //是否授权个人信息
       user_info: '', //用户信息
@@ -734,13 +772,13 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
       analyseList: { //统计的值
         countName: "数量",
         countValue: 0,
-        sumName: "总数",
+        sumName: "总和",
         sumValue: 0,
-        avgName: "平均值",
+        avgName: "平均",
         avgValue: 0,
-        peakName: "最高值",
+        peakName: "最大",
         peakValue: 0,
-        minName: "最低值",
+        minName: "最小",
         minValue: 0 },
 
       yearListsData: {},
@@ -761,8 +799,14 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
 
       timeDian: "所有",
       lineItemValue: "",
-      lineItemType: "" };
-
+      lineItemType: "",
+      recentlyDay: 0, //最近 为今天和最后一条的时间天数差
+      recentlyTime: "", //当天时间，用于和最近的记录对比
+      ecbClickItem: "", //点击某条记录时，保存的值
+      ecbClickModel: false, //控制某条记录的操作弹窗
+      ecbIsEdit: false, //开关，当编辑成功时，并且它为true时，再成功回调里 再次请求数据
+      ecbIsDelect: false //遇上逻辑同理
+    };
   },
   components: {
     headNav: _index.default,
@@ -873,6 +917,7 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
       }
       var nowTime = this.currentYear + "-" + (this.currentMonth < 10 ? "0" + this.currentMonth : this.
       currentMonth) + "-" + this.currentDate;
+      this.recentlyTime = nowTime;
       this.timeListTime = this.currentMonth + "月" + "-" + this.currentYear;
       this.nowTime = nowTime;
       uni.setStorageSync("nowTime", nowTime);
@@ -1199,6 +1244,10 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
         }).then(function (res) {
           _this6.chuDayRecord();
           _this6.explainShow = false;
+          if (_this6.ecbIsEdit == true) {
+            var lb_id = _this6.ecbClickItem.lb_id;
+            _this6.disposeLineItem(lb_id);
+          }
         });
         this.editLinShi = "";
       }
@@ -1248,6 +1297,11 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
       this.explainValue = item.jl_num;
       this.explainNote = item.remarks;
 
+      this.ecbClickModel = false;
+      this.ecbIsEdit = false;
+
+      this.explainDate = item.rc_sj;
+
       // let nowDate = new Date();
       // let year = dayRecord.currentYear;
       // let month = dayRecord.currentMonth;
@@ -1262,7 +1316,6 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
       // 	this.explainTime = "下午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes)
       // }
 
-      this.explainDate = item.rc_sj;
 
     },
 
@@ -1271,6 +1324,7 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
       console.log("item", item);
       this.deleteRecordItem = item;
       this.deleteShow = true;
+      this.ecbIsDelect = false;
     },
 
     //点击删除弹窗确认按钮
@@ -1296,6 +1350,10 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
         }
       }).then(function () {
         _this7.chuDayRecord();
+        if (_this7.ecbIsDelect == true) {
+          var lb_id = _this7.ecbClickItem.lb_id;
+          _this7.disposeLineItem(lb_id);
+        }
       });
 
     },
@@ -1410,12 +1468,14 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
         start = this.timeStart;
         end = this.timeEnd;
         if (start != "") {
-          var date = new Date(start);
-          start = date.valueOf();
+          var date = _products.default.startEndTime(start, "start");
+          var dateNew = new Date(date);
+          start = dateNew.valueOf();
         }
         if (end != "") {
-          var date = new Date(end);
-          end = date.valueOf();
+          var _date = _products.default.startEndTime(end, "end");
+          var _dateNew = new Date(_date);
+          end = _dateNew.valueOf();
         }
       }
 
@@ -1431,14 +1491,22 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
           _this8.yearListsData = res.data;
           timeAll = res.list;
           uni.setStorageSync("lastAllLists", res.list);
-          // uni.showToast({
-          // 	title: res.msg,
-          // 	icon: "none",
-          // 	duration: 2000
-          // });
+
+          _this8.recentlyDay = _products.default.getTimeDiff(timeAll[0].rq, _this8.recentlyTime);
 
           var splitYear = "";
-          timeAll.forEach(function (item) {
+          for (var i = 0; i < timeAll.length; i++) {
+
+            if (i < timeAll.length - 1) {
+              var chaTime = _products.default.getTimeDiff(timeAll[i].rq, timeAll[i + 1].rq);
+              timeAll[i].chaTime = chaTime;
+            } else {
+              timeAll[i].chaTime = "开始时间";
+              console.log("空", i);
+            }
+
+            var item = timeAll[i];
+            console.log("item", item);
             seriesData.push(item.jl_num);
             timeJointAll.push(item.rq);
 
@@ -1446,7 +1514,10 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
             splitYear = item.rq.split("-")[0];
             resLists[splitYear] = resLists[splitYear] || [];
             resLists[splitYear].push(item); //将所有的item列放入到对应的className中
-          });
+
+
+          }
+
           console.log("年份对象", resLists);
 
           var newRes = [];
@@ -1458,12 +1529,14 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
             newRes.push(newItem);
           }
           //进行排序
-          // newRes.sort(function(a, b) {
-          // 	return b.yearItem - a.yearItem;
-          // })
+          newRes.sort(function (a, b) {
+            return b.yearItem - a.yearItem;
+          });
           _this8.yearLists = newRes;
           console.log("最终年份数组", _this8.yearLists);
+          // products.getTimeDiff("2021-04-27","2021-05-01")
         } else {
+          _this8.recentlyDay = 0;
           _this8.yearLists = "";
           uni.setStorageSync("lastAllLists", []);
           _this8.yearListsData = {
@@ -1537,6 +1610,12 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
 
 
       var ringOpts = {
+        padding: [
+        15,
+        10,
+        0,
+        0],
+
         legend: {
           show: false },
 
@@ -1567,6 +1646,37 @@ var _products = _interopRequireDefault(__webpack_require__(/*! ../../utils/produ
     //关闭数据分析弹窗
     offEchartsModel: function offEchartsModel() {
       this.echartsModel = false;
+    },
+
+    //点击某条记录，打开操作 编辑和删除弹窗
+    ecbClick: function ecbClick(item) {
+      console.log("item", item);
+      this.ecbClickItem = item;
+      this.ecbClickModel = true;
+    },
+
+    //点击编辑事件
+    ecbEdit: function ecbEdit(item) {
+      var dayRecord = uni.getStorageSync('dayRecord');
+      console.log("编辑", item, dayRecord);
+      this.explainShow = true;
+      this.explainIconValue = item;
+      this.editLinShi = item;
+      this.explainValue = item.jl_num;
+      this.explainNote = item.remarks;
+      this.ecbClickModel = false;
+      this.explainDate = item.rc_sj;
+
+      this.ecbIsEdit = true;
+    },
+
+    //点击删除
+    ecbDelect: function ecbDelect(item) {
+      console.log("item", item);
+      this.deleteRecordItem = item;
+      this.ecbClickModel = false;
+      this.deleteShow = true;
+      this.ecbIsDelect = true;
     },
 
     //打开日历弹窗

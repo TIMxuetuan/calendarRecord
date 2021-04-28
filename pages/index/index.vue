@@ -21,7 +21,7 @@
 		<view class="rightLists" @click="openSetModel">
 			<u-icon name="order" color="#ffffff" size="32"></u-icon>
 		</view>
-		
+
 		<!--页面右下角加号-->
 		<view class="rightAdd" @click="openRightModel">
 			<u-icon name="plus" color="#000000" size="32"></u-icon>
@@ -51,36 +51,46 @@
 		<!--添加 各种类型的事件 弹窗（点击新增事件弹出）-->
 		<u-popup v-model="addActivityShow" z-index="10085" mode="bottom" height="100%">
 			<u-navbar height="50" :is-back="false" :border-bottom="false" is-fixed :background="background">
-				<view class="addMode-head">
+				<!-- <view class="addMode-head">
 					<view @click="addActivityClose">退出</view>
 					<view @click="configActivity">保存</view>
-				</view>
+				</view> -->
 			</u-navbar>
 
 			<view class="addMode-body">
-				<view class="leftIcon">
-					<view v-if="newActivityItem == ''" @click="openIconModel" class="selectIcon">选择</br>图标</view>
-					<view v-else @click="openIconModel" class="selectIcon">
-						<u-icon :name="newActivityItem.name" :color="newActivityItem.color" size="100"></u-icon>
+				<view class="addModeBody-top">
+					<view class="leftIcon">
+						<view v-if="newActivityItem == ''" @click="openIconModel" class="selectIcon">选择</br>图标</view>
+						<view v-else @click="openIconModel" class="selectIcon">
+							<u-icon :name="newActivityItem.name" :color="newActivityItem.color" size="100"></u-icon>
+						</view>
+					</view>
+					<view class="rightText">
+						<view class="rightText-titile">事件名称</view>
+						<view class="rightText-input">
+							<u-input :focus="false" auto-height v-model="rightInput" type="textarea" :border="false"
+								:clearable="false" :custom-style="rightTextCustom" placeholder=" " maxlength="10" />
+						</view>
 					</view>
 				</view>
-				<view class="rightText">
-					<view class="rightText-titile">事件名称</view>
-					<view class="rightText-input">
-						<u-input :focus="false" auto-height v-model="rightInput" type="textarea" :border="false"
-							:clearable="false" :custom-style="rightTextCustom" placeholder=" " maxlength="10" />
-					</view>
+				<view class="addMode-center">
+					<u-button @click="configActivity" :custom-style="buttonStyle" shape="circle">保存</u-button>
 				</view>
+			</view>
+			
+			<!--页面右下角加号-->
+			<view class="rightLists" @click="addActivityClose">
+				<u-icon name="arrow-left" color="#ffffff" size="32"></u-icon>
 			</view>
 		</u-popup>
 
 		<!--为事件添加值和说明弹窗-->
-		<u-popup v-model="explainShow" z-index="10085" mode="center" width="80%" border-radius="10">
+		<u-popup v-model="explainShow" z-index="10095" mode="center" width="80%" border-radius="10">
 			<view class="explain-centent">
 				<view class="explain-head">
-					<view class="explainHead-icon">
-						<u-icon v-if="explainIconValue" :name="explainIconValue.tra_icons"
-							:color="explainIconValue.tra_color" size="80"></u-icon>
+					<view class="explainHead-icon" v-if="explainIconValue.tra_icons != 'undefined'">
+						<u-icon :name="explainIconValue.tra_icons"
+							:color="explainIconValue.tra_color" size="50"></u-icon>
 					</view>
 					<view class="explainHead-text">{{explainIconValue.bt}}</view>
 				</view>
@@ -88,8 +98,9 @@
 					<view class="explainBody-item">
 						<view class="explainBody-title">数值:</view>
 						<view class="explainBody-input">
-							<u-input v-model="explainValue" type="text" :border="false" :clearable="false"
-								:custom-style="explainCustom" placeholder=" " />
+							<!-- <u-input v-model="explainValue" type="text" :border="false" :clearable="false"
+								:custom-style="explainCustom" placeholder=" " /> -->
+							 <input v-model="explainValue" type="digit" class="uni-input" :focus="true" placeholder=" " />
 						</view>
 					</view>
 					<view class="explainBody-item">
@@ -214,7 +225,7 @@
 				<view class="rightAdd" @click="openRightModel">
 					<u-icon name="plus" color="#000000" size="32"></u-icon>
 				</view>
-				
+
 				<!--页面右下角查看类别列表-->
 				<view class="rightLists" @click="offAllRecord">
 					<u-icon name="arrow-left" color="#ffffff" size="32"></u-icon>
@@ -227,7 +238,7 @@
 			mode="date" @change="changeTimeModel"></u-calendar>
 
 		<!--删除记录确认弹窗-->
-		<u-modal v-model="deleteShow" show-cancel-button content="确定删除这条记录吗？" confirm-color="red"
+		<u-modal z-index="10095" v-model="deleteShow" show-cancel-button content="确定删除这条记录吗？" confirm-color="red"
 			@confirm="confirmRecord"></u-modal>
 
 		<!--点击某一天中的某条记录，查看此条记录的所有数据分析弹窗-->
@@ -243,7 +254,7 @@
 								<view class="explain-head echartsModel-head" v-if="echartsNowItem">
 									<view v-if="echartsNowItem.tra_icons" class="explainHead-icon echartsModel-icon">
 										<u-icon :name="echartsNowItem.tra_icons" :color="echartsNowItem.tra_color"
-											size="60"></u-icon>
+											size="50"></u-icon>
 									</view>
 									<view class="explainHead-text echartsModel-text">
 										{{echartsNowItem.bt}}
@@ -290,6 +301,14 @@
 									</view>
 								</view>
 								<view class="ecStatistics-analyse">
+									<view class="analyse-item">
+										<view class="analyseItem-title">
+											最近
+										</view>
+										<view class="analyseItem-value">
+											{{recentlyDay}}
+										</view>
+									</view>
 									<view class="analyse-item">
 										<view class="analyseItem-title">
 											{{analyseList.countName}}
@@ -341,18 +360,21 @@
 										{{item.yearItem}}
 									</view>
 									<view class="ecbottomItem-body">
-										<view class="ecbottomItem-body-item" v-for="(items,index) in item.dataItem"
-											:key="index">
+										<view class="ecbottomItem-body-item" v-for="(items,indexs) in item.dataItem"
+											:key="indexs" @click="ecbClick(items)">
 											<view class="ecbottomBody-top">
 												<view class="ecbottomBody-top-year">
 													<!-- {{timeSwitch(items.dayRecord,items.explainDateTime)}} -->
-													{{items.rc_sj}}
+													{{items.rc_sj}} 
+													<text v-if="items.chaTime != '开始时间'">(距上次{{items.chaTime}}天)</text>
+													<text v-else>({{items.chaTime}})</text>
 												</view>
 												<view class="">
 													{{items.jl_num}}
 												</view>
 											</view>
 											<view class="ecbottomBody-remark">
+												<view v-if="items.remarks" class="ecbottomBody-long"></view>
 												{{items.remarks}}
 											</view>
 										</view>
@@ -369,6 +391,14 @@
 				<view class="rightLists" @click="offEchartsModel">
 					<u-icon name="arrow-left" color="#ffffff" size="32"></u-icon>
 				</view>
+			</view>
+		</u-popup>
+		
+		<!--点击某条记录时弹出的操作弹窗-->
+		<u-popup z-index="10085" v-model="ecbClickModel" mode="center" width="80%" border-radius="14">
+			<view class="ecbmodel">
+				<view @click="ecbEdit(ecbClickItem)" class="">编辑</view>
+				<view @click="ecbDelect(ecbClickItem)" class="ecbmodel-del">删除</view>
 			</view>
 		</u-popup>
 
@@ -395,14 +425,14 @@
 				<view class="affirmBtn" @click="affirmBtnClick">确认</view>
 			</view>
 		</u-popup>
-		
+
 		<!--开始时间选择日期弹窗-->
 		<u-calendar v-model="startModel" z-index="10085" max-date="9999-01-01" :safe-area-inset-bottom="true"
 			mode="date" @change="startChange"></u-calendar>
-			
+
 		<!--结束时间选择日期弹窗-->
-		<u-calendar v-model="endModel" z-index="10085" max-date="9999-01-01" :safe-area-inset-bottom="true"
-			mode="date" @change="endChange"></u-calendar>
+		<u-calendar v-model="endModel" z-index="10085" max-date="9999-01-01" :safe-area-inset-bottom="true" mode="date"
+			@change="endChange"></u-calendar>
 
 		<!--左侧设置弹窗-->
 		<u-popup z-index="10085" v-model="settingModel" mode="bottom" width="100%" height="50%">
@@ -467,6 +497,11 @@
 	export default {
 		data() {
 			return {
+				buttonStyle:{
+					width:"200px",
+					color: '#fff',
+					backgroundColor:'#2196F3',
+				},
 				hintLogin: false,
 				isGet: false, //是否授权个人信息
 				user_info: '', //用户信息
@@ -546,22 +581,22 @@
 				analyseList: { //统计的值
 					countName: "数量",
 					countValue: 0,
-					sumName: "总数",
+					sumName: "总和",
 					sumValue: 0,
-					avgName: "平均值",
+					avgName: "平均",
 					avgValue: 0,
-					peakName: "最高值",
+					peakName: "最大",
 					peakValue: 0,
-					minName: "最低值",
+					minName: "最小",
 					minValue: 0,
 				},
 				yearListsData: {},
 				timeDataSelect: false, //控制选择时间段的弹窗
-				timeStart:"", //开始时间
-				timeEnd:"", //结束时间
-				startModel:false, //控制选择开始日期
-				endModel:false, //控制选择结束日期
-				timeValue:"所有",
+				timeStart: "", //开始时间
+				timeEnd: "", //结束时间
+				startModel: false, //控制选择开始日期
+				endModel: false, //控制选择结束日期
+				timeValue: "所有",
 				timeSelectList: [{
 						name: '所有',
 						disabled: false
@@ -571,9 +606,15 @@
 						disabled: false
 					},
 				],
-				timeDian:"所有",
-				lineItemValue:"",
-				lineItemType:"",
+				timeDian: "所有",
+				lineItemValue: "",
+				lineItemType: "",
+				recentlyDay:0, //最近 为今天和最后一条的时间天数差
+				recentlyTime:"", //当天时间，用于和最近的记录对比
+				ecbClickItem:"", //点击某条记录时，保存的值
+				ecbClickModel:false, //控制某条记录的操作弹窗
+				ecbIsEdit:false, //开关，当编辑成功时，并且它为true时，再成功回调里 再次请求数据
+				ecbIsDelect:false, //遇上逻辑同理
 			}
 		},
 		components: {
@@ -685,6 +726,7 @@
 				}
 				let nowTime = this.currentYear + "-" + (this.currentMonth < 10 ? "0" + this.currentMonth : this
 					.currentMonth) + "-" + this.currentDate
+				this.recentlyTime = nowTime;
 				this.timeListTime = this.currentMonth + "月" + "-" + this.currentYear;
 				this.nowTime = nowTime;
 				uni.setStorageSync("nowTime", nowTime)
@@ -939,7 +981,7 @@
 					});
 					return
 				}
-				if(!products.isNumber(this.explainValue)){
+				if (!products.isNumber(this.explainValue)) {
 					uni.showToast({
 						title: "请输入数字",
 						icon: "none",
@@ -1011,6 +1053,10 @@
 					}).then(res => {
 						this.chuDayRecord()
 						this.explainShow = false;
+						if(this.ecbIsEdit == true){
+							let lb_id = this.ecbClickItem.lb_id;
+							this.disposeLineItem(lb_id)
+						}
 					})
 					this.editLinShi = "";
 				}
@@ -1059,6 +1105,11 @@
 				this.editLinShi = item;
 				this.explainValue = item.jl_num;
 				this.explainNote = item.remarks;
+				
+				this.ecbClickModel = false;
+				this.ecbIsEdit = false;
+				
+				this.explainDate = item.rc_sj;
 
 				// let nowDate = new Date();
 				// let year = dayRecord.currentYear;
@@ -1074,7 +1125,6 @@
 				// 	this.explainTime = "下午" + hours + ":" + (minutes < 10 ? '0' + minutes : minutes)
 				// }
 
-				this.explainDate = item.rc_sj;
 
 			},
 
@@ -1083,6 +1133,7 @@
 				console.log("item", item)
 				this.deleteRecordItem = item;
 				this.deleteShow = true;
+				this.ecbIsDelect = false;
 			},
 
 			//点击删除弹窗确认按钮
@@ -1108,6 +1159,10 @@
 					}
 				}).then(() => {
 					this.chuDayRecord()
+					if(this.ecbIsDelect == true){
+						let lb_id = this.ecbClickItem.lb_id;
+						this.disposeLineItem(lb_id)
+					}
 				})
 
 			},
@@ -1123,52 +1178,52 @@
 				this.timeStart = this.timeStart == "" ? timeSum : this.timeStart;
 				this.timeEnd = this.timeEnd == "" ? timeSum : this.timeEnd;
 			},
-			
+
 			//切换两个时间选项
 			radioGroupChange(e) {
 				this.timeValue = e
 			},
-			
+
 			//点击开始时间事件
-			timeStartClick(){
-				if(this.timeValue == "所有"){
+			timeStartClick() {
+				if (this.timeValue == "所有") {
 					return
 				}
 				this.startModel = true;
 			},
-			
+
 			//开始时间弹窗 点击事件
-			startChange(e){
+			startChange(e) {
 				this.timeStart = e.year + "-" + (e.month < 10 ? "0" + e.month : e.month) + "-" + e.day;
 			},
-			
+
 			//点击结束时间事件
-			timeEndClick(){
-				if(this.timeValue == "所有"){
+			timeEndClick() {
+				if (this.timeValue == "所有") {
 					return
 				}
 				this.endModel = true;
 			},
-			
+
 			//结束时间弹窗 点击事件
-			endChange(e){
+			endChange(e) {
 				this.timeEnd = e.year + "-" + (e.month < 10 ? "0" + e.month : e.month) + "-" + e.day;
 			},
-			
+
 			//选择所有或者时间段 点击确认事件，
-			affirmBtnClick(){
-				console.log("最后确认",this.timeValue,this.timeStart,this.timeEnd)
-				if(this.timeValue == "所有"){
+			affirmBtnClick() {
+				console.log("最后确认", this.timeValue, this.timeStart, this.timeEnd)
+				if (this.timeValue == "所有") {
 					// this.timeStart = "";
 					// this.timeEnd = "";
 					this.timeDian = "所有";
-				}else{
+				} else {
 					this.timeStart = this.timeStart;
 					this.timeEnd = this.timeEnd;
 					this.timeDian = this.timeStart + "至" + this.timeEnd;
 				}
 				this.timeDataSelect = false;
-				
+
 				let value = this.lineItemValue;
 				let type = this.lineItemType;
 				let lb_id = "";
@@ -1183,13 +1238,13 @@
 			//点击记录中的某一条，获得数据，并打开数据分析弹窗
 			lineItem(value, type) {
 				console.log("底", value, type)
-				
+
 				//下面四条是为 时间段筛选 初始化
 				this.timeDian = "所有";
 				this.timeValue = "所有"
 				this.timeStart = "";
 				this.timeEnd = "";
-				
+
 				this.lineItemValue = value;
 				this.lineItemType = type;
 				this.echartsModel = true;
@@ -1201,37 +1256,39 @@
 					lb_id = value.id
 				}
 				this.echartsNowItem = value;
-				uni.setStorageSync("echartsNowItem",this.echartsNowItem)
+				uni.setStorageSync("echartsNowItem", this.echartsNowItem)
 				this.disposeLineItem(lb_id)
 			},
-			
+
 			//上面的调用记录详情接口并处理数据
-			disposeLineItem(lb_id){
+			disposeLineItem(lb_id) {
 				let timeJointAll = [] //折线图使用的x轴值
 				let seriesData = []; //折线图使用的数据值
 				let timeAll = [];
 				let resLists = {}
-				
+
 				let start = "";
 				let end = "";
-				
-				if(this.timeValue == "所有"){
+
+				if (this.timeValue == "所有") {
 					start = "";
 					end = "";
-				}else{
+				} else {
 					start = this.timeStart;
 					end = this.timeEnd;
-					if(start != ""){
-						var date = new Date(start);
-						start = date.valueOf()
+					if (start != "") {
+						let date = products.startEndTime(start, "start")
+						let dateNew = new Date(date);
+						start = dateNew.valueOf()
 					}
-					if(end != ""){
-						var date = new Date(end);
-						end = date.valueOf()
+					if (end != "") {
+						let date = products.startEndTime(end, "end")
+						let dateNew = new Date(date);
+						end = dateNew.valueOf()
 					}
 				}
-				
-				
+
+
 				allApi.tjttrarecord({
 					wechat_id: this.user_info.id,
 					lb_id: lb_id,
@@ -1243,24 +1300,35 @@
 						this.yearListsData = res.data
 						timeAll = res.list;
 						uni.setStorageSync("lastAllLists", res.list)
-						// uni.showToast({
-						// 	title: res.msg,
-						// 	icon: "none",
-						// 	duration: 2000
-						// });
-				
+						
+						this.recentlyDay = products.getTimeDiff(timeAll[0].rq, this.recentlyTime)
+
 						let splitYear = "";
-						timeAll.forEach(item => {
+						for (var i = 0; i < timeAll.length; i++) {
+							
+							if (i < timeAll.length - 1) {
+								let chaTime = products.getTimeDiff(timeAll[i].rq, timeAll[i + 1].rq)
+								timeAll[i].chaTime = chaTime
+							}else{
+								timeAll[i].chaTime = "开始时间"
+								console.log("空",i)
+							}
+							
+							let item = timeAll[i];
+							console.log("item", item)
 							seriesData.push(item.jl_num);
 							timeJointAll.push(item.rq);
-				
+
 							/*以下是将数据按照年份 分组*/
 							splitYear = item.rq.split("-")[0]
 							resLists[splitYear] = resLists[splitYear] || [];
 							resLists[splitYear].push(item); //将所有的item列放入到对应的className中
-						})
+
+							
+						}
+
 						console.log("年份对象", resLists)
-				
+
 						let newRes = []
 						for (let items in resLists) {
 							let newItem = {
@@ -1270,20 +1338,22 @@
 							newRes.push(newItem)
 						}
 						//进行排序
-						// newRes.sort(function(a, b) {
-						// 	return b.yearItem - a.yearItem;
-						// })
+						newRes.sort(function(a, b) {
+							return b.yearItem - a.yearItem;
+						})
 						this.yearLists = newRes
 						console.log("最终年份数组", this.yearLists)
+						// products.getTimeDiff("2021-04-27","2021-05-01")
 					} else {
+						this.recentlyDay = 0;
 						this.yearLists = "";
 						uni.setStorageSync("lastAllLists", [])
 						this.yearListsData = {
-							min:0,
-							count:0,
-							peak:0,
-							sum:0,
-							avg:0,
+							min: 0,
+							count: 0,
+							peak: 0,
+							sum: 0,
+							avg: 0,
 						}
 						uni.showToast({
 							title: res.msg,
@@ -1292,7 +1362,7 @@
 						});
 					}
 				})
-				
+
 				//在h5和app里用这个
 				//#ifdef H5 || APP-PLUS 
 				let linearareadata = {
@@ -1336,7 +1406,7 @@
 					}],
 				}
 				//#endif
-				
+
 				//在微信小程序里用这个
 				//#ifdef MP-WEIXIN 
 				let linearareadata = {
@@ -1347,8 +1417,14 @@
 						data: seriesData
 					}]
 				}
-				
+
 				let ringOpts = {
+					padding: [
+						15,
+						10,
+						0,
+						0
+					],
 					legend: {
 						show: false,
 					},
@@ -1379,6 +1455,37 @@
 			//关闭数据分析弹窗
 			offEchartsModel() {
 				this.echartsModel = false;
+			},
+			
+			//点击某条记录，打开操作 编辑和删除弹窗
+			ecbClick(item){
+				console.log("item",item)
+				this.ecbClickItem = item;
+				this.ecbClickModel = true;
+			},
+			
+			//点击编辑事件
+			ecbEdit(item){
+				let dayRecord = uni.getStorageSync('dayRecord');
+				console.log("编辑", item, dayRecord)
+				this.explainShow = true;
+				this.explainIconValue = item;
+				this.editLinShi = item;
+				this.explainValue = item.jl_num;
+				this.explainNote = item.remarks;
+				this.ecbClickModel = false;
+				this.explainDate = item.rc_sj;
+				
+				this.ecbIsEdit = true;
+			},
+			
+			//点击删除
+			ecbDelect(item){
+				console.log("item", item)
+				this.deleteRecordItem = item;
+				this.ecbClickModel = false;
+				this.deleteShow = true;
+				this.ecbIsDelect = true;
 			},
 
 			//打开日历弹窗
@@ -1438,7 +1545,7 @@
 
 			//左侧的设置弹窗--点击内容事件（与下面的不同）
 			dianContent(index) {
-				console.log("index", index, this.setModelIcon[index],this.setModelIcon)
+				console.log("index", index, this.setModelIcon[index], this.setModelIcon)
 				this.lineItem(this.setModelIcon[index], "dianContent")
 				this.settingModel = false;
 			},

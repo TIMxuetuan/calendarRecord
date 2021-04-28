@@ -196,10 +196,10 @@
 				if (subY > 50 || subY < -50) {
 					// //console.log('上下滑')
 				} else {
-					if (subX > 50) {
+					if (subX > 20) {
 						//console.log('右滑看上一个月')
 						this.gotoPreMonth()
-					} else if (subX < -50) {
+					} else if (subX < -20) {
 						//console.log('左滑看下一个月')
 						this.gotoNextMonth()
 					} else {

@@ -268,9 +268,22 @@ button.all.data-v-57280228::after {
   margin-top: 40rpx;
   width: 100%;
   padding: 0 30rpx;
+}
+.addModeBody-top.data-v-57280228 {
+  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+}
+.addMode-center.data-v-57280228 {
+  margin-top: 100rpx;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
 }
 .leftIcon.data-v-57280228 {
   display: -webkit-box;
@@ -426,11 +439,13 @@ button.all.data-v-57280228::after {
   -webkit-align-items: center;
           align-items: center;
 }
+.explainHead-icon.data-v-57280228 {
+  margin-right: 30rpx;
+}
 .explainHead-text.data-v-57280228 {
   color: #000000;
   font-weight: bold;
   font-size: 36rpx;
-  margin-left: 30rpx;
 }
 .explainBody-title.data-v-57280228 {
   font-size: 36rpx;
@@ -443,7 +458,11 @@ button.all.data-v-57280228::after {
 }
 .explainBody-input.data-v-57280228 .uni-textarea-textarea {
   font-size: 40rpx;
-  color: red;
+}
+.explainBody-input.data-v-57280228 .uni-input {
+  font-size: 40rpx;
+  min-height: 35px;
+  border-bottom: 2px solid #2196F3;
 }
 .explain-time.data-v-57280228 {
   margin-top: 50rpx;
@@ -634,7 +653,7 @@ button.all.data-v-57280228::after {
 }
 .lineOne.data-v-57280228 {
   width: 100%;
-  height: 400px;
+  height: 200px;
 }
 .echartsModel-bottom.data-v-57280228 {
   margin-top: 20rpx;
@@ -679,7 +698,7 @@ button.all.data-v-57280228::after {
           flex-wrap: wrap;
 }
 .analyse-item.data-v-57280228 {
-  width: 20%;
+  width: 25%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -745,9 +764,28 @@ button.all.data-v-57280228::after {
 .ecbottomBody-top-year.data-v-57280228 {
   font-weight: bold;
 }
+.ecbottomBody-top-year text.data-v-57280228 {
+  margin-left: 10rpx;
+}
 .ecbottomBody-remark.data-v-57280228 {
+  height: 40rpx;
+  line-height: 40rpx;
   font-size: 26rpx;
   margin: 10rpx 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.ecbottomBody-long.data-v-57280228 {
+  width: 1px;
+  height: 28rpx;
+  line-height: 28rpx;
+  background-color: #000000;
+  margin-right: 10rpx;
+  vertical-align: middle;
 }
 .noData.data-v-57280228 {
   width: 100%;
@@ -761,6 +799,14 @@ button.all.data-v-57280228::after {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+.ecbmodel.data-v-57280228 {
+  padding: 50rpx 40rpx;
+  font-size: 40rpx;
+}
+.ecbmodel-del.data-v-57280228 {
+  color: #FF5555;
+  margin-top: 50rpx;
 }
 /*时间段选择弹窗样式*/
 .timeSelect.data-v-57280228 {

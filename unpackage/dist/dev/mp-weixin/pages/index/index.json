@@ -5,6 +5,7 @@
     "u-popup": "/uview-ui/components/u-popup/u-popup",
     "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
     "u-input": "/uview-ui/components/u-input/u-input",
+    "u-button": "/uview-ui/components/u-button/u-button",
     "t-color-picker": "/components/t-color-picker/t-color-picker",
     "u-calendar": "/uview-ui/components/u-calendar/u-calendar",
     "u-modal": "/uview-ui/components/u-modal/u-modal",

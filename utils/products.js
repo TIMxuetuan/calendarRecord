@@ -110,6 +110,27 @@ let products = {
 	   　　} else {
 	   　　　　return true;
 	   　　}
+	},
+	
+	//给时间 如2021-04-28 添加时分秒 ，开始时间添加 00:00:00， 结束时间加 23:59:59
+	startEndTime(value,type){
+		if(type == "start"){
+			value = value + " " + "00:00:00"
+		}else if(type == "end"){
+			value = value + " " + "23:59:59"
+		}
+		return value
+	},
+	
+	//两个日期相差天数
+	getTimeDiff(start,end){
+		let startNew = new Date(start);
+		let endNew = new Date(end);
+		startNew = startNew.valueOf();
+		endNew = endNew.valueOf();
+		let differNum = Math.abs((startNew - endNew) / 1000 / 60 / 60 /24);
+		return differNum
+		console.log("时间戳",startNew,endNew,differNum)
 	}
 	
 }
