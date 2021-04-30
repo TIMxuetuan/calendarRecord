@@ -1,4 +1,4 @@
-const baseUrl = 'https://api.kehub.cn/txb.php/tra'
+const baseUrl = 'https://api.kehub.cn/txb.php'
 //公共参数
 let params = {
 
@@ -29,6 +29,7 @@ let request = function(kvs) {
 		// let newdata = kvs.data;
 		uni.request({
 			url: baseUrl + kvs.url,
+			// url: kvs.url,
 			method: 'POST',
 			header: {
 				'content-type': 'application/x-www-form-urlencoded'

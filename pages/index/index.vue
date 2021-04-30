@@ -26,6 +26,11 @@
 		<view class="rightAdd" @click="openRightModel">
 			<u-icon name="plus" color="#000000" size="32"></u-icon>
 		</view>
+		
+		<!--页面右下角跳转到账单记录页-->
+		<view class="rightBill" @click="openBill">
+			<u-icon name="red-packet" color="#ffffff" size="32"></u-icon>
+		</view>
 
 		<!--各种事件弹窗-->
 		<u-popup v-model="activityShow" z-index="10085" mode="bottom" height="50%">
@@ -1611,6 +1616,13 @@
 				//console.log("跳转")
 				uni.navigateTo({
 					url: '/pages/yearCalendar/yearCalendar'
+				});
+			},
+			
+			//跳转到账单页面
+			openBill(){
+				uni.navigateTo({
+					url: '/pages/bill/bill'
 				});
 			}
 

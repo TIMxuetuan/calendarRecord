@@ -1,0 +1,194 @@
+.bill-container{
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+.container{
+	width: 100%;
+	height: 100%;
+	background-color: #F1F1F1;
+}
+
+.swiperItem-all{
+	width: 100%;
+	// height: 100%;
+	background-color: #fff;
+}
+
+/*四个统计 还入、刷出、手续费等*/
+.swiperAll-top{
+	width: 100%;
+	height: 160rpx;
+	display: flex;
+	border-bottom: 1px solid #F1F1F1;
+	
+	.allTop-item{
+		width: 25%;
+		padding: 30rpx 0;
+		color: #919191;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+		border-right: 1px solid #F1F1F1;
+	}
+	
+	.allTop-item:last-child{
+		border-right: none;
+	}
+}
+
+/*列表内容 开始*/
+.swiperAll-content{
+	// margin-top: 30rpx;
+	box-sizing: border-box;
+	padding: 0 40rpx 90rpx 40rpx;
+}
+
+.allContent-item{
+	height: 120rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10rpx 0;
+	border-bottom: 1px solid #F0F0F0;
+	
+	.itemLeft{
+		display: flex;
+		height: 100%;
+		align-items: center;
+	}
+	
+	.itemLeft-img{
+		width: 70rpx;
+		height: 70rpx;
+		line-height: 70rpx;
+		background-color: #6739B6;
+		border-radius:50%;
+		color: #fff;
+		font-size: 38rpx;
+		text-align: center;
+		margin-right: 10rpx;
+	}
+	
+	.itemLeft-text{
+		height: 100%;
+		font-size: 34rpx;
+		color: #ACACAC;
+		display: flex;
+		flex-direction: column;
+	}
+	.iLeftText-deputy{
+		font-size: 24rpx;
+		margin-top: 16rpx;
+	}
+}
+
+.allContent-item:last-child{
+	border: none;
+}
+
+.itemRight{
+	font-size: 28rpx;
+	color: #9AA9B0;
+	text-align: right;
+}
+
+.itemRight-price{
+	font-size: 34rpx;
+	font-weight: bold;
+}
+
+.positiveNum{
+	color: #027F02;
+}
+
+.minusNum{
+	color: #F20505;
+}
+
+/*右下角添加图表*/
+.rightAdd {
+	position: fixed;
+	z-index: 1000;
+	right: 120rpx;
+	bottom: 30rpx;
+	width: 60rpx;
+	height: 60rpx;
+	background-color: #027F02;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.rightLists{
+	position: fixed;
+	z-index: 1000;
+	right: 30rpx;
+	bottom: 30rpx;
+	width: 60rpx;
+	height: 60rpx;
+	background-color: #2196F3;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/*添加账单记录弹窗*/
+.billModel{
+	width: 100%;
+	height: 100%;
+	background-color: #F1F1F1;
+	padding: 20rpx 0;
+	box-sizing: border-box;
+	
+	/deep/ .u-form-item__body{
+		height: 120rpx;
+		padding: 0 20rpx;
+		background-color: #fff;
+	}
+	
+	.their{
+		color: #000;
+		display: flex;
+		
+		.their-icon{
+			margin-left: 20rpx;
+		}
+	}
+	
+	.twoBtn{
+		width: 100%;
+		margin: 40rpx 0;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+	}
+}
+
+//所属商户弹窗 样式
+.merchant-show{
+	padding: 40rpx;
+}
+
+.merchant-btn{
+	display: flex;
+	width: 100%;
+	justify-content: flex-end;
+	margin-top: 30rpx;
+}
+
+.ecbmodel{
+	padding: 50rpx 40rpx;
+	font-size: 40rpx;
+}
+
+.ecbmodel-del{
+	color: #FF5555;
+	margin-top: 50rpx;
+}

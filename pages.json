@@ -28,6 +28,32 @@
             }
             
         }
+        ,{
+            "path" : "pages/bill/bill",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "账单",
+				"navigationBarBackgroundColor":"#2196F3",
+				"navigationBarTextStyle":"white",
+				"backgroundTextStyle": "dark",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance":50
+            }
+            
+        }
+        ,{
+            "path" : "pages/billCategory/billCategory",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "账单类别",
+				"navigationBarBackgroundColor":"#2196F3",
+				"navigationBarTextStyle":"white",
+				"backgroundTextStyle": "dark",
+                "enablePullDownRefresh": true,
+				"onReachBottomDistance":50
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

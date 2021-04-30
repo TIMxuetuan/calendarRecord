@@ -139,7 +139,7 @@ button.all.data-v-57280228::after {
 /*右下角添加图表*/
 .rightAdd.data-v-57280228 {
   position: fixed;
-  right: 120rpx;
+  right: 210rpx;
   bottom: 30rpx;
   width: 60rpx;
   height: 60rpx;
@@ -157,11 +157,29 @@ button.all.data-v-57280228::after {
 }
 .rightLists.data-v-57280228 {
   position: fixed;
-  right: 30rpx;
+  right: 120rpx;
   bottom: 30rpx;
   width: 60rpx;
   height: 60rpx;
   background-color: #2196F3;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.rightBill.data-v-57280228 {
+  position: fixed;
+  right: 30rpx;
+  bottom: 30rpx;
+  width: 60rpx;
+  height: 60rpx;
+  background-color: #3AB54A;
   border-radius: 50%;
   display: -webkit-box;
   display: -webkit-flex;

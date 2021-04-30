@@ -128,10 +128,54 @@ let products = {
 		let endNew = new Date(end);
 		startNew = startNew.valueOf();
 		endNew = endNew.valueOf();
-		let differNum = Math.abs((startNew - endNew) / 1000 / 60 / 60 /24);
+		let differNum = Math.abs(Math.round((startNew - endNew) / 1000 / 60 / 60 /24));
 		return differNum
 		console.log("时间戳",startNew,endNew,differNum)
-	}
+	},
+	
+	//截取字符串第一个字符
+	cutOutString(value){
+		let item = value.slice(0,1)
+		return item
+	},
+	
+	/*账单卡片用的方法*/
+	
+	//计算进度， 用剩余额度 除与 总额度
+	calculateSum(item){
+		let syhk = item.syhk * 1;
+		let ed = item.ed * 1;
+		let resultNum = ((ed - syhk) / ed).toFixed(2) * 100;
+		return resultNum
+	},
+	
+	//计算还款日距今天还有多少天
+	calculateHkDay(item){
+		let nowDate = new Date();
+		let currentYear = nowDate.getFullYear()
+		let currentMonth = nowDate.getMonth() + 1
+		let currentDate = nowDate.getDate();
+		let hkr = item.hkr;
+		
+		let newDay = "";
+		if(currentDate <= hkr){
+			newDay = Math.abs(currentDate - hkr);
+		}else{
+			let data = currentYear + "-" + currentMonth + "-" + currentDate;
+			
+			let hkrYear = currentYear;
+			let hkrMonth = currentMonth + 1;
+			if(hkrMonth > 12){
+				hkrMonth = hkrMonth - 12;
+				hkrYear = hkrYear + 1;
+			}
+			
+			let hkrDate = hkrYear + "-" + hkrMonth + "-" + hkr;
+			newDay = this.getTimeDiff(data,hkrDate)
+		}
+		
+		return newDay
+	},
 	
 }
 

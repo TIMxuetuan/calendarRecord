@@ -1,0 +1,183 @@
+.billCategory{
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+/*右下角添加图表*/
+.rightAdd {
+	position: fixed;
+	z-index: 1000;
+	right: 30rpx;
+	bottom: 30rpx;
+	width: 60rpx;
+	height: 60rpx;
+	background-color: #027F02;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.scroll-Y{
+	width: 100%;
+	// height: 100%;
+}
+
+/*四个统计 还入、刷出、手续费等*/
+.swiperAll-top{
+	width: 100%;
+	height: 160rpx;
+	display: flex;
+	border-bottom: 1px solid #F1F1F1;
+	
+	.allTop-item{
+		width: 25%;
+		padding: 30rpx 0;
+		color: #919191;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+		border-right: 1px solid #F1F1F1;
+	}
+	
+	.allTop-item:last-child{
+		border-right: none;
+	}
+}
+
+/*类别列表*/
+.category-list{
+	width: 100%;
+	height: 100%;
+	padding-bottom: 90rpx;
+	
+	/deep/ .u-swipe-action{
+		border-bottom: 1px solid #EDEDED !important;
+	}
+	
+	.category-swipe:last-child{
+		/deep/ .u-swipe-action{
+			border: none !important;
+		}
+	}
+}
+
+.category-item{
+	width: 100%;
+	height: 170rpx;
+	padding: 20rpx 30rpx;
+	display: flex;
+	justify-content:space-between;
+	align-items: center;
+}
+
+.category-left{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.category-img{
+	width: 120rpx;
+	height: 120rpx;
+	line-height: 120rpx;
+	border-radius: 20rpx;
+	background-color: #CCCCCC;
+	color: #fff;
+	font-size: 50rpx;
+	text-align: center;
+}
+
+.category-centent{
+	display:flex;
+	flex-direction:column;
+	margin: 0 20rpx 0 20rpx;
+	
+	.centent-top{
+		color: #000;
+		font-size: 24rpx;
+	}
+	.cententTop-title{
+		font-size: 40rpx;
+		margin-right: 10rpx;
+	}
+	
+	.centent-line{
+		width: 430rpx;
+		// width: 100%;
+		height: 10rpx;
+		margin: 10rpx 0 5rpx;
+		flex: 1;
+		
+		.line-progress{
+			display: flex;
+			height: 10rpx;
+		}
+	}
+	
+	.centent-text{
+		font-size:24rpx;
+		color: #C6C6C6;
+	}
+	
+}
+
+.category-right{
+	display: flex;
+	flex-direction:column;
+	text-align: right;
+	font-size: 26rpx;
+	color: #A6B3B9;
+}
+
+/*添加账单记录弹窗*/
+.billModel{
+	width: 100%;
+	height: 100%;
+	background-color: #F1F1F1;
+	padding: 20rpx;
+	box-sizing: border-box;
+	
+	/deep/ .u-form-item__body{
+		height: 100rpx;
+		padding: 0 20rpx;
+		background-color: #fff;
+		border-radius: 10rpx;
+	}
+	
+	/deep/ .u-form-item{
+		padding: 10rpx 0;
+	}
+	
+	.their{
+		color: #000;
+		display: flex;
+		
+		.their-icon{
+			margin-left: 20rpx;
+		}
+	}
+	
+	.twoBtn{
+		width: 100%;
+		margin: 40rpx 0;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+	}
+}
+
+.cleared-style{
+	color: #4FB15C;
+	font-weight: bold;
+}
+
+.also-style{
+	color: #E34E43;
+	font-weight: bold;
+}
