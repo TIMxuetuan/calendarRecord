@@ -282,7 +282,7 @@
 								:animation="false" :ontouch="true" :canvas2d="true" :echartsH5="true" :echartsApp="true"
 								:inScrollView="true" /> -->
 
-								<qiun-data-charts type="line" canvasId="scrolllineid2" :opts="ringOpts"
+								<qiun-data-charts type="line" canvasId="scrolllineidTwo" :opts="ringOpts"
 									:chartData="chartDataOne" :animation="false" :inScrollView="true" :echartsH5="true"
 									:echartsApp="true" :ontouch="true" :canvas2d="true" />
 								<!-- #endif -->
@@ -1328,12 +1328,8 @@
 							splitYear = item.rq.split("-")[0]
 							resLists[splitYear] = resLists[splitYear] || [];
 							resLists[splitYear].push(item); //将所有的item列放入到对应的className中
-
-							
 						}
-
 						console.log("年份对象", resLists)
-
 						let newRes = []
 						for (let items in resLists) {
 							let newItem = {

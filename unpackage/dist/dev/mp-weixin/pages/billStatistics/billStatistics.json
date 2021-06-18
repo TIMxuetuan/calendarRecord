@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "按月统计",
+  "navigationBarBackgroundColor": "#2196F3",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": false,
+  "usingComponents": {}
+}

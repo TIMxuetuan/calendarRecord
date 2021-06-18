@@ -7,7 +7,7 @@
 			</view>
 
 			<view class="swiperAll-top">
-				<view class="allTop-item" v-for="(fourItem,fourIndex) in fourLists" :key="fourIndex">
+				<view class="allTop-item" v-for="(fourItem,fourIndex) in fourLists" :key="fourIndex" @click="allLx(fourItem)">
 					<view class="">
 						{{fourItem.value}}
 					</view>
@@ -32,7 +32,7 @@
 								<view class="category-centent">
 									<view class="centent-top">
 										<text class="cententTop-title">{{item.bs}}</text>
-										<text>到期还款日：{{item.hkr}}</text>
+										<text>账单日：{{item.zdr}}</text>
 									</view>
 									<view class="centent-line">
 										<u-line-progress class="line-progress" :round="false" height="10"
@@ -43,7 +43,7 @@
 											本期还款已结清，
 										</text>
 										<text class="also-style" v-else>
-											本期还款还有{{calculateHkDay(item)}}天，
+											本期还款还有{{calculateHkDay(item)}}天,({{item.hkr}})
 										</text>
 										<text class="">
 											待还款：{{item.syhk}}
@@ -66,7 +66,7 @@
 		</view>
 
 		<u-popup v-model="addModelShow" z-index="10095" mode="center" width="90%" border-radius="10"
-			:safe-area-inset-bottom="true" negative-top>
+			:safe-area-inset-bottom="true">
 			<view class="billModel">
 				<u-form :model="form" ref="uForm">
 					<u-form-item label="标识" label-width="150" prop="bs">
@@ -383,6 +383,23 @@
 						});
 					}
 				})
+			},
+			
+			//点击内容事件（与下面的不同）
+			dianContent(index) {
+				let item = this.kpLists[index];
+				uni.navigateTo({
+					url: '/pages/billStatistics/billStatistics?item=' + encodeURIComponent(JSON.stringify(item)) + "&type=1",
+				})
+			},
+			
+			//点击手续费
+			allLx(item){
+				if(item.name == "手续费"){
+					uni.navigateTo({
+						url: '/pages/billStatistics/billStatistics?item=' + encodeURIComponent(JSON.stringify(item)) + "&type=0",
+					})
+				}
 			},
 
 		}

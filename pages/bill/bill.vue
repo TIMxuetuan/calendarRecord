@@ -11,21 +11,25 @@
 			<u-icon name="order" color="#ffffff" size="32"></u-icon>
 		</view>
 
-		<view>
+		<view class="tab-all">
 			<u-tabs-swiper ref="uTabs" :list="list" name="bs" :current="current" @change="tabsChange" :is-scroll="false"
-				swiperWidth="750" active-color="#3EB34D" bar-width="80"></u-tabs-swiper>
+				swiperWidth="750" active-color="#3EB34D" bar-width="80" :show-bar="true"></u-tabs-swiper>
 		</view>
-		<view class="container">
-			<swiper :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish"
-				style="height: 100%;width: 100%;">
-				<swiper-item class="swiper-item" v-for="(item, index) in tabs" :key="index">
-					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
-						<view class="">
+		<view class="container" @touchstart="start" @touchend="end">
+			<!-- <swiper class="tab-box" ref="swiper1" :current="swiperCurrent" @transition="transition"
+				@animationfinish="animationfinish" style="height: 100%;width: 100%;flex:1">
+				<swiper-item class="swiper-item" v-for="(item, index) in tabs" :key="index"> -->
+
+					<scroll-view style="flex: 1;height: 100%;" enableBackToTop="true" scroll-y @scrolltolower="onreachBottom">
+					<!-- @scrolltolower="onreachBottom" -->
+					
+						<!-- <view class="scBody"> -->
+						<!-- <view class="">
 							<u-gap height="40" bg-color="#F1F1F1"></u-gap>
-						</view>
+						</view> -->
 						<view class="swiperItem-all">
 							<view class="swiperAll-top">
-								<view class="allTop-item" v-for="(fourItem,fourIndex) in fourLists" :key="fourIndex">
+								<view class="allTop-item" v-for="(fourItem,fourIndex) in fourLists" :key="fourIndex" @click="dianContent(fourItem)">
 									<view class="">
 										{{fourItem.value}}
 									</view>
@@ -35,9 +39,13 @@
 								</view>
 							</view>
 							<view class="swiperAll-content">
-								<view class="allContent-item" v-for="(billItem,billIndex) in billLists" :key="billIndex"
-									@click="billItemClick(billItem)">
-									<view class="itemLeft">
+								<!-- <uni-list :border="true">
+						<uni-list-item v-for="(billItem,billIndex) in billLists" :key="billIndex"
+							@click="billItemClick(billItem)" :clickable="true"> -->
+
+								<view class="allContent-item" v-for="(billItem,billIndex) in billLists"
+									:key="billItem.id" @click="billItemClick(billItem)">
+									<view class="itemLeft" slot="header">
 										<view class="itemLeft-img">
 											{{cutOutString(billItem.bs)}}
 										</view>
@@ -50,7 +58,7 @@
 											</view>
 										</view>
 									</view>
-									<view class="itemRight">
+									<view class="itemRight" slot="body">
 										<view class="">
 											{{billItem.lx}}
 										</view>
@@ -60,16 +68,21 @@
 										</view>
 									</view>
 								</view>
+
+								<!-- </uni-list-item>
+					</uni-list> -->
 							</view>
 						</view>
+						<!-- </view> -->
 					</scroll-view>
-				</swiper-item>
-			</swiper>
+
+				<!-- </swiper-item>
+			</swiper> -->
 		</view>
 
 		<!--添加账单详情内容弹窗-->
 		<u-popup v-model="billModelShow" z-index="10085" mode="bottom" width="100%" border-radius="10"
-			:safe-area-inset-bottom="true" negative-top>
+			:safe-area-inset-bottom="true">
 			<view class="billModel">
 				<u-form :model="form" ref="uForm">
 					<u-form-item :label="switchVal == false ? '刷出' : '还入'">
@@ -104,7 +117,7 @@
 
 		<!--所属商户弹窗-->
 		<u-popup v-model="merchantShow" z-index="10095" mode="center" width="80%" height="50%" border-radius="10"
-			:safe-area-inset-bottom="true" negative-top>
+			:safe-area-inset-bottom="true">
 			<view class="merchant-show">
 				<u-checkbox-group :wrap="true" :disabled="disabledGroup">
 					<u-checkbox @change="checkboxChange" v-model="item.checked" v-for="(item, index) in theirList"
@@ -199,8 +212,9 @@
 				deleteSetIcon: false,
 				isAddEdit: "", //是否新增还是编辑 ，当为 addNew时新增， editNew为编辑
 				disabledGroup: false,
-				oldlists:[], //老记录数据，为分页用
-				total:0,
+				oldlists: [], //老记录数据，为分页用
+				total: 0,
+				startData: {},
 			};
 		},
 		onReady() {
@@ -210,26 +224,89 @@
 
 		},
 		onShow() {
-			console.log("show")
 			this.user_info = uni.getStorageSync('user_info');
-			console.log("this.user_info", this.user_info);
 			this.getKname(); //获得卡片名称
 			this.getJl_list();
 		},
-		onPullDownRefresh: function() {
-			//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
-			setTimeout(function() {
-				uni.stopPullDownRefresh(); //停止下拉刷新动画
-				console.log("结束")
-			}, 2000);
-		},
+
+		// onReachBottom: function() {
+		// 	console.log("加载更多")
+		// 	if (this.billLists.length < this.total) {
+		// 		var page = this.page;
+		// 		page++;
+		// 		this.oldlists = this.billLists
+		// 		this.page = page
+		// 		this.getJl_list();
+		// 	} else {
+		// 		uni.showToast({
+		// 			title: '到底了',
+		// 			icon: 'none',
+		// 			duration: 2000
+		// 		});
+		// 	}
+		// },
+
+		// onPullDownRefresh: function() {
+		// 	//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+		// 	setTimeout(function() {
+		// 		uni.stopPullDownRefresh(); //停止下拉刷新动画
+		// 		console.log("结束")
+		// 	}, 2000);
+		// },
 		methods: {
 			...products,
+			
+			//监听滑动开始
+			start(e) {
+				this.startData.clientX = e.changedTouches[0].clientX;
+				this.startData.clientY = e.changedTouches[0].clientY;
+			},
+			
+			//监听滑动结束
+			end(e) {
+				console.log("this.current",this.current)
+				const subX = e.changedTouches[0].clientX - this.startData.clientX;
+				const subY = e.changedTouches[0].clientY - this.startData.clientY;
+				let index = 0;
+				if (subY > 50 || subY < -50) {
+					// //console.log('上下滑')
+				} else {
+					if (subX > 20) {
+						console.log('右滑看上一个')
+						if(this.current > 0){
+							index = this.current - 1;
+							this.tabsChange(index);
+						}else{
+							index = this.current;
+						}
+					} else if (subX < -20) {
+						console.log('左滑看下一个')
+						if(this.current < this.list.length){
+							index = this.current + 1;
+							this.tabsChange(index);
+						}else{
+							index = this.current;
+						}
+					} else {
+						// //console.log('无效')
+					}
+				}
+			},
 
 			// tabs通知swiper切换
 			tabsChange(index) {
-				this.swiperCurrent = index;
-				console.log("this.swiperCurrent", this.swiperCurrent)
+				this.current = index;
+
+				this.page = 0;
+				this.oldlists = [];
+				this.$refs.uTabs.setFinishCurrent(index);
+				let listNew = this.list;
+				if (listNew[index].bs == "全部") {
+					this.kid = "";
+				} else {
+					this.kid = listNew[index].id
+				}
+				this.getJl_list();
 			},
 			// swiper-item左右移动，通知tabs的滑块跟随移动
 			transition(e) {
@@ -252,12 +329,13 @@
 					this.kid = listNew[current].id
 				}
 				this.getJl_list();
-				console.log("animationfinish", this.swiperCurrent, this.current, listNew, this.kid)
+				console.log("滑动", this.billLists)
+				// console.log("animationfinish", this.swiperCurrent, this.current, listNew, this.kid)
 			},
 
-			// scroll-view到底部加载更多
+			//scroll-view到底部加载更多
 			onreachBottom() {
-				console.log("组件到底了")
+				console.log("swiper组件的加载更多")
 				if (this.billLists.length < this.total) {
 					var page = this.page;
 					page++;
@@ -287,7 +365,7 @@
 						})
 						this.list = list;
 						this.tabs = list;
-						console.log("this.list", this.list)
+						// console.log("this.list", this.list)
 					} else {
 						uni.showToast({
 							title: res.msg,
@@ -321,13 +399,15 @@
 						})
 						this.fourLists = fourLists;
 						this.total = res.total;
-						
-						//获取上次加载的数据
-						var oldlists = this.oldlists; //console.log(oldlists)
-						var newlists = oldlists.concat(res.list); //合并数据 res.data 你的数组数据
-						this.billLists = newlists;
-						console.log("获得", this.billLists, this.fourLists)
 
+						//获取上次加载的数据
+						let oldlists = this.oldlists;
+						console.log("oldlists", oldlists)
+						let newlists = oldlists.concat(res.list); //合并数据 res.data 你的数组数据
+						this.billLists = newlists;
+						this.$set(this.billLists, newlists);
+						console.log("获得", this.billLists);
+						this.$forceUpdate()
 					} else {
 						this.fourLists = [{
 								name: "还入",
@@ -376,7 +456,7 @@
 
 				let theirList = this.theirList;
 				let theirItemId = this.theirItem.id.split(",");
-				console.log("theirItemId", theirItemId)
+				// console.log("theirItemId", theirItemId)
 				theirList.forEach(item => {
 					item.checked = false;
 					item.name = item.bs;
@@ -390,7 +470,7 @@
 				})
 
 				this.theirList = theirList;
-				console.log("this.theirList", this.theirItem, this.theirList)
+				// console.log("this.theirList", this.theirItem, this.theirList)
 
 			},
 
@@ -414,7 +494,7 @@
 					id: pitchId.join(",")
 				}
 				this.merchantShow = false;
-				console.log("detail", this.theirItem)
+				// console.log("detail", this.theirItem)
 			},
 
 			//添加记录事假
@@ -423,9 +503,9 @@
 					if (valid) {
 						let myDate = new Date();
 						let timestamp = myDate.valueOf();;
-						console.log("switchVal", this.switchVal, this.theirItem, this.form, timestamp);
+						// console.log("switchVal", this.switchVal, this.theirItem, this.form, timestamp);
 						if (this.isAddEdit == "addNew") {
-							console.log("新增")
+							// console.log("新增")
 							allApi.add_jl({
 								"info[wechat_id]": this.user_info.id,
 								"info[kid]": this.theirItem.id,
@@ -436,7 +516,6 @@
 								"info[sj]": timestamp,
 							}).then(res => {
 								if (res.event == 100) {
-									console.log(res)
 									this.billModelShow = false;
 									this.getJl_list();
 								} else {
@@ -448,7 +527,7 @@
 								}
 							})
 						} else if (this.isAddEdit == "editNew") {
-							console.log("编辑", this.ecbItem)
+							// console.log("编辑", this.ecbItem)
 							allApi.editjl({
 								"info[id]": this.ecbItem.id,
 								"info[wechat_id]": this.user_info.id,
@@ -460,7 +539,7 @@
 								"info[sj]": timestamp,
 							}).then(res => {
 								if (res.event == 100) {
-									console.log(res)
+									// console.log(res)
 									this.billModelShow = false;
 									this.getJl_list();
 								} else {
@@ -481,7 +560,7 @@
 
 			//点击某一条数据，弹出操作弹窗
 			billItemClick(item) {
-				console.log("item", item)
+				// console.log("item", item)
 				this.ecbClickModel = true;
 				this.ecbItem = item;
 			},
@@ -489,7 +568,7 @@
 			//点击编辑，弹出新增编辑弹窗，并初始化赋值
 			ecbEdit() {
 				let ecbItem = this.ecbItem
-				console.log("ecbItem", ecbItem)
+				// console.log("ecbItem", ecbItem)
 				this.billModelShow = true;
 				this.ecbClickModel = false;
 
@@ -515,12 +594,11 @@
 
 			//删除确认弹窗
 			confirmSetIcon() {
-				console.log("当前item", this.ecbItem)
+				// console.log("当前item", this.ecbItem)
 				allApi.deljl({
 					id: this.ecbItem.id
 				}).then(res => {
 					if (res.event == 100) {
-						console.log(res)
 						this.deleteSetIcon = false;
 						this.getJl_list();
 					} else {
@@ -535,10 +613,32 @@
 
 			//跳转账单类别页面
 			rightListsClick() {
-				console.log("ddd")
 				uni.navigateTo({
 					url: '/pages/billCategory/billCategory'
 				})
+			},
+			
+			//点击内容事件（与下面的不同）
+			dianContent(item) {
+				console.log("item",item,this.kid)
+				if(item.name == "手续费"){
+					if(this.kid != ''){
+						let newItem = {
+							id:this.kid
+						};
+						uni.navigateTo({
+							url: '/pages/billStatistics/billStatistics?item=' + encodeURIComponent(JSON.stringify(newItem)) + "&type=1",
+						})
+					}else{
+						let newItem = {
+							id:''
+						};
+						uni.navigateTo({
+							url: '/pages/billStatistics/billStatistics?item=' + encodeURIComponent(JSON.stringify(newItem)) + "&type=0",
+						})
+					}
+				}
+				
 			},
 		}
 	}

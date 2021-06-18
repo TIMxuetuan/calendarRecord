@@ -197,6 +197,15 @@ function deljl (data){ // 卡片记录删除接口
 	})
 }
 
+function get_tj (data){ // 卡片记录按月统计接口
+	return request({
+		url:'/kp/get_tj',
+		method:'POST',
+		type:true,
+		data
+	})
+}
+
 /*账单记录页面bill 结束*/
 
 
@@ -224,5 +233,6 @@ export default {
 	jl_list,
 	editjl,
 	deljl,
+	get_tj,
 	
 }

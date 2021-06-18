@@ -143,9 +143,9 @@ let products = {
 	
 	//计算进度， 用剩余额度 除与 总额度
 	calculateSum(item){
-		let syhk = item.syhk * 1;
+		let kyed = item.kyed * 1;
 		let ed = item.ed * 1;
-		let resultNum = ((ed - syhk) / ed).toFixed(2) * 100;
+		let resultNum = ((ed - kyed) / ed).toFixed(2) * 100;
 		return resultNum
 	},
 	

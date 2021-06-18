@@ -4,7 +4,8 @@
     "components/headNav/index",
     "pages/yearCalendar/yearCalendar",
     "pages/bill/bill",
-    "pages/billCategory/billCategory"
+    "pages/billCategory/billCategory",
+    "pages/billStatistics/billStatistics"
   ],
   "subPackages": [],
   "window": {
@@ -13,5 +14,6 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }

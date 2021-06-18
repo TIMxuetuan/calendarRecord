@@ -4,19 +4,64 @@
 	height: 100vh;
 	min-height: 100vh;
 	flex-direction: column;
+	box-sizing: content-box;
+	// padding-bottom: 100rpx;
 }
 
 .container{
 	width: 100%;
 	height: 100%;
 	background-color: #F1F1F1;
+	margin-top: 80rpx;
 }
+
+.tab-all{
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
+}
+
+/deep/::-webkit-scrollbar {
+	display: none;
+	width: 0;
+	height: 0;
+} 
+
+
+.tab-box {
+   flex: 1;
+}
+
+.swiper-item{
+	width: 100%;
+	height: 100%;
+	flex: 1;
+}
+
 
 .swiperItem-all{
 	width: 100%;
 	// height: 100%;
 	background-color: #fff;
 }
+
+.scBody{
+	width: 100%;
+	height: 100%;
+	padding-bottom: 100rpx;
+	overflow-y: scroll !important;
+}
+
+.listview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
 
 /*四个统计 还入、刷出、手续费等*/
 .swiperAll-top{
@@ -55,8 +100,9 @@
 	align-items: center;
 	padding: 10rpx 0;
 	border-bottom: 1px solid #F0F0F0;
-	
-	.itemLeft{
+}
+
+.itemLeft{
 		display: flex;
 		height: 100%;
 		align-items: center;
@@ -85,7 +131,6 @@
 		font-size: 24rpx;
 		margin-top: 16rpx;
 	}
-}
 
 .allContent-item:last-child{
 	border: none;
@@ -192,3 +237,4 @@
 	color: #FF5555;
 	margin-top: 50rpx;
 }
+

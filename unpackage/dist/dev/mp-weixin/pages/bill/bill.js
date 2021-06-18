@@ -96,40 +96,37 @@ var components
 try {
   components = {
     uIcon: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-icon/u-icon */ "uview-ui/components/u-icon/u-icon").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-icon/u-icon.vue */ 84))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-icon/u-icon */ "uview-ui/components/u-icon/u-icon").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-icon/u-icon.vue */ 92))
     },
     uTabsSwiper: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-tabs-swiper/u-tabs-swiper */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-tabs-swiper/u-tabs-swiper")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-tabs-swiper/u-tabs-swiper.vue */ 190))
-    },
-    uGap: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-gap/u-gap */ "uview-ui/components/u-gap/u-gap").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-gap/u-gap.vue */ 197))
+      return Promise.all(/*! import() | uview-ui/components/u-tabs-swiper/u-tabs-swiper */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-tabs-swiper/u-tabs-swiper")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-tabs-swiper/u-tabs-swiper.vue */ 198))
     },
     uPopup: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 91))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-popup/u-popup */ "uview-ui/components/u-popup/u-popup").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-popup/u-popup.vue */ 99))
     },
     uForm: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-form/u-form */ "uview-ui/components/u-form/u-form").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form/u-form.vue */ 204))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-form/u-form */ "uview-ui/components/u-form/u-form").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form/u-form.vue */ 205))
     },
     uFormItem: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-form-item/u-form-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-form-item/u-form-item")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form-item/u-form-item.vue */ 211))
+      return Promise.all(/*! import() | uview-ui/components/u-form-item/u-form-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-form-item/u-form-item")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-form-item/u-form-item.vue */ 212))
     },
     uSwitch: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-switch/u-switch */ "uview-ui/components/u-switch/u-switch").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-switch/u-switch.vue */ 219))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-switch/u-switch */ "uview-ui/components/u-switch/u-switch").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-switch/u-switch.vue */ 220))
     },
     uInput: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-input/u-input */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-input/u-input")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-input/u-input.vue */ 105))
+      return Promise.all(/*! import() | uview-ui/components/u-input/u-input */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-input/u-input")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-input/u-input.vue */ 113))
     },
     uButton: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-button/u-button */ "uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-button/u-button.vue */ 113))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-button/u-button */ "uview-ui/components/u-button/u-button").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-button/u-button.vue */ 121))
     },
     uCheckboxGroup: function() {
-      return Promise.all(/*! import() | uview-ui/components/u-checkbox-group/u-checkbox-group */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-checkbox-group/u-checkbox-group")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-checkbox-group/u-checkbox-group.vue */ 226))
+      return Promise.all(/*! import() | uview-ui/components/u-checkbox-group/u-checkbox-group */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uview-ui/components/u-checkbox-group/u-checkbox-group")]).then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-checkbox-group/u-checkbox-group.vue */ 227))
     },
     uCheckbox: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-checkbox/u-checkbox */ "uview-ui/components/u-checkbox/u-checkbox").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-checkbox/u-checkbox.vue */ 233))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-checkbox/u-checkbox */ "uview-ui/components/u-checkbox/u-checkbox").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-checkbox/u-checkbox.vue */ 234))
     },
     uModal: function() {
-      return __webpack_require__.e(/*! import() | uview-ui/components/u-modal/u-modal */ "uview-ui/components/u-modal/u-modal").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-modal/u-modal.vue */ 134))
+      return __webpack_require__.e(/*! import() | uview-ui/components/u-modal/u-modal */ "uview-ui/components/u-modal/u-modal").then(__webpack_require__.bind(null, /*! @/uview-ui/components/u-modal/u-modal.vue */ 142))
     }
   }
 } catch (e) {
@@ -153,22 +150,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var l1 = _vm.__map(_vm.tabs, function(item, index) {
-    var $orig = _vm.__get_orig(item)
+  var l0 = _vm.__map(_vm.billLists, function(billItem, billIndex) {
+    var $orig = _vm.__get_orig(billItem)
 
-    var l0 = _vm.__map(_vm.billLists, function(billItem, billIndex) {
-      var $orig = _vm.__get_orig(billItem)
-
-      var m0 = _vm.cutOutString(billItem.bs)
-      return {
-        $orig: $orig,
-        m0: m0
-      }
-    })
-
+    var m0 = _vm.cutOutString(billItem.bs)
     return {
       $orig: $orig,
-      l0: l0
+      m0: m0
     }
   })
 
@@ -176,7 +164,7 @@ var render = function() {
     {},
     {
       $root: {
-        l1: l1
+        l0: l0
       }
     }
   )
@@ -214,6 +202,19 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -415,7 +416,8 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
       isAddEdit: "", //是否新增还是编辑 ，当为 addNew时新增， editNew为编辑
       disabledGroup: false,
       oldlists: [], //老记录数据，为分页用
-      total: 0 };
+      total: 0,
+      startData: {} };
 
   },
   onReady: function onReady() {
@@ -425,26 +427,89 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
 
   },
   onShow: function onShow() {
-    console.log("show");
     this.user_info = uni.getStorageSync('user_info');
-    console.log("this.user_info", this.user_info);
     this.getKname(); //获得卡片名称
     this.getJl_list();
   },
-  onPullDownRefresh: function onPullDownRefresh() {
-    //监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
-    setTimeout(function () {
-      uni.stopPullDownRefresh(); //停止下拉刷新动画
-      console.log("结束");
-    }, 2000);
-  },
+
+  // onReachBottom: function() {
+  // 	console.log("加载更多")
+  // 	if (this.billLists.length < this.total) {
+  // 		var page = this.page;
+  // 		page++;
+  // 		this.oldlists = this.billLists
+  // 		this.page = page
+  // 		this.getJl_list();
+  // 	} else {
+  // 		uni.showToast({
+  // 			title: '到底了',
+  // 			icon: 'none',
+  // 			duration: 2000
+  // 		});
+  // 	}
+  // },
+
+  // onPullDownRefresh: function() {
+  // 	//监听下拉刷新动作的执行方法，每次手动下拉刷新都会执行一次
+  // 	setTimeout(function() {
+  // 		uni.stopPullDownRefresh(); //停止下拉刷新动画
+  // 		console.log("结束")
+  // 	}, 2000);
+  // },
   methods: _objectSpread(_objectSpread({},
   _products.default), {}, {
 
+    //监听滑动开始
+    start: function start(e) {
+      this.startData.clientX = e.changedTouches[0].clientX;
+      this.startData.clientY = e.changedTouches[0].clientY;
+    },
+
+    //监听滑动结束
+    end: function end(e) {
+      console.log("this.current", this.current);
+      var subX = e.changedTouches[0].clientX - this.startData.clientX;
+      var subY = e.changedTouches[0].clientY - this.startData.clientY;
+      var index = 0;
+      if (subY > 50 || subY < -50) {
+        // //console.log('上下滑')
+      } else {
+        if (subX > 20) {
+          console.log('右滑看上一个');
+          if (this.current > 0) {
+            index = this.current - 1;
+            this.tabsChange(index);
+          } else {
+            index = this.current;
+          }
+        } else if (subX < -20) {
+          console.log('左滑看下一个');
+          if (this.current < this.list.length) {
+            index = this.current + 1;
+            this.tabsChange(index);
+          } else {
+            index = this.current;
+          }
+        } else {
+          // //console.log('无效')
+        }
+      }
+    },
+
     // tabs通知swiper切换
     tabsChange: function tabsChange(index) {
-      this.swiperCurrent = index;
-      console.log("this.swiperCurrent", this.swiperCurrent);
+      this.current = index;
+
+      this.page = 0;
+      this.oldlists = [];
+      this.$refs.uTabs.setFinishCurrent(index);
+      var listNew = this.list;
+      if (listNew[index].bs == "全部") {
+        this.kid = "";
+      } else {
+        this.kid = listNew[index].id;
+      }
+      this.getJl_list();
     },
     // swiper-item左右移动，通知tabs的滑块跟随移动
     transition: function transition(e) {
@@ -467,12 +532,13 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
         this.kid = listNew[current].id;
       }
       this.getJl_list();
-      console.log("animationfinish", this.swiperCurrent, this.current, listNew, this.kid);
+      console.log("滑动", this.billLists);
+      // console.log("animationfinish", this.swiperCurrent, this.current, listNew, this.kid)
     },
 
-    // scroll-view到底部加载更多
+    //scroll-view到底部加载更多
     onreachBottom: function onreachBottom() {
-      console.log("组件到底了");
+      console.log("swiper组件的加载更多");
       if (this.billLists.length < this.total) {
         var page = this.page;
         page++;
@@ -502,7 +568,7 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
 
           _this.list = list;
           _this.tabs = list;
-          console.log("this.list", _this.list);
+          // console.log("this.list", this.list)
         } else {
           uni.showToast({
             title: res.msg,
@@ -538,11 +604,13 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
           _this2.total = res.total;
 
           //获取上次加载的数据
-          var oldlists = _this2.oldlists; //console.log(oldlists)
+          var oldlists = _this2.oldlists;
+          console.log("oldlists", oldlists);
           var newlists = oldlists.concat(res.list); //合并数据 res.data 你的数组数据
           _this2.billLists = newlists;
-          console.log("获得", _this2.billLists, _this2.fourLists);
-
+          _this2.$set(_this2.billLists, newlists);
+          console.log("获得", _this2.billLists);
+          _this2.$forceUpdate();
         } else {
           _this2.fourLists = [{
             name: "还入",
@@ -591,7 +659,7 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
 
       var theirList = this.theirList;
       var theirItemId = this.theirItem.id.split(",");
-      console.log("theirItemId", theirItemId);
+      // console.log("theirItemId", theirItemId)
       theirList.forEach(function (item) {
         item.checked = false;
         item.name = item.bs;
@@ -605,7 +673,7 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
       });
 
       this.theirList = theirList;
-      console.log("this.theirList", this.theirItem, this.theirList);
+      // console.log("this.theirList", this.theirItem, this.theirList)
 
     },
 
@@ -629,7 +697,7 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
         id: pitchId.join(",") };
 
       this.merchantShow = false;
-      console.log("detail", this.theirItem);
+      // console.log("detail", this.theirItem)
     },
 
     //添加记录事假
@@ -638,9 +706,9 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
         if (valid) {
           var myDate = new Date();
           var timestamp = myDate.valueOf();;
-          console.log("switchVal", _this3.switchVal, _this3.theirItem, _this3.form, timestamp);
+          // console.log("switchVal", this.switchVal, this.theirItem, this.form, timestamp);
           if (_this3.isAddEdit == "addNew") {
-            console.log("新增");
+            // console.log("新增")
             _api_methods.default.add_jl({
               "info[wechat_id]": _this3.user_info.id,
               "info[kid]": _this3.theirItem.id,
@@ -651,7 +719,6 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
               "info[sj]": timestamp }).
             then(function (res) {
               if (res.event == 100) {
-                console.log(res);
                 _this3.billModelShow = false;
                 _this3.getJl_list();
               } else {
@@ -663,7 +730,7 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
               }
             });
           } else if (_this3.isAddEdit == "editNew") {
-            console.log("编辑", _this3.ecbItem);
+            // console.log("编辑", this.ecbItem)
             _api_methods.default.editjl({
               "info[id]": _this3.ecbItem.id,
               "info[wechat_id]": _this3.user_info.id,
@@ -675,7 +742,7 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
               "info[sj]": timestamp }).
             then(function (res) {
               if (res.event == 100) {
-                console.log(res);
+                // console.log(res)
                 _this3.billModelShow = false;
                 _this3.getJl_list();
               } else {
@@ -696,7 +763,7 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
 
     //点击某一条数据，弹出操作弹窗
     billItemClick: function billItemClick(item) {
-      console.log("item", item);
+      // console.log("item", item)
       this.ecbClickModel = true;
       this.ecbItem = item;
     },
@@ -704,7 +771,7 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
     //点击编辑，弹出新增编辑弹窗，并初始化赋值
     ecbEdit: function ecbEdit() {
       var ecbItem = this.ecbItem;
-      console.log("ecbItem", ecbItem);
+      // console.log("ecbItem", ecbItem)
       this.billModelShow = true;
       this.ecbClickModel = false;
 
@@ -730,12 +797,11 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
 
     //删除确认弹窗
     confirmSetIcon: function confirmSetIcon() {var _this4 = this;
-      console.log("当前item", this.ecbItem);
+      // console.log("当前item", this.ecbItem)
       _api_methods.default.deljl({
         id: this.ecbItem.id }).
       then(function (res) {
         if (res.event == 100) {
-          console.log(res);
           _this4.deleteSetIcon = false;
           _this4.getJl_list();
         } else {
@@ -750,9 +816,31 @@ var _api_methods = _interopRequireDefault(__webpack_require__(/*! ../../utils/ap
 
     //跳转账单类别页面
     rightListsClick: function rightListsClick() {
-      console.log("ddd");
       uni.navigateTo({
         url: '/pages/billCategory/billCategory' });
+
+    },
+
+    //点击内容事件（与下面的不同）
+    dianContent: function dianContent(item) {
+      console.log("item", item, this.kid);
+      if (item.name == "手续费") {
+        if (this.kid != '') {
+          var newItem = {
+            id: this.kid };
+
+          uni.navigateTo({
+            url: '/pages/billStatistics/billStatistics?item=' + encodeURIComponent(JSON.stringify(newItem)) + "&type=1" });
+
+        } else {
+          var _newItem = {
+            id: '' };
+
+          uni.navigateTo({
+            url: '/pages/billStatistics/billStatistics?item=' + encodeURIComponent(JSON.stringify(_newItem)) + "&type=0" });
+
+        }
+      }
 
     } }) };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
